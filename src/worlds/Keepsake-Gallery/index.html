@@ -135,102 +135,120 @@
     }
     });
 
-    // bugs on the pedestal interaction
-    AFRAME.registerComponent('pedestal-interaction', {
-      init: function() {
-          const self = this;
-          this.hasDisplayedObject = false;
-          this.displayedObjectId = null;
-          this.pedestalTop = new THREE.Vector3();
-          
-          if (!self.el.classList.contains('interactive')) {
-              self.el.classList.add('interactive');
-          }
+    // hardcoded pedestal interaction
+  AFRAME.registerComponent('pedestal-interaction', {
+    init: function() {
+        const self = this;
+        this.hasDisplayedObject = false;
+        this.displayedObjectId = null;
+        this.pedestalTop = new THREE.Vector3();
+        
+        if (!self.el.classList.contains('interactive')) {
+            self.el.classList.add('interactive');
+        }
 
-          // calc top center of pedestal
-          this.updatePedestalPosition = () => {
-              this.el.object3D.getWorldPosition(this.pedestalTop);
-              this.pedestalTop.y += 1.5; // adjustable based on height
-          };
+        // calc top center of pedestal
+        this.updatePedestalPosition = () => {
+            this.el.object3D.getWorldPosition(this.pedestalTop);
+            this.pedestalTop.y += 1.5; // adjustable based on height
+        };
 
-          this.el.addEventListener('click', () => {
-            console.log('Pedestal clicked');
-              const manager = this.el.sceneEl.components['interaction-manager'];
-              const heldId = manager.pickedUpObject;
-              console.log('Currently held object ID:', heldId);
-              
-              const breadEntity = document.querySelector('#bread');
-              const uploadUI = document.querySelector('#upload-ui');
-              
-              // log bread in console
-              console.log('Bread entity found:', !!breadEntity);
-              if (breadEntity) {
-                console.log('Bread pickup component:', !!breadEntity.components['circles-pickup-object']);
-                if (breadEntity.components['circles-pickup-object']) {
-                  console.log('Bread pickedUp state:', breadEntity.components['circles-pickup-object'].pickedUp);
+        this.el.addEventListener('click', () => {
+          console.log('Pedestal clicked');
+            const manager = this.el.sceneEl.components['interaction-manager'];
+            const heldId = manager.pickedUpObject;
+            console.log('Currently held object ID:', heldId);
+            
+            const breadEntity = document.querySelector('#bread');
+            const croissantsEntity = document.querySelector('#croissants');
+            const uploadUI = document.querySelector('#upload-ui');
+            
+            // log objects in console
+            console.log('Bread entity found:', !!breadEntity);
+            console.log('Croissants entity found:', !!croissantsEntity);
+            
+            if (breadEntity) {
+              console.log('Bread pickup component:', !!breadEntity.components['circles-pickup-object']);
+              if (breadEntity.components['circles-pickup-object']) {
+                console.log('Bread pickedUp state:', breadEntity.components['circles-pickup-object'].pickedUp);
+              }
+            }
+            
+            if (croissantsEntity) {
+              console.log('Croissants pickup component:', !!croissantsEntity.components['circles-pickup-object']);
+              if (croissantsEntity.components['circles-pickup-object']) {
+                console.log('Croissants pickedUp state:', croissantsEntity.components['circles-pickup-object'].pickedUp);
+              }
+            }
+            
+            this.updatePedestalPosition();
+            
+            // when clicked show upload UI if nothing is displayed or held
+            if (uploadUI && !this.hasDisplayedObject && !heldId) {
+              console.log('Showing Upload UI');
+              uploadUI.style.display = 'block';
+            }
+
+            // Handle placing objects on pedestal
+            if (heldId && !this.hasDisplayedObject) {
+                const object = heldId === 'bread' ? breadEntity : croissantsEntity;
+                if (object) {
+                    console.log(`Placing ${heldId} on pedestal...`);
+                    this.hasDisplayedObject = true;
+                    this.displayedObjectId = heldId;
+
+                    // detach object from camera to place in scene
+                    object.sceneEl.object3D.attach(object.object3D);
+                    
+                    // setting object world position to top of pedestal
+                    object.setAttribute('position', {
+                        x: this.pedestalTop.x,
+                        y: this.pedestalTop.y,
+                        z: this.pedestalTop.z
+                    });
+                    object.setAttribute('rotation', '0 0 0');
+                    object.setAttribute('scale', '1.5 1.5 1.5');
+                    object.setAttribute('visible', true);
+                    
+                    // update pickup state
+                    object.components['circles-pickup-object'].pickedUp = false;
+                    manager.pickedUpObject = null;
+
+                    console.log(`${heldId} placed at position:`, object.getAttribute('position'));
                 }
-              }
-              
-              this.updatePedestalPosition();
-              
-              // when clicked show upload UI if nothing is displayed or held
-              if (uploadUI && !this.hasDisplayedObject && !heldId) {
-                console.log('Showing Upload UI');
-                uploadUI.style.display = 'block';
-              }
+            }
+            // handle picking up object from pedestal
+            else if (this.hasDisplayedObject && !manager.pickedUpObject) {
+                const objectToPickup = this.displayedObjectId === 'bread' ? breadEntity : croissantsEntity;
+                
+                if (objectToPickup) {
+                    console.log(`Retrieving ${this.displayedObjectId} from pedestal`);
+                    this.hasDisplayedObject = false;
+                    const pickedUpId = this.displayedObjectId;
+                    this.displayedObjectId = null;
 
-              // place bread
-              if (heldId === 'bread' && !this.hasDisplayedObject) {
-                  console.log('placing bread on pedestal...');
-                  this.hasDisplayedObject = true;
-                  this.displayedObjectId = 'bread';
+                    const camera = document.querySelector('#camera');
+                    
+                    // attach object to camera for pickup
+                    camera.object3D.attach(objectToPickup.object3D);
+                    
+                    // update pos relative to camera
+                    objectToPickup.setAttribute('position', {
+                        x: 0,
+                        y: -0.5, // slightly below
+                        z: -1    // infront
+                    });
+                    
+                    // update pickup state
+                    objectToPickup.components['circles-pickup-object'].pickedUp = true;
+                    manager.pickedUpObject = pickedUpId;
+                }
+            }
+        });
 
-                  // detach bread from camera to place in scene
-                  breadEntity.sceneEl.object3D.attach(breadEntity.object3D);
-                  
-                  // setting bread world position to top of pedestal
-                  breadEntity.setAttribute('position', {
-                      x: this.pedestalTop.x,
-                      y: this.pedestalTop.y,
-                      z: this.pedestalTop.z
-                  });
-                  breadEntity.setAttribute('rotation', '0 0 0');
-                  breadEntity.setAttribute('scale', '1.5 1.5 1.5');
-                  breadEntity.setAttribute('visible', true);
-                  
-                  // update pickup state - using circles-pickup-object instead of pickupable
-                  breadEntity.components['circles-pickup-object'].pickedUp = false;
-                  manager.pickedUpObject = null;
-
-                  console.log('Bread placed at position:', breadEntity.getAttribute('position'));
-              }
-              // handle picking up bread from pedestal
-              else if (this.hasDisplayedObject && !manager.pickedUpObject && this.displayedObjectId === 'bread') {
-                  console.log('retrieving bread from pedestal');
-                  this.hasDisplayedObject = false;
-                  this.displayedObjectId = null;
-
-                  const camera = document.querySelector('#camera');
-                  
-                  // attach bread to camera for pickup
-                  camera.object3D.attach(breadEntity.object3D);
-                  
-                  // update pos relative to camera
-                  breadEntity.setAttribute('position', {
-                      x: 0,
-                      y: -0.5, // slightly below
-                      z: -1    // infront
-                  });
-                  
-                  // update pickup state - using circles-pickup-object instead of pickupable
-                  breadEntity.components['circles-pickup-object'].pickedUp = true;
-                  manager.pickedUpObject = 'bread';
-              }
-          });
-
-          // initial position update
-          this.updatePedestalPosition();
-      }
+        // initial position update
+        this.updatePedestalPosition();
+    }
   });
 
       // interaction manager - listens for entities being picked up/released globally
@@ -364,8 +382,12 @@
         shadow="cast:true; recieve:true;">
         </a-entity>
 
-      <!-- pdf test -->
-      <a-entity id="pdf-test" position="-5.631 2.690 -1.629" rotation="0 90 0" scale="2.0 2.0 2.0" circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"></a-entity>
+      <!-- pdf - how to make bread -->
+      <a-entity id="pdf-bread" position="-5.631 2.690 -1.629" rotation="0 90 0" scale="2.0 2.0 2.0" circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"></a-entity>
+      <!-- pdf - how to make bread -->
+      <a-entity id="pdf-fancy-bread" position="0.993 2.876 -5.708" rotation="0 0 0" scale="2.0 2.0 2.0" circles-pdf-loader="src:assets/pdf/bread-art-zine.pdf;"></a-entity>
+      <!-- pdf - bread meme -->
+      <a-entity id="pdf-meme-bread" position="5.642 2.119 -0.022" rotation="0 -90 0" scale="2.0 2.0 2.0" circles-pdf-loader="src:assets/pdf/how-to-make-bread.pdf;"></a-entity>
 
         <!-- frame (1)-->
         <a-entity
