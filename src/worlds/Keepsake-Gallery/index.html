@@ -293,6 +293,10 @@
   <a-scene circles_scene_properties interaction-manager gallery-name-display background="color: black">
     <a-assets>
       <!-- put all assets here -->
+      <!--Skybox-->
+      <img id="sky_map" src="assets/textures/minimal_skybox.jpg" crossorigin="anonymous">
+
+
       <!-- pedestal -->
       <a-asset-item id="pedestal-model" src="assets/models/Pedestal.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
       <!-- frame -->
@@ -327,6 +331,14 @@
         cursor="rayOrigin: mouse"
         circles-interactive-object
         raycaster="objects: .interactive; far: 20; interval: 100">
+        </a-entity>
+
+        <!--SKY BOX-->
+        <a-entity id="sky-box"
+              geometry="primitive:sphere; radius:100"
+              position="0 0 0"
+              rotation="0 0 0"
+              material="src: #sky_map; side:back; shader:flat">
         </a-entity>
 
         <!-- pedestal (this is huge)-->
