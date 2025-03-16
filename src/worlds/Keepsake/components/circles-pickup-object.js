@@ -53,6 +53,7 @@ AFRAME.registerComponent('circles-pickup-object', {
     this.el.removeEventListener('click', this.clickFunc);
   },
   pickup : function(sendNetworkEvent, passedContext) {
+    console.log('pickUpEventFunc');
     const CONTEXT_AF    = (passedContext) ? passedContext : this;
     const data          = CONTEXT_AF.data;
     const SAME_DIFF     = 0.001;
@@ -87,6 +88,10 @@ AFRAME.registerComponent('circles-pickup-object', {
     //let others know
     CONTEXT_AF.el.emit(CIRCLES.EVENTS.PICKUP_THIS_OBJECT, {sendNetworkEvent:sendNetworkEvent}, true);
     CIRCLES.getCirclesManagerElement().emit(CIRCLES.EVENTS.PICKUP_THIS_OBJECT, {el:CONTEXT_AF.el}, false);
+
+    // logging what obj has been picked up #########################################################
+    CONTEXT_AF.el.sceneEl.emit('object-picked-up', {id: CONTEXT_AF.el.id}, false);
+    console.log('Picked up object with ID:', CONTEXT_AF.el.id);
   },
   release : function(sendNetworkEvent, passedContext) {
     const CONTEXT_AF  = (passedContext) ? passedContext : this;
@@ -107,11 +112,15 @@ AFRAME.registerComponent('circles-pickup-object', {
     let artReleaseTimeout = null;
 
     const releaseEventFunc = function() {
-      //console.log('releaseEventFunc');
+      console.log('releaseEventFunc');
 
       CONTEXT_AF.el.setAttribute('position', {x:dropPos.x, y:dropPos.y, z:dropPos.z});
       CONTEXT_AF.el.setAttribute('rotation', {x:dropRot.x, y:dropRot.y, z:dropRot.z});
       CONTEXT_AF.el.setAttribute('scale', {x:dropSca.x, y:dropSca.y, z:dropSca.z});
+
+      // logging what obj has been released #########################################################
+      CONTEXT_AF.el.sceneEl.emit('object-released', {id: CONTEXT_AF.el.id}, false);
+      console.log('Released object with ID:', CONTEXT_AF.el.id);
 
       //send off event for others
       CONTEXT_AF.el.emit(CIRCLES.EVENTS.RELEASE_THIS_OBJECT, {sendNetworkEvent:sendNetworkEvent}, true);
