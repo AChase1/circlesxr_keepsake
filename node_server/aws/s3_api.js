@@ -1,22 +1,21 @@
 const s3 = require('./aws_config').s3;
 const bucketName = require('./aws_config').bucketName;
 const aws = require('./aws_config').aws;
-const { send } = require('process');
-const stream = require('stream');
-const { promisify } = require('util');
-const pipeline = promisify(stream.pipeline);
-
-
+const s3Logic = require('./s3_logic');
 
 const uploadToS3 = async (request, response) => {
   try {
     const artifact = JSON.parse(request.body.artifact);
+    const metadata = {};
+    for (const [key, value] of Object.entries(artifact)) {
+      metadata[`x-amz-meta-${key}`] = value.toString(); // Prefix with x-amz-meta- and convert to string
+    }
     const addObjectCmd = new aws.PutObjectCommand({
       Bucket: bucketName,
       Key: artifact.objectKey,
       Body: request.file.buffer,
       ContentType: request.file.mimetype,
-      Metadata: request.body.artifact,
+      Metadata: metadata,
       // TODO => add custom metadata
     });
 
@@ -42,7 +41,6 @@ const retrieveAllObjects = async (request, response) => {
 
 const retrieveObject = async (request, response) => {
   try {
-    const s3Logic = new S3Logic();
     const key = decodeURIComponent(request.params.key);
     const getObjectCmd = new aws.GetObjectCommand({
       Bucket: bucketName,
@@ -52,6 +50,7 @@ const retrieveObject = async (request, response) => {
     const cmdResponse = await s3.send(getObjectCmd);
     const fileBuffer = await s3Logic.configureFileData(cmdResponse.Body);
     const metadata = s3Logic.configureMetadata(cmdResponse.Metadata);
+    console.log(metadata);
     metadata.file = fileBuffer;
 
     response.status(200).json({ message: 'Object retrieved successfully!', data: metadata });

@@ -6,13 +6,14 @@ class FileLogic {
 
             const fileInput = document.createElement('input');
             fileInput.type = 'file';
-            fileInput.display = 'none';
+            fileInput.style.display = 'none';
             document.body.appendChild(fileInput);
 
             fileInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
                 if (file) {
-                    const pedestalId = document.querySelector("a-scene").components["interaction-manager"];
+                    const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
+                    console.log(pedestalId);
                     const timestamp = basicLogic.getCurrentTimestamp();
                     const artifact = new Artifact(file.name + timestamp, 1, "", "", [], [], pedestalId, file);
                     s3Repository.uploadToS3(artifact);
@@ -42,12 +43,12 @@ class FileLogic {
             console.error("Pedestal not found");
             return;
         }
-        const pedestalInteraction = pedestal.components["pedestal-interaction"].data;
+        const pedestalInteraction = pedestal.components["pedestal-interaction"];
         const model = document.createElement("a-entity");
         model.setAttribute("gltf-model", `url(${URL.createObjectURL(file)})`);
         pedestal.appendChild(model);
         model.setAttribute("scale", "70 70 70");
-        model.setAttribute("position", pedestalInteraction.pedestalTop);
+        model.setAttribute("position", {x: pedestalInteraction.pedestalTop.x + 73, y: pedestalInteraction.pedestalTop.y + 15, z: pedestalInteraction.pedestalTop.z + 13});
     }
 }
 

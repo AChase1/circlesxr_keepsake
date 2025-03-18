@@ -11,6 +11,8 @@ class S3Repository {
 
             if (response.status == 200) {
                 console.log("Object uploaded successfully");
+                const uploadUI = document.querySelector('#upload-ui');
+                uploadUI.style.display = 'none';
                 await this.retrieveObject(artifact.objectKey);
             } else {
                 console.error("Error uploading object");

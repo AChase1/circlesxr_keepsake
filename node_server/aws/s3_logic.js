@@ -1,5 +1,5 @@
 class S3Logic {
-    configureFileData = async (fileData) => {
+    static configureFileData = async (fileData) => {
         const chunks = [];
         for await (const chunk of fileData) {
             chunks.push(chunk);
@@ -8,15 +8,17 @@ class S3Logic {
         return buffer.toString('base64');
     }
 
-    configureMetadata = (metadata) => {
+    static configureMetadata = (metadata) => {
         return {
-            objectKey: metadata.objectKey,
-            userId: metadata.userId,
-            objectName: metadata.objectName,
-            objectDescription: metadata.objectDescription,
-            reactions: metadata.reactions,
-            comments: metadata.comments,
-            pedestalId: metadata.pedestal
+            objectKey: metadata['x-amz-meta-objectkey'],
+            userId: metadata['x-amz-meta-userid'],
+            objectName: metadata['x-amz-meta-objectname'],
+            objectDescription: metadata['x-amz-meta-objectdescription'],
+            reactions: metadata['x-amz-meta-reactions'],
+            comments: metadata['x-amz-meta-comments'],
+            pedestalId: metadata['x-amz-meta-pedestalid']
         };
     }
 }
+
+module.exports = S3Logic;
