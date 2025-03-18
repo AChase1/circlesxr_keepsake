@@ -38,7 +38,7 @@
     <div id="upload-ui">
       <span id="close-btn">&times;</span>
       <div class="center">
-        <h2 style="color: white">Upload a Keepsake</h2>
+        <h2 style="color: white">Upload to Keepsake</h2>
         <p style="color: white">Acceptable file types 3D:.glb, .gltf</p>
         <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
           Choose File
@@ -93,22 +93,7 @@
       <!-- minimal gallery model -->
       <a-asset-item id="minimal-room-model" src="assets/models/Minimal_Room.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
 
-        <!-- polycam models -->
-        <!-- bread -->
-        <a-asset-item
-          id="bread-model"
-          src="assets/models/bread.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
-
-        <!-- croissants -->
-        <a-asset-item
-          id="croissants-model"
-          src="assets/models/croissants.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
+      <!-- pdf model -->
 
         <!-- Circles' built-in assets [REQUIRED] -->
         <circles-assets />
@@ -212,40 +197,6 @@
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
         shadow="cast:true; recieve:true;"
-      >
-      </a-entity>
-
-      <!-- croissant -->
-      <a-entity
-        id="croissants"
-        class="interactive"
-        pickupable
-        circles-interactive-obj="
-        type:scale;
-        "
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="1.5 1.5 1.5"
-        gltf-model="#croissants-model"
-        shadow="cast:true; receive:true"
-        visible="true"
-      >
-      </a-entity>
-
-      <!-- bread -->
-      <a-entity
-        id="bread"
-        class="interactive"
-        pickupable
-        circles-interactive-obj="
-        type:scale;
-        "
-        position="2 0 0"
-        rotation="0 0 0"
-        scale="1.5 1.5 1.5"
-        gltf-model="#bread-model"
-        shadow="cast:true; receive:true"
-        visible="true"
       >
       </a-entity>
 

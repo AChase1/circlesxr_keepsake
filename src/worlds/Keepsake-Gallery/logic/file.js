@@ -12,8 +12,9 @@ class FileLogic {
             fileInput.addEventListener('change', (event) => {
                 const file = event.target.files[0];
                 if (file) {
+                    const pedestalId = document.querySelector("a-scene").components["interaction-manager"];
                     const timestamp = basicLogic.getCurrentTimestamp();
-                    const artifact = new Artifact(file.name + timestamp, 1, "", "", [], [], file);
+                    const artifact = new Artifact(file.name + timestamp, 1, "", "", [], [], pedestalId, file);
                     s3Repository.uploadToS3(artifact);
                 }
             });
@@ -24,13 +25,29 @@ class FileLogic {
 
     }
 
-    loadObjectInScene(file) {
-        const pedestal = document.getElementById("pedestal-3");
+    fileDataToAframe = (file, pedestalId) => {
+        const binaryString = atob(file);
+        const len = binaryString.length;
+        const bytes = new Uint8Array(len);
+        for (let i = 0; i < len; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        const blobFile = new Blob([bytes], { type: 'application/octet-stream' });
+        this.loadObjectInScene(blobFile, pedestalId);
+    }
+
+    loadObjectInScene(file, pedestalId) {
+        const pedestal = document.getElementById(pedestalId);
+        if (!pedestal) {
+            console.error("Pedestal not found");
+            return;
+        }
+        const pedestalInteraction = pedestal.components["pedestal-interaction"].data;
         const model = document.createElement("a-entity");
         model.setAttribute("gltf-model", `url(${URL.createObjectURL(file)})`);
         pedestal.appendChild(model);
         model.setAttribute("scale", "70 70 70");
-        model.setAttribute("position", "74 18 13");
+        model.setAttribute("position", pedestalInteraction.pedestalTop);
     }
 }
 

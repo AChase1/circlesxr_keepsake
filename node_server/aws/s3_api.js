@@ -1,6 +1,7 @@
 const s3 = require('./aws_config').s3;
 const bucketName = require('./aws_config').bucketName;
 const aws = require('./aws_config').aws;
+const { send } = require('process');
 const stream = require('stream');
 const { promisify } = require('util');
 const pipeline = promisify(stream.pipeline);
@@ -15,6 +16,7 @@ const uploadToS3 = async (request, response) => {
       Key: artifact.objectKey,
       Body: request.file.buffer,
       ContentType: request.file.mimetype,
+      Metadata: request.body.artifact,
       // TODO => add custom metadata
     });
 
@@ -40,6 +42,7 @@ const retrieveAllObjects = async (request, response) => {
 
 const retrieveObject = async (request, response) => {
   try {
+    const s3Logic = new S3Logic();
     const key = decodeURIComponent(request.params.key);
     const getObjectCmd = new aws.GetObjectCommand({
       Bucket: bucketName,
@@ -47,17 +50,11 @@ const retrieveObject = async (request, response) => {
     });
 
     const cmdResponse = await s3.send(getObjectCmd);
-    console.log("finished command");
+    const fileBuffer = await s3Logic.configureFileData(cmdResponse.Body);
+    const metadata = s3Logic.configureMetadata(cmdResponse.Metadata);
+    metadata.file = fileBuffer;
 
-    const chunks = [];
-    for await (const chunk of cmdResponse.Body) {
-      chunks.push(chunk);
-    }
-    console.log("finished chunks");
-    const buffer = Buffer.concat(chunks);
-
-    console.log(cmdResponse);
-    response.status(200).json({ message: 'Object retrieved successfully!', data: buffer.toString('base64') });
+    response.status(200).json({ message: 'Object retrieved successfully!', data: metadata });
   } catch (error) {
     response.status(500).json({ message: 'Error retrieving object: ' + error });
   }

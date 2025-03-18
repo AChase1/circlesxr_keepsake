@@ -1,7 +1,7 @@
 'use strict';
 
 const router = require('express').Router();
-const s3ApiLogic = require('../aws/s3_apiLogic');
+const s3ApiLogic = require('../aws/s3_api');
 const path = require('path');
 const controller = require('../controllers/controller');
 const fs = require('fs').promises;

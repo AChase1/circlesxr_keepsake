@@ -18,80 +18,84 @@ AFRAME.registerComponent('pedestal-interaction', {
         this.el.addEventListener('click', () => {
             console.log('Pedestal clicked');
             const manager = this.el.sceneEl.components['interaction-manager'];
-            console.log(manager);
-            const heldId = manager.pickedUpObject;
-            console.log('Currently held object ID:', heldId);
+            manager.emit('object-picked-up', { id: this.el.id }, true);
+            uploadUI.style.display = 'block';
 
-            const breadEntity = document.querySelector('#bread');
-            const uploadUI = document.querySelector('#upload-ui');
+            //     const manager = this.el.sceneEl.components['interaction-manager'];
+            //     console.log(manager);
+            //     const heldId = manager.pickedUpObject;
+            //     console.log('Currently held object ID:', heldId);
 
-            // log bread in console
-            console.log('Bread entity found:', !!breadEntity);
-            if (breadEntity) {
-                console.log('Bread pickup component:', !!breadEntity.components['circles-pickup-object']);
-                if (breadEntity.components['circles-pickup-object']) {
-                    console.log('Bread pickedUp state:', breadEntity.components['circles-pickup-object'].pickedUp);
-                }
-            }
+            //     const breadEntity = document.querySelector('#bread');
+            //     const uploadUI = document.querySelector('#upload-ui');
 
-            this.updatePedestalPosition();
+            //     // log bread in console
+            //     console.log('Bread entity found:', !!breadEntity);
+            //     if (breadEntity) {
+            //         console.log('Bread pickup component:', !!breadEntity.components['circles-pickup-object']);
+            //         if (breadEntity.components['circles-pickup-object']) {
+            //             console.log('Bread pickedUp state:', breadEntity.components['circles-pickup-object'].pickedUp);
+            //         }
+            //     }
 
-            // when clicked show upload UI if nothing is displayed or held
-            if (uploadUI && !this.hasDisplayedObject && !heldId) {
-                console.log('Showing Upload UI');
-                uploadUI.style.display = 'block';
-            }
+            //     this.updatePedestalPosition();
 
-            // place bread
-            if (heldId === 'bread' && !this.hasDisplayedObject) {
-                console.log('placing bread on pedestal...');
-                this.hasDisplayedObject = true;
-                this.displayedObjectId = 'bread';
+            //     // when clicked show upload UI if nothing is displayed or held
+            //     if (uploadUI && !this.hasDisplayedObject && !heldId) {
+            //         console.log('Showing Upload UI');
+            //         uploadUI.style.display = 'block';
+            //     }
 
-                // detach bread from camera to place in scene
-                breadEntity.sceneEl.object3D.attach(breadEntity.object3D);
+            //     // place bread
+            //     if (heldId === 'bread' && !this.hasDisplayedObject) {
+            //         console.log('placing bread on pedestal...');
+            //         this.hasDisplayedObject = true;
+            //         this.displayedObjectId = 'bread';
 
-                // setting bread world position to top of pedestal
-                breadEntity.setAttribute('position', {
-                    x: this.pedestalTop.x,
-                    y: this.pedestalTop.y,
-                    z: this.pedestalTop.z
-                });
-                breadEntity.setAttribute('rotation', '0 0 0');
-                breadEntity.setAttribute('scale', '1.5 1.5 1.5');
-                breadEntity.setAttribute('visible', true);
+            //         // detach bread from camera to place in scene
+            //         breadEntity.sceneEl.object3D.attach(breadEntity.object3D);
 
-                // update pickup state - using circles-pickup-object instead of pickupable
-                breadEntity.components['circles-pickup-object'].pickedUp = false;
-                manager.pickedUpObject = null;
+            //         // setting bread world position to top of pedestal
+            //         breadEntity.setAttribute('position', {
+            //             x: this.pedestalTop.x,
+            //             y: this.pedestalTop.y,
+            //             z: this.pedestalTop.z
+            //         });
+            //         breadEntity.setAttribute('rotation', '0 0 0');
+            //         breadEntity.setAttribute('scale', '1.5 1.5 1.5');
+            //         breadEntity.setAttribute('visible', true);
 
-                console.log('Bread placed at position:', breadEntity.getAttribute('position'));
-            }
-            // handle picking up bread from pedestal
-            else if (this.hasDisplayedObject && !manager.pickedUpObject && this.displayedObjectId === 'bread') {
-                console.log('retrieving bread from pedestal');
-                this.hasDisplayedObject = false;
-                this.displayedObjectId = null;
+            //         // update pickup state - using circles-pickup-object instead of pickupable
+            //         breadEntity.components['circles-pickup-object'].pickedUp = false;
+            //         manager.pickedUpObject = null;
 
-                const camera = document.querySelector('#camera');
+            //         console.log('Bread placed at position:', breadEntity.getAttribute('position'));
+            //     }
+            //     // handle picking up bread from pedestal
+            //     else if (this.hasDisplayedObject && !manager.pickedUpObject && this.displayedObjectId === 'bread') {
+            //         console.log('retrieving bread from pedestal');
+            //         this.hasDisplayedObject = false;
+            //         this.displayedObjectId = null;
 
-                // attach bread to camera for pickup
-                camera.object3D.attach(breadEntity.object3D);
+            //         const camera = document.querySelector('#camera');
 
-                // update pos relative to camera
-                breadEntity.setAttribute('position', {
-                    x: 0,
-                    y: -0.5, // slightly below
-                    z: -1    // infront
-                });
+            //         // attach bread to camera for pickup
+            //         camera.object3D.attach(breadEntity.object3D);
 
-                // update pickup state - using circles-pickup-object instead of pickupable
-                breadEntity.components['circles-pickup-object'].pickedUp = true;
-                manager.pickedUpObject = 'bread';
-            }
+            //         // update pos relative to camera
+            //         breadEntity.setAttribute('position', {
+            //             x: 0,
+            //             y: -0.5, // slightly below
+            //             z: -1    // infront
+            //         });
+
+            //         // update pickup state - using circles-pickup-object instead of pickupable
+            //         breadEntity.components['circles-pickup-object'].pickedUp = true;
+            //         manager.pickedUpObject = 'bread';
+            //     }
         });
 
-        // initial position update
+        // // initial position update
         this.updatePedestalPosition();
     }
 });
