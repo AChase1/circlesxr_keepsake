@@ -1,337 +1,426 @@
 <html>
-<head>
-    <!--TESTING COMMENT BY STEVEN-->
-  <!-- Circles' head scripts [REQUIRED] -->
-  <circles-start-scripts/>
-  <!-- custom scripts are added here-->
-  <script src="/worlds/Keepsake/components/circles-pickup-object.js"></script>
+  <head>
+    <!-- Circles' head scripts [REQUIRED] -->
+    <circles-start-scripts />
+    <!-- custom scripts are added here-->
+    <script src="./components/circles-pickup-object.js"></script>
+    <script src="./components/pickupable.js"></script>
+    <script src="./components/plate-interaction.js"></script>
+    <script src="./components/object-label.js"></script>
+    <script src="./components/interaction-manager.js"></script>
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Keepsake</title>
-  <!-- scripts link -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Keepsake</title>
+    <!-- scripts link -->
 
-  <!-- css link -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/user-gesture.css">
-    <!-- INTERACTIVITY SCRIPT HERE ******************************************************************************* -->
-    <script>
-      "use strict";
+    <!-- css link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/user-gesture.css" />
+  </head>
 
-      // picking up an object
-      AFRAME.registerComponent('pickupable', {
-        init: function() {
-            var self = this;
-            self.player = document.querySelector('#camera');
-            self.pickedUp = false;
-            self.clickProcessed = false; // add debounce flag
+  <body>
+    <!-- this is used to create our enter UI that creates a 2D overlay to capture a user gesture for sound/mic access etc. -->
+    <circles-start-ui />
 
-            self.playerHolder = CIRCLES.getAvatarHolderElementBody();
-            self.origParent = self.el.parentNode;
-            
-            if (!self.el.classList.contains('interactive')) {
-            self.el.classList.add('interactive'); 
-            }
-
-            self.el.addEventListener('click', (e) => {
-            
-            if (self.pickedUp === true) {
-                // release entity
-                //self.el.sceneEl.object3D.attach(self.el.object3D);
-                self.playerHolder.object3D.attach(self.el.object3D);
-
-                self.pickedUp = false;
-                self.el.emit('object-released', {id: self.el.id});
-            } else {
-                // pick up obj
-                //self.player.object3D.attach(self.el.object3D);
-                self.playerHolder.object3D.attach(self.el.object3D);
-                console.log('something has been picked up.');
-                console.log(self.pickedUp);
-                
-                // pos obj infront of camera
-                self.el.setAttribute('position', {
-                x: 0,
-                y: -0.5,  // slightly below center of view
-                z: -1   // closer to camera so it appears in hand
-                });
-                
-                self.el.setAttribute('rotation', {
-                x: 0,
-                y: 0,
-                z: 0
-                });
-                
-                self.pickedUp = true;
-                self.el.emit('object-picked-up', {id: self.el.id});
-            }
-            });
-
-            // check if entity is picked up
-            self.isPickedUp = function() {
-            return self.pickedUp;
-            };
-        }
-        });
-
-      AFRAME.registerComponent('pedestal-interaction', {
-          init: function() {
-              const self = this;
-              this.hasDisplayedOwl = false;
-              this.pedestalTop = new THREE.Vector3();
-              
-              
-              if (!self.el.classList.contains('interactive')) {
-                  self.el.classList.add('interactive');
-              }
-
-              // calc top center of pedestal
-              this.updatePedestalPosition = () => {
-                  this.el.object3D.getWorldPosition(this.pedestalTop);
-                  this.pedestalTop.y += 1.5; // adjustable based on height
-              };
-
-              this.el.addEventListener('click', () => {
-                console.log('Pedestal clicked');
-                  const manager = this.el.sceneEl.components['interaction-manager'];
-                  const heldId = manager.pickedUpObject;
-                  const owlEntity = document.querySelector('#owl');
-                  const uploadUI = document.querySelector('#upload-ui');
-                  
-                  // when clicked show upload UI
-                  if (uploadUI) {
-                    console.log('Showing Upload UI');
-                      uploadUI.style.display = 'block';
-                  } else {
-                      console.error("Upload component not found...");
-                  }
-
-                  if (!owlEntity) return;
-
-                  this.updatePedestalPosition();
-
-                  if (heldId === 'owl' && !this.hasDisplayedOwl) {
-                      console.log('placing owl on pedestal...');
-                      this.hasDisplayedOwl = true;
-
-                      // detach owl from camera to place in scene
-                      owlEntity.sceneEl.object3D.attach(owlEntity.object3D);
-                      
-                      // setting owl world postiion to top of pedestal
-                      owlEntity.setAttribute('position', {
-                          x: this.pedestalTop.x,
-                          y: this.pedestalTop.y,
-                          z: this.pedestalTop.z
-                      });
-                      owlEntity.setAttribute('rotation', '0 0 0');
-                      owlEntity.setAttribute('scale', '1 1 1');
-                      owlEntity.setAttribute('visible', true);
-                      
-                      // update pickup state
-                      owlEntity.components.pickupable.pickedUp = false;
-                      manager.pickedUpObject = null;
-
-                      console.log('Owl placed at position:', owlEntity.getAttribute('position'));
-                  } 
-                  else if (this.hasDisplayedOwl && !manager.pickedUpObject) {
-                      console.log('retrieving owl from pedestal');
-                      this.hasDisplayedOwl = false;
-
-                      const camera = document.querySelector('#camera');
-                      
-                      // attach owl to camera for pickup
-                      camera.object3D.attach(owlEntity.object3D);
-                      
-                      // update pos relative to camera
-                      owlEntity.setAttribute('position', {
-                          x: 0,
-                          y: -0.5, // slightly below
-                          z: -1    // infront
-                      });
-                      
-                      owlEntity.components.pickupable.pickedUp = true;
-                      manager.pickedUpObject = 'owl';
-                  }
-              });
-
-              // Initial position update
-              this.updatePedestalPosition();
-          }
-      });
-
-      // interaction manager - listens for entities being picked up/released globally
-      AFRAME.registerComponent('interaction-manager', {
-          init: function() {
-              this.pickedUpObject = null;
-              
-              this.el.sceneEl.addEventListener(CIRCLES.EVENTS.PICKUP_THIS_OBJECT, (e) => {
-            this.pickedUpObject = e.detail.el.id;
-            console.log('picked up:', this.pickedUpObject);
-        });
-
-        this.el.sceneEl.addEventListener(CIRCLES.EVENTS.RELEASE_THIS_OBJECT, (e) => {
-            this.pickedUpObject = null;
-            console.log('nothing in hand');
-        });
-          }
-      });
-
-  </script>
-</head>
-
-<body>
-  <!-- this is used to create our enter UI that creates a 2D overlay to capture a user gesture for sound/mic access etc. -->
-  <circles-start-ui/>
-
-  <!-- Upload UI -->
-  <div id="upload-ui">
-    <span id="close-btn">&times;</span>
-    <div class="center">
-        <h2 style="color: white;">Upload a Keepsake</h2>
-        <p style="color: white;">Acceptable file types 3D:.glb, .gltf</p>
-        <button id="upload-btn">Choose File</button>
-        <input type="file" id="file-input" style="display: none" accept=".glb,.gltf">
+    <!-- Upload UI -->
+    <div id="upload-ui">
+      <span id="close-btn">&times;</span>
+      <div class="center">
+        <h2 style="color: white">Upload a Keepsake</h2>
+        <p style="color: white">Acceptable file types 3D:.glb, .gltf</p>
+        <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
+          Choose File
+        </button>
+        <input
+          type="file"
+          id="file-input"
+          style="display: none"
+          accept=".glb,.gltf"
+        />
+      </div>
     </div>
-</div>
 
-  <!-- a-scene with 'circles-properties' component [REQUIRED] -->
-  <a-scene circles_scene_properties interaction-manager background="color: black">
-    <a-assets>
-      <!-- put all assets here -->
-      <!-- pedestal -->
-      <a-asset-item id="pedestal-model" src="assets/models/doric_twist_pedestal.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-      <!-- polycam scans -->
-      <a-asset-item id="owl-model" src="assets/models/Owl Puppet (1).glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
+    <!-- Orb Label UI-->
+    <div id="label-ui">
+      <span id="close-label-btn">&times;</span>
+      <div class="label-content">
+        <h2>Name Your Orb</h2>
+        <input type="text" id="label-input" placeholder="Enter a name..." />
+      </div>
+      <div class="label-buttons">
+        <button id="cancel-label" class="label-btn">Cancel</button>
+        <button id="submit-label" class="label-btn">Submit</button>
+      </div>
+    </div>
 
-      <!-- Circles' built-in assets [REQUIRED] -->
-      <circles-assets/>
-    </a-assets>
+    <!-- a-scene with 'circles-properties' component [REQUIRED] -->
+    <a-scene
+      circles_scene_properties
+      interaction-manager
+      background="color: black"
+    >
+      <a-assets>
+        <!-- put all assets here -->
 
-    <!-- Circles' built-in manager and avatar [REQUIRED] -->
-    <circles-manager-avatar/>
-  
-    <!-- put scene stuff here -->
-        <!-- camera -->
-        <a-entity 
-        id="camera" 
-        camera 
-        look-controls 
-        wasd-controls 
-        twoway-motion="speed: 35"
-        position="0 1.6 0" 
-        cursor="rayOrigin: mouse"
-        circles-interactive-object
-        raycaster="objects: .interactive; far: 20; interval: 100">
-        </a-entity>
+        <!--Skybox Image-->
+        <img
+          id="sky_map"
+          src="assets/images/resting_place.jpg"
+          crossorigin="anonymous"
+        />
 
         <!-- pedestal -->
-        <a-entity
-        id="pedestal"
-        class="interactive"
-        position="2.3 0 0"
-        rotation="0 90 0"
-        scale="2 2 2"
-        gltf-model="#pedestal-model"
-        pedestal-interaction
-        circles-interactive-object
-        shadow="cast:true; recieve:true;">
-        </a-entity>
+        <a-asset-item
+          id="pedestal-model"
+          src="assets/models/doric_twist_pedestal.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
 
-        <!-- owl -->
-        <a-entity
-        id="owl"
-        circles-pickup-object="
-        
-        "
-        circles-interactive-object
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="1 1 1"
-        gltf-model="#owl-model"
-        shadow="cast:true; receive:true"
-        visible="true">
-        </a-entity>
+        <a-asset-item
+          id="chair-model"
+          response-type="arraybuffer"
+          src="./assets/models/Chair_BaseColor.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="table-model"
+          response-type="arraybuffer"
+          src="./assets/models/Table_BaseColor.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="reception-desk-model"
+          response-type="arraybuffer"
+          src="./assets/models/Desk_BaseColor.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="computer-model"
+          response-type="arraybuffer"
+          src="./assets/models/Computer_BaseColor.glb"
+        ></a-asset-item>
 
-        <!--- orb interaction testing -->
-        <a-sphere id="pickupSphere"
-        position="0 1 -2"
+        <!-- orb room model -->
+        <a-asset-item
+          id="orb-room-model"
+          src="assets/models/Lobby_BaseColor.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- polycam scans -->
+        <a-asset-item
+          id="owl-model"
+          src="assets/models/Owl Puppet (1).glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- Circles' built-in assets [REQUIRED] -->
+        <circles-assets />
+      </a-assets>
+
+      <!-- Circles' built-in manager and avatar [REQUIRED] -->
+      <circles-manager-avatar />
+
+      <!-- put scene stuff here -->
+      <!-- camera -->
+      <a-entity
+        id="camera"
+        camera
+        look-controls
+        wasd-controls
+        twoway-motion="speed: 35"
+        position="0 1.6 0"
+        cursor="rayOrigin: mouse"
+        circles-interactive-object
+        raycaster="objects: .interactive; far: 20; interval: 100"
+      >
+      </a-entity>
+
+      <!--SKY BOX-->
+      <a-entity
+        id="sky-box"
+        geometry="primitive:sphere; radius:100"
+        position="0 -50 0"
+        material="src: #sky_map; side:back; shader:flat"
+      >
+        <!--Use "side" property to load material on the inside/outside of the faces-->
+      </a-entity>
+
+      <!--Starting Sphere-->
+      <a-sphere
+        id="pickupSphere"
+        position="-3 1.5 -3"
         radius="0.2"
-        material="color: #3498db"
+        material="color: #3498db; metalness: 0.7; roughness: 0.3"
         circles-interactive-object
-        pickupable>
-        </a-sphere>
+        pickupable
+        object-label="text: ; yOffset: 0.6"
+      >
+      </a-sphere>
 
-        <!-- plate -->
-        <a-cylinder id="plate"
-        position="1 0.05 -2"
+      <!-- plate -->
+      <a-cylinder
+        id="plate1"
+        position="-27.6 1.3 1"
         height="0.1"
         radius="0.5"
         material="color: #e74c3c"
         circles-interactive-object
-        class="interactive">
-        </a-cylinder>
+        plate-interaction
+        class="interactive"
+      >
+      </a-cylinder>
 
-        <!-- floor -->
-        <a-box 
-            position="0 -0.1 0"
-            width="10" 
-            height="0.2" 
-            depth="10" 
-            color="white"
-            shadow="receive: true">
-        </a-box>
+      <a-cylinder
+        id="plate2"
+        position="-30.9 1.3 3.6"
+        height="0.1"
+        radius="0.5"
+        material="color: #e74c3c"
+        circles-interactive-object
+        plate-interaction
+        class="interactive"
+      >
+      </a-cylinder>
 
-        <!-- ceiling -->
-        <a-box 
-            position="0 4 0"
-            width="10" 
-            height="0.2" 
-            depth="10" 
-            color="white"
-            shadow="receive: true">
-        </a-box>
+      <a-cylinder
+        id="plate3"
+        position="-31.9 1.3 7.7"
+        height="0.1"
+        radius="0.5"
+        material="color: #e74c3c"
+        circles-interactive-object
+        plate-interaction
+        class="interactive"
+      >
+      </a-cylinder>
 
-        <!-- walls -->
-        <a-box 
-            position="0 2 -5"
-            width="10" 
-            height="4" 
-            depth="0.2" 
-            color="white"
-            shadow="receive: true">
-        </a-box>
+      <a-cylinder
+        id="plate4"
+        position="-30.4 1.3 11.6"
+        height="0.1"
+        radius="0.5"
+        material="color: #e74c3c"
+        circles-interactive-object
+        plate-interaction
+        class="interactive"
+      >
+      </a-cylinder>
 
-        <a-box 
-            position="0 2 5"
-            width="10" 
-            height="4" 
-            depth="0.2" 
-            color="white"
-            shadow="receive: true">
-        </a-box>
+      <a-cylinder
+        id="plate5"
+        position="-26.9 1.3 13.8"
+        height="0.1"
+        radius="0.5"
+        material="color: #e74c3c"
+        circles-interactive-object
+        plate-interaction
+        class="interactive"
+      >
+      </a-cylinder>
 
-        <a-box 
-            position="-5 2 0"
-            width="0.2" 
-            height="4" 
-            depth="10" 
-            color="white"
-            shadow="receive: true">
-        </a-box>
+      <a-cylinder
+        id="plate6"
+        position="-22.7 1.3 13.7"
+        height="0.1"
+        radius="0.5"
+        material="color: #e74c3c"
+        circles-interactive-object
+        plate-interaction
+        class="interactive"
+      >
+      </a-cylinder>
 
-        <a-box 
-            position="5 2 0"
-            width="0.2" 
-            height="4" 
-            depth="10" 
-            color="white"
-            shadow="receive: true">
-        </a-box>
-  </a-scene>
+      <a-entity id="keepsake_Lobby" position="14 0 14" rotation="0 180 0">
+        <!--Chairs-->
+        <a-entity
+          id="chair1"
+          position="22 0.1 7"
+          rotation="0 45 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#chair-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
 
-  <!-- Circles' end scripts [REQUIRED] -->
-  <circles-end-scripts/>
- </body>
+        <a-entity
+          id="chair2"
+          position="24 0.1 7"
+          rotation="0 -45 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#chair-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="chair3"
+          position="12 0.1 30.5"
+          rotation="0 135 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#chair-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="chair4"
+          position="14 0.1 30.5"
+          rotation="0 -135 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#chair-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="chair5"
+          position="19 0.1 30.5"
+          rotation="0 135 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#chair-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="chair6"
+          position="22 0.1 30.5"
+          rotation="0 -135 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#chair-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <!--Table-->
+        <a-entity
+          id="table1"
+          position="4 0.1 15"
+          rotation="0 -45 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#table-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="table2"
+          position="4 0.1 25"
+          rotation="0 45 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#table-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="table3"
+          position="30 0.1 15"
+          rotation="0 45 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#table-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="table4"
+          position="30 0.1 25"
+          rotation="0 -45 0"
+          scale="0.23 0.23 0.23"
+          gltf-model="#table-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <!--Computers-->
+        <a-entity
+          id="computer1"
+          position="4.12 1 15.5"
+          rotation="0 35 0"
+          scale="0.07 0.07 0.07"
+          gltf-model="#computer-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="computer2"
+          position="4.5 1 25"
+          rotation="0 135 0"
+          scale="0.07 0.07 0.07"
+          gltf-model="#computer-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="computer3"
+          position="30.8 1 14.7"
+          rotation="0 -38 0"
+          scale="0.07 0.07 0.07"
+          gltf-model="#computer-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <a-entity
+          id="computer4"
+          position="30.3 1 25.93"
+          rotation="0 -135 0"
+          scale="0.07 0.07 0.07"
+          gltf-model="#computer-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <!--Receptionist Desk-->
+        <a-entity
+          id="receptionistDesk"
+          position="17 0.1 20"
+          rotation="0 0 0"
+          scale="0.33 0.33 0.33"
+          gltf-model="#reception-desk-model"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <!--Lobby Model-->
+        <a-entity
+          id="orb-room"
+          position="0 0 0"
+          rotation="0 0 0"
+          scale="0.3 0.3 0.3"
+          gltf-model="#orb-room-model"
+          shadow="recieve:true;"
+        >
+        </a-entity>
+      </a-entity>
+    </a-scene>
+
+    <!-- Circles' end scripts [REQUIRED] -->
+    <circles-end-scripts />
+  </body>
 </html>

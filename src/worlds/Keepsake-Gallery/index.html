@@ -1,0 +1,276 @@
+<html>
+  <head>
+    <!-- Circles' head scripts [REQUIRED] -->
+    <circles-start-scripts />
+    <!-- custom scripts are added here-->
+    <script src="./logic/file.js"></script>
+    <script src="./logic/basic.js"></script>
+    <script src="./model/artifact.js"></script>
+    <script src="./repository/s3.js"></script>
+    <script src="./components/circles-interactive-obj.js"></script>
+    <script src="./components/pedestal-interaction.js"></script>
+    <script src="./components/gallery-name-display.js"></script>
+    <script src="./components/ui-handler.js"></script>
+    <script src="../Keepsake/components/interaction-manager.js"></script>
+    <script src="../Keepsake/components/pickupable.js"></script>
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>entering gallery...</title>
+    <!-- scripts link -->
+
+    <!-- css link -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/user-gesture.css" />
+    <!-- Adding CSS for Upload UI -->
+  </head>
+
+  <body>
+    <!-- this is used to create our enter UI that creates a 2D overlay to capture a user gesture for sound/mic access etc. -->
+    <circles-start-ui />
+
+    <!-- Upload UI -->
+    <div id="upload-ui">
+      <span id="close-btn">&times;</span>
+      <div class="center">
+        <h2 style="color: white">Upload a Keepsake</h2>
+        <p style="color: white">Acceptable file types 3D:.glb, .gltf</p>
+        <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
+          Choose File
+        </button>
+      </div>
+    </div>
+
+    <!-- a-scene with 'circles-properties' component [REQUIRED] -->
+    <a-scene
+      circles_scene_properties
+      interaction-manager
+      gallery-name-display
+      background="color: black"
+    >
+      <a-assets>
+        <!-- put all assets here -->
+        <!-- pedestal -->
+        <a-asset-item
+          id="pedestal-model"
+          src="assets/models/Pedestal.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <!-- frame -->
+        <a-asset-item
+          id="frame-model"
+          src="assets/models/Frame.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- minimal gallery model -->
+        <a-asset-item
+          id="minimal-room-model"
+          src="assets/models/Minimal_Room.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+  <!-- a-scene with 'circles-properties' component [REQUIRED] -->
+  <a-scene circles_scene_properties interaction-manager gallery-name-display background="color: black">
+    <a-assets>
+      <!-- put all assets here -->
+      <!--Skybox-->
+      <img id="sky_map" src="assets/textures/minimal_skybox.jpg" crossorigin="anonymous">
+
+
+      <!-- pedestal -->
+      <a-asset-item id="pedestal-model" src="assets/models/Pedestal.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
+      <!-- frame -->
+      <a-asset-item id="frame-model" src="assets/models/Frame.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
+      
+      <!-- minimal gallery model -->
+      <a-asset-item id="minimal-room-model" src="assets/models/Minimal_Room.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
+
+        <!-- polycam models -->
+        <!-- bread -->
+        <a-asset-item
+          id="bread-model"
+          src="assets/models/bread.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- croissants -->
+        <a-asset-item
+          id="croissants-model"
+          src="assets/models/croissants.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- Circles' built-in assets [REQUIRED] -->
+        <circles-assets />
+      </a-assets>
+
+      <!-- Circles' built-in manager and avatar [REQUIRED] -->
+      <circles-manager-avatar />
+
+      <!-- put scene stuff here -->
+      <!-- camera -->
+      <a-entity
+        id="camera"
+        camera
+        look-controls
+        wasd-controls
+        twoway-motion="speed: 35"
+        position="0 1.6 0"
+        cursor="rayOrigin: mouse"
+        circles-interactive-object
+        raycaster="objects: .interactive; far: 20; interval: 100"
+      >
+      </a-entity>
+
+      <!-- pedestal (this is huge)-->
+      <a-entity
+        id="pedestal-1"
+        class="interactive"
+        position="3.150 0 -1.822"
+        rotation="0 90 0"
+        scale="0.05 0.05 0.05"
+        gltf-model="#pedestal-model"
+        pedestal-interaction
+        shadow="cast:true; recieve:true;"
+      >
+      </a-entity>
+
+      <!-- scale="0.045 0.045 0.045"-->
+      <a-entity
+        id="pedestal-2"
+        class="interactive"
+        position="-2.87 0 -3.581"
+        rotation="0 90 0"
+        scale="0.045 0.045 0.045"
+        gltf-model="#pedestal-model"
+        pedestal-interaction
+        shadow="cast:true; recieve:true;"
+      >
+      </a-entity>
+
+      <a-entity
+        id="pedestal-3"
+        class="interactive"
+        position="4.592 0 3.352"
+        rotation="0 90 0"
+        scale="0.03 0.03 0.03"
+        gltf-model="#pedestal-model"
+        pedestal-interaction
+        shadow="cast:true; recieve:true;"
+      >
+      </a-entity>
+
+      <!-- pdf test -->
+      <a-entity
+        id="pdf-test"
+        position="-5.631 2.690 -1.629"
+        rotation="0 90 0"
+        scale="2.0 2.0 2.0"
+        circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"
+      ></a-entity>
+
+      <!-- frame (1)-->
+      <a-entity
+        id="frame-1"
+        class="interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        shadow="cast:true; recieve:true;"
+      >
+      </a-entity>
+
+      <!-- frame (2)-->
+      <a-entity
+        id="frame-2"
+        class="interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        shadow="cast:true; recieve:true;"
+      >
+      </a-entity>
+
+      <!-- frame (3)-->
+      <a-entity
+        id="frame-3"
+        class="interactive"
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        shadow="cast:true; recieve:true;"
+      >
+      </a-entity>
+
+      <!-- croissant -->
+      <a-entity
+        id="croissants"
+        class="interactive"
+        pickupable
+        circles-interactive-obj="
+        type:scale;
+        "
+        position="0 0 0"
+        rotation="0 0 0"
+        scale="1.5 1.5 1.5"
+        gltf-model="#croissants-model"
+        shadow="cast:true; receive:true"
+        visible="true"
+      >
+      </a-entity>
+
+      <!-- bread -->
+      <a-entity
+        id="bread"
+        class="interactive"
+        pickupable
+        circles-interactive-obj="
+        type:scale;
+        "
+        position="2 0 0"
+        rotation="0 0 0"
+        scale="1.5 1.5 1.5"
+        gltf-model="#bread-model"
+        shadow="cast:true; receive:true"
+        visible="true"
+      >
+      </a-entity>
+
+      <!-- testing minimal room model -->
+      <a-entity
+        id="minimal-room"
+        position="0 0 0"
+        rotation="0 0 0"
+        scale="0.23 0.23 0.23"
+        gltf-model="#minimal-room-model"
+        shadow="recieve:false; cast:false;"
+      >
+      </a-entity>
+
+      <!-- EXIT: back to lobby portal -->
+      <a-entity
+        id="portal_link"
+        position="-4.573 1.347 4.479"
+        rotation="0 143.672 0"
+        scale="1 1 1"
+        circles-portal="title_text:Exit to Lobby; link_url:/w/Keepsake?gallerySource=true"
+      ></a-entity>
+    </a-scene>
+
+    <!-- Circles' end scripts [REQUIRED] -->
+    <circles-end-scripts />
+  </body>
+</html>

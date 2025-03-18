@@ -1,10 +1,15 @@
 'use strict';
 
-const router     = require('express').Router();
-const path       = require('path');
+const router = require('express').Router();
+const s3ApiLogic = require('../aws/s3_apiLogic');
+const path = require('path');
 const controller = require('../controllers/controller');
-const User       = require('../models/user');
-const passport   = require('passport');
+const fs = require('fs').promises;
+const User = require('../models/user');
+const passport = require('passport');
+
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 /**
  * Authenticated
@@ -45,10 +50,14 @@ router.get('/', notAuthenticated, (req, res) => {
   });
 });
 
-router.post('/login',  passport.authenticate('local', {
+router.post('/login', passport.authenticate('local', {
   successRedirect: '/explore',
   failureRedirect: '/'
 }));
+
+router.post('/s3_upload', upload.single('file'), async (req, res) => s3ApiLogic.uploadToS3(req, res));
+router.get('/s3_retrieveAllObjects', async (req, res) => s3ApiLogic.retrieveAllObjects(req, res));
+router.get('/s3_retrieveObject/:key', async (req, res) => s3ApiLogic.retrieveObject(req, res));
 
 //magic links for students
 router.get('/get-magic-links', authenticated, controller.getMagicLinks);
@@ -56,11 +65,11 @@ router.get('/get-magic-links', authenticated, controller.getMagicLinks);
 //get list of worlds
 router.get('/get-worlds-list', authenticated, controller.getWorldsList);
 
-router.get('/magic-login', function(req, res, next) {
-  passport.authenticate('jwt', function(err, user, info) {
+router.get('/magic-login', function (req, res, next) {
+  passport.authenticate('jwt', function (err, user, info) {
     if (err) { return next(err); }
     if (!user) { return res.redirect('/'); }
-    req.logIn(user, function(err) {
+    req.logIn(user, function (err) {
       if (err) { return next(err); }
       return res.redirect(req.query.route);
     });
@@ -70,7 +79,7 @@ router.get('/magic-login', function(req, res, next) {
 // Ensure a user is authenticated before hitting logout
 router.get('/logout', authenticated, (req, res, next) => {
   // Logout of Passport
-  req.logout(function(err) {
+  req.logout(function (err) {
     if (err) { return next(err); }
     res.redirect('/'); // Redirect to home page
   });
@@ -100,7 +109,7 @@ router
       successRedirect: '/explore',
       failureRedirect: '/'
     }));
-    
+
 router.post('/update-user', controller.updateUserInfo);
 
 //TODO: this is a temporary fix. Sometime will have to add in ability for user to upload ....
