@@ -17,7 +17,8 @@ AFRAME.registerComponent('pedestal-interaction', {
 
         this.el.addEventListener('click', () => {
             console.log('Pedestal clicked');
-            const manager = this.el.sceneEl.components['interaction-manager'];
+            const uploadUI = document.querySelector('#upload-ui');
+            const manager = this.el.sceneEl;
             manager.emit('object-picked-up', { id: this.el.id }, true);
             uploadUI.style.display = 'block';
 

@@ -47,14 +47,16 @@
     </div>
 
     <!-- a-scene with 'circles-properties' component [REQUIRED] -->
-    <a-scene
-      circles_scene_properties
-      interaction-manager
-      gallery-name-display
-      background="color: black"
-    >
+    <a-scene circles_scene_properties interaction-manager gallery-name-display>
       <a-assets>
         <!-- put all assets here -->
+        <!--Skybox-->
+        <img
+          id="sky_map"
+          src="assets/textures/minimal_skybox.jpg"
+          crossorigin="anonymous"
+        />
+
         <!-- pedestal -->
         <a-asset-item
           id="pedestal-model"
@@ -77,23 +79,8 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-  <!-- a-scene with 'circles-properties' component [REQUIRED] -->
-  <a-scene circles_scene_properties interaction-manager gallery-name-display background="color: black">
-    <a-assets>
-      <!-- put all assets here -->
-      <!--Skybox-->
-      <img id="sky_map" src="assets/textures/minimal_skybox.jpg" crossorigin="anonymous">
 
-
-      <!-- pedestal -->
-      <a-asset-item id="pedestal-model" src="assets/models/Pedestal.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-      <!-- frame -->
-      <a-asset-item id="frame-model" src="assets/models/Frame.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-      
-      <!-- minimal gallery model -->
-      <a-asset-item id="minimal-room-model" src="assets/models/Minimal_Room.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-
-      <!-- pdf model -->
+        <!-- pdf model -->
 
         <!-- Circles' built-in assets [REQUIRED] -->
         <circles-assets />
@@ -112,7 +99,6 @@
         twoway-motion="speed: 35"
         position="0 1.6 0"
         cursor="rayOrigin: mouse"
-        circles-interactive-object
         raycaster="objects: .interactive; far: 20; interval: 100"
       >
       </a-entity>
