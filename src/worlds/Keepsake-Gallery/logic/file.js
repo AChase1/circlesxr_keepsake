@@ -43,8 +43,14 @@ class FileLogic {
             console.error("Pedestal not found");
             return;
         }
+        const children = Array.from(pedestal.children).filter(child => child.id === "artifact");
+        if (children) {
+            console.log("Pedestal already has an artifact");
+            children.forEach(child => pedestal.removeChild(child));
+        }
         const pedestalInteraction = pedestal.components["pedestal-interaction"];
         const model = document.createElement("a-entity");
+        model.setAttribute("id", "artifact");
         model.setAttribute("gltf-model", `url(${URL.createObjectURL(file)})`);
         pedestal.appendChild(model);
         model.setAttribute("scale", "70 70 70");
