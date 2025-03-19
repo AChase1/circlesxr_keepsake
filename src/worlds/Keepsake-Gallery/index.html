@@ -38,7 +38,7 @@
     <div id="upload-ui">
       <span id="close-btn">&times;</span>
       <div class="center">
-        <h2 style="color: white">Upload a Keepsake</h2>
+        <h2 style="color: white">Upload to Keepsake</h2>
         <p style="color: white">Acceptable file types 3D:.glb, .gltf</p>
         <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
           Choose File
@@ -47,14 +47,16 @@
     </div>
 
     <!-- a-scene with 'circles-properties' component [REQUIRED] -->
-    <a-scene
-      circles_scene_properties
-      interaction-manager
-      gallery-name-display
-      background="color: black"
-    >
+    <a-scene circles_scene_properties interaction-manager gallery-name-display>
       <a-assets>
         <!-- put all assets here -->
+        <!--Skybox-->
+        <img
+          id="sky_map"
+          src="assets/textures/minimal_skybox.jpg"
+          crossorigin="anonymous"
+        />
+
         <!-- pedestal -->
         <a-asset-item
           id="pedestal-model"
@@ -77,38 +79,8 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-  <!-- a-scene with 'circles-properties' component [REQUIRED] -->
-  <a-scene circles_scene_properties interaction-manager gallery-name-display background="color: black">
-    <a-assets>
-      <!-- put all assets here -->
-      <!--Skybox-->
-      <img id="sky_map" src="assets/textures/minimal_skybox.jpg" crossorigin="anonymous">
 
-
-      <!-- pedestal -->
-      <a-asset-item id="pedestal-model" src="assets/models/Pedestal.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-      <!-- frame -->
-      <a-asset-item id="frame-model" src="assets/models/Frame.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-      
-      <!-- minimal gallery model -->
-      <a-asset-item id="minimal-room-model" src="assets/models/Minimal_Room.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-
-        <!-- polycam models -->
-        <!-- bread -->
-        <a-asset-item
-          id="bread-model"
-          src="assets/models/bread.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
-
-        <!-- croissants -->
-        <a-asset-item
-          id="croissants-model"
-          src="assets/models/croissants.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
+        <!-- pdf model -->
 
         <!-- Circles' built-in assets [REQUIRED] -->
         <circles-assets />
@@ -127,7 +99,6 @@
         twoway-motion="speed: 35"
         position="0 1.6 0"
         cursor="rayOrigin: mouse"
-        circles-interactive-object
         raycaster="objects: .interactive; far: 20; interval: 100"
       >
       </a-entity>
@@ -212,40 +183,6 @@
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
         shadow="cast:true; recieve:true;"
-      >
-      </a-entity>
-
-      <!-- croissant -->
-      <a-entity
-        id="croissants"
-        class="interactive"
-        pickupable
-        circles-interactive-obj="
-        type:scale;
-        "
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="1.5 1.5 1.5"
-        gltf-model="#croissants-model"
-        shadow="cast:true; receive:true"
-        visible="true"
-      >
-      </a-entity>
-
-      <!-- bread -->
-      <a-entity
-        id="bread"
-        class="interactive"
-        pickupable
-        circles-interactive-obj="
-        type:scale;
-        "
-        position="2 0 0"
-        rotation="0 0 0"
-        scale="1.5 1.5 1.5"
-        gltf-model="#bread-model"
-        shadow="cast:true; receive:true"
-        visible="true"
       >
       </a-entity>
 

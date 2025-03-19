@@ -11,7 +11,9 @@ class S3Repository {
 
             if (response.status == 200) {
                 console.log("Object uploaded successfully");
-                await this.retrieveAllObjects(artifact.objectKey);
+                const uploadUI = document.querySelector('#upload-ui');
+                uploadUI.style.display = 'none';
+                await this.retrieveObject(artifact.objectKey);
             } else {
                 console.error("Error uploading object");
             }
@@ -47,14 +49,9 @@ class S3Repository {
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
             if (response.status == 200) {
                 const jsonResponse = await response.json();
-                const binaryString = atob(jsonResponse.data);
-                const len = binaryString.length;
-                const bytes = new Uint8Array(len);
-                for (let i = 0; i < len; i++) {
-                    bytes[i] = binaryString.charCodeAt(i);
-                }
-                const file = new Blob([bytes], { type: 'application/octet-stream' });
-                fileLogic.loadObjectInScene(file);
+                const newArtifact = Artifact.fromJson(jsonResponse.data);
+                fileLogic.fileDataToAframe(newArtifact.file, newArtifact.pedestalId);
+
             } else {
                 console.log("Error retrieving object");
                 return null;
