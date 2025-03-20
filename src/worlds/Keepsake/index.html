@@ -152,10 +152,11 @@
         <!--Use "side" property to load material on the inside/outside of the faces-->
       </a-entity>
 
+
       <!--Starting Sphere-->
       <a-sphere
         id="pickupSphere"
-        position="-3 1.5 -3"
+        position="-3.2 1.45 -5"
         radius="0.2"
         material="color: #3498db; metalness: 0.7; roughness: 0.3"
         circles-interactive-object
@@ -164,84 +165,257 @@
       >
       </a-sphere>
 
-      <!-- plate -->
-      <a-cylinder
-        id="plate1"
-        position="-27.6 1.3 1"
-        height="0.1"
-        radius="0.5"
-        material="color: #e74c3c"
-        circles-interactive-object
-        plate-interaction
-        class="interactive"
-      >
-      </a-cylinder>
+      <!--Minimal Room Plates-->
+      <a-entity id="orb_plates">      
+          <a-cylinder id="minimal_plate1"
+            position="-21.674 1.3 3.824"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
 
-      <a-cylinder
-        id="plate2"
-        position="-30.9 1.3 3.6"
-        height="0.1"
-        radius="0.5"
-        material="color: #e74c3c"
-        circles-interactive-object
-        plate-interaction
-        class="interactive"
-      >
-      </a-cylinder>
+          <a-cylinder id="minimal_plate2"
+            position="-23.487 1.3 7.649"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
 
-      <a-cylinder
-        id="plate3"
-        position="-31.9 1.3 7.7"
-        height="0.1"
-        radius="0.5"
-        material="color: #e74c3c"
-        circles-interactive-object
-        plate-interaction
-        class="interactive"
-      >
-      </a-cylinder>
+          <a-cylinder id="minimal_plate3"
+            position="-22.633 1.3 11.778"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
 
-      <a-cylinder
-        id="plate4"
-        position="-30.4 1.3 11.6"
-        height="0.1"
-        radius="0.5"
-        material="color: #e74c3c"
-        circles-interactive-object
-        plate-interaction
-        class="interactive"
-      >
-      </a-cylinder>
+          <a-cylinder id="minimal_plate4"
+            position="-19.588 1.3 14.682"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
 
-      <a-cylinder
-        id="plate5"
-        position="-26.9 1.3 13.8"
-        height="0.1"
-        radius="0.5"
-        material="color: #e74c3c"
-        circles-interactive-object
-        plate-interaction
-        class="interactive"
-      >
-      </a-cylinder>
+          <a-cylinder id="minimal_plate5"
+            position="-15.399 1.3 15.177"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
 
-      <a-cylinder
-        id="plate6"
-        position="-22.7 1.3 13.7"
-        height="0.1"
-        radius="0.5"
-        material="color: #e74c3c"
-        circles-interactive-object
-        plate-interaction
-        class="interactive"
-      >
-      </a-cylinder>
+          <a-cylinder id="minimal_plate6"
+            position="-11.753 1.3 13.206"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <!--Playground Room Plates-->
+          <a-cylinder id="playground_plate1"
+            position="-12.588 1.3 -21.741"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="playground_plate2"
+            position="-16.451 1.3 -23.558"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="playground_plate3"
+            position="-20.568 1.3 -22.873"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="playground_plate4"
+            position="-23.594 1.3 -19.790"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="playground_plate5"
+            position="-24.057 1.3 -15.573"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="playground_plate6"
+            position="-21.980 1.3 -11.877"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <!--Liminal Room Plates-->
+          <a-cylinder id="liminal_plate1"
+            position="15.352 1.3 -11.735"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="liminal_plate2"
+            position="17.599 1.3 -15.557"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="liminal_plate3"
+            position="17.004 1.3 -19.682"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="liminal_plate4"
+            position="14.153 1.3 -22.798"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="liminal_plate5"
+            position="9.988 1.3 -23.548"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="liminal_plate6"
+            position="6.175 1.3 -21.870"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <!--Nature Room Plates-->
+          <a-cylinder id="nature_plate1"
+            position="5.222 1.3 13.126"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="nature_plate2"
+            position="8.822 1.3 15.285"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="nature_plate3"
+            position="13.175 1.3 14.811"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="nature_plate4"
+            position="16.227 1.3 11.889"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="nature_plate5"
+            position="17.133 1.3 7.816"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+
+          <a-cylinder id="nature_plate6"
+            position="15.188 1.3 3.938"
+            height="0.1"
+            radius="0.5"
+            material="color: #e74c3c"
+            circles-interactive-object
+            plate-interaction
+            class="interactive">
+          </a-cylinder>
+      </a-entity>
 
       <a-entity id="keepsake_Lobby" position="14 0 14" rotation="0 180 0">
         <!--Chairs-->
         <a-entity
           id="chair1"
-          position="22 0.1 7"
+          position="16.569 0.1 11.148"
           rotation="0 45 0"
           scale="0.23 0.23 0.23"
           gltf-model="#chair-model"
@@ -252,7 +426,7 @@
 
         <a-entity
           id="chair2"
-          position="24 0.1 7"
+          position="18.809 0.1 10.646"
           rotation="0 -45 0"
           scale="0.23 0.23 0.23"
           gltf-model="#chair-model"
@@ -263,7 +437,7 @@
 
         <a-entity
           id="chair3"
-          position="12 0.1 30.5"
+          position="12.000 0.1 27.760"
           rotation="0 135 0"
           scale="0.23 0.23 0.23"
           gltf-model="#chair-model"
@@ -274,7 +448,7 @@
 
         <a-entity
           id="chair4"
-          position="14 0.1 30.5"
+          position="13.900 0.1 26.528"
           rotation="0 -135 0"
           scale="0.23 0.23 0.23"
           gltf-model="#chair-model"
@@ -285,7 +459,7 @@
 
         <a-entity
           id="chair5"
-          position="19 0.1 30.5"
+          position="20.429 0.1 26.648"
           rotation="0 135 0"
           scale="0.23 0.23 0.23"
           gltf-model="#chair-model"
@@ -296,7 +470,7 @@
 
         <a-entity
           id="chair6"
-          position="22 0.1 30.5"
+          position="22.726 0.1 26.844"
           rotation="0 -135 0"
           scale="0.23 0.23 0.23"
           gltf-model="#chair-model"
@@ -308,7 +482,7 @@
         <!--Table-->
         <a-entity
           id="table1"
-          position="4 0.1 15"
+          position="7.795 0.1 12.669"
           rotation="0 -45 0"
           scale="0.23 0.23 0.23"
           gltf-model="#table-model"
@@ -319,7 +493,7 @@
 
         <a-entity
           id="table2"
-          position="4 0.1 25"
+          position="6.865 0.1 23.586"
           rotation="0 45 0"
           scale="0.23 0.23 0.23"
           gltf-model="#table-model"
@@ -330,7 +504,7 @@
 
         <a-entity
           id="table3"
-          position="30 0.1 15"
+          position="26.083 0.1 13.727"
           rotation="0 45 0"
           scale="0.23 0.23 0.23"
           gltf-model="#table-model"
@@ -341,7 +515,7 @@
 
         <a-entity
           id="table4"
-          position="30 0.1 25"
+          position="26.807 0.1 22.586"
           rotation="0 -45 0"
           scale="0.23 0.23 0.23"
           gltf-model="#table-model"
@@ -353,8 +527,8 @@
         <!--Computers-->
         <a-entity
           id="computer1"
-          position="4.12 1 15.5"
-          rotation="0 35 0"
+          position="7.812 1 13.251"
+          rotation="0 46.064 0"
           scale="0.07 0.07 0.07"
           gltf-model="#computer-model"
           shadow="cast:true; receive:true"
@@ -364,7 +538,7 @@
 
         <a-entity
           id="computer2"
-          position="4.5 1 25"
+          position="7.574 1 23.451"
           rotation="0 135 0"
           scale="0.07 0.07 0.07"
           gltf-model="#computer-model"
@@ -375,8 +549,8 @@
 
         <a-entity
           id="computer3"
-          position="30.8 1 14.7"
-          rotation="0 -38 0"
+          position="27.021 1 13.318"
+          rotation="0 -45.200 0"
           scale="0.07 0.07 0.07"
           gltf-model="#computer-model"
           shadow="cast:true; receive:true"
@@ -386,7 +560,7 @@
 
         <a-entity
           id="computer4"
-          position="30.3 1 25.93"
+          position="27.185 1 23.504"
           rotation="0 -135 0"
           scale="0.07 0.07 0.07"
           gltf-model="#computer-model"
@@ -398,9 +572,9 @@
         <!--Receptionist Desk-->
         <a-entity
           id="receptionistDesk"
-          position="17 0.1 20"
+          position="17.266 0.1 21.676"
           rotation="0 0 0"
-          scale="0.33 0.33 0.33"
+          scale="0.307 0.307 0.307"
           gltf-model="#reception-desk-model"
           shadow="cast:true; receive:true"
           visible="true"
