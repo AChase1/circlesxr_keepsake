@@ -1,5 +1,5 @@
 class Orb {
-    constructor(key, userEmail, name,position) {
+    constructor(key, userEmail, name, position) {
         this.key = key == undefined ? "" : key;
         this.userEmail = userEmail == undefined ? "" : userEmail;
         this.name = name == undefined ? "" : name;
@@ -20,10 +20,8 @@ class Orb {
         const metadata = JSON.stringify(this.toJson());
         s3Logic.uploadToS3("", metadata);
     }
-    
-    createSphere = () => {
-        
-    }
+
+
 
     static fromJson = (json) => {
         return new Orb(json.key, json.userEmail, json.name, json.position);

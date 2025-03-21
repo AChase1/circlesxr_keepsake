@@ -9,7 +9,7 @@ const uploadToS3 = async (request, response) => {
     for (const [key, value] of Object.entries(JSON.parse(request.body.metadata))) {
       metadata[`x-amz-meta-${key}`] = value.toString(); // Prefix with x-amz-meta- and convert to string
     }
-    
+
     const addObjectCmd = new aws.PutObjectCommand({
       Bucket: bucketName,
       Key: metadata.key,
@@ -32,7 +32,7 @@ const retrieveAllObjects = async (request, response) => {
     });
 
     const cmdResponse = await s3.send(getAllObjectsCmd);
-    response.status(200).json({ message: 'Object retrieved successfully!', data: cmdResponse });
+    response.status(200).json({ message: 'Objects retrieved successfully!', data: cmdResponse });
   } catch (error) {
     response.status(500).json({ message: 'Error retrieving object: ' + error });
   }

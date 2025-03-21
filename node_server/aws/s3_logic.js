@@ -24,6 +24,14 @@ class S3Logic {
             pedestalId: metadata['x-amz-meta-pedestalid']
         };
     }
+
+    static configureObjectData = async (cmdResponse) => {
+        const isOrb = cmdResponse.ContentType == 'application/json';
+        const fileBuffer = isOrb ? cmdResponse.Body : await this.configureFileData(cmdResponse.Body);
+        const metadata = this.configureMetadata(cmdResponse.Metadata, isOrb);
+        metadata.file = fileBuffer;
+        return metadata;
+    }
 }
 
 module.exports = S3Logic;

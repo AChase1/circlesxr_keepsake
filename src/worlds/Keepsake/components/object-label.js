@@ -44,6 +44,14 @@ AFRAME.registerComponent("object-label", {
     },
 });
 
+function storeOrbInS3(labelText) {
+    const currUserEmail = UserLogic.getCurrentUserEmail();
+    const globalOrbPos = new Vector3();
+    object.object3D.getWorldPosition(globalOrbPos);
+    const orb = new Orb(currUserEmail + labelText, currUserEmail, labelText, globalOrbPos);
+    orb.saveToS3();
+}
+
 // label creation
 document.addEventListener("DOMContentLoaded", function () {
     // setup label submission
@@ -87,18 +95,15 @@ document.addEventListener("DOMContentLoaded", function () {
                     ] = true;
                 }
 
-                // TODO => create orb 
-                // TODO => save orb  
-                
-
-
-
+                storeOrbInS3(labelText);
             }
         }
 
         // hide ui
         labelUI.style.display = "none";
     };
+
+
 
     // submit label
     const submitButton = document.querySelector("#submit-label");
