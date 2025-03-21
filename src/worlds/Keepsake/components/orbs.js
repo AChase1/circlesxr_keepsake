@@ -1,57 +1,61 @@
-AFRAME.registerComponent("user-orbs", {
+AFRAME.registerComponent("orbs", {
 
     init: async function () {
         const s3Logic = new S3Logic();
         const allObjects = await s3Logic.retrieveAllObjects();
-        this.checkOrbForUser(allObjects);
-
+        this.checkCurrUserOrb(allObjects);
+        this.loadAllOrbs(allObjects);
     },
 
     loadAllOrbs: function (objects) {
-        const orbs = [];
         objects.forEach((object) => {
             const isOrb = object.file == "";
             if (isOrb) {
                 const orb = Orb.fromJson(object);
-                orbs.push(orb);
+                this.createCirclesPortal(orb);
             }
         });
-        orbs.forEach((orb) => {
-
-        });
+        
     },
 
-    checkOrbForUser: function (objects) {
-        const hasOrb = userLogic.doesCurrentUserHaveOrb(allObjects);
-        if (hasOrb) {
-            console.log("User has orb");
-            // TODO => UI / Interaction for user with orb
-        } else {
-            console.log("User does not have orb");
-            this.createStartOrb();
-        }
-    },
-
-    createCirclesPortal: function (labelText) {
-        const portal = document.createElement("a-entity");
-        portal.setAttribute("object-label", { text: labelText });
+    createCirclesPortal: function (orb, portal) {
+        portal.setAttribute("object-label", { text: orb.name });
         portal.setAttribute("circles-portal", {
-            title_text: labelText,
+            title_text: orb.name,
             link_url:
-                "/w/Keepsake-Gallery?galleryName=" +
-                encodeURIComponent(labelText),
+                "/w/Keepsake-Gallery?userEmail=" +
+                encodeURIComponent(orb.userEmail) + "&galleryName=" + encodeURIComponent(orb.name),
         });
+        portal.setAttribute("position", orb.position);
+        
+        this.el.appendChild(portal);
 
-        if (object.components.pickupable) {
+        if (portal.components.pickupable) {
             object.removeAttribute("pickupable");
             console.log(`Disabled pickupable on ${objectId}`);
         }
 
+        this.assignToPlate(portal);
+    },
+
+    assignToPlate: function (object) {
         const plate = document.querySelector("[plate-interaction]");
         if (plate && plate.components["plate-interaction"]) {
             plate.components["plate-interaction"].objectsLabeled[
-                objectId
+                object.id
             ] = true;
+        }
+    },
+
+    checkCurrUserOrb: function (objects) {
+        const userLogic = new UserLogic();
+        const hasOrb = userLogic.doesCurrentUserHaveOrb(objects);
+        if (hasOrb) {
+            console.log("User has orb");
+            // TODO => UI / Interactions for user with orb
+        } else {
+            console.log("User does not have orb");
+            this.createStartOrb();
         }
     },
 

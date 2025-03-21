@@ -1,29 +1,33 @@
-class FileLogic {
+class ArtifactLogic {
     getFileFromSystem = function () {
+            const fileInput = this.createFileInput();
+            fileInput.addEventListener('change', (event) => this.readAndUploadFile(event));
+            fileInput.click();
+    }
+
+    readAndUploadFile = async (event) => {
         try {
             const s3Logic = new S3Logic();
             const basicLogic = new BasicLogic();
-
-            const fileInput = document.createElement('input');
-            fileInput.type = 'file';
-            fileInput.style.display = 'none';
-            document.body.appendChild(fileInput);
-
-            fileInput.addEventListener('change', (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
-                    const timestamp = basicLogic.getCurrentTimestamp();
-                    const artifact = new Artifact(file.name + timestamp, 1, "", "", [], [], pedestalId, file);
-                    const metadata = JSON.stringify(artifact.toJson());
-                    s3Logic.uploadToS3(artifact.file.buffer, metadata);
-                }
-            });
-            fileInput.click();
+            const file = event.target.files[0];
+            if (file) {
+                const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
+                const timestamp = basicLogic.getCurrentTimestamp();
+                const artifact = new Artifact(file.name + timestamp, 1, "", "", [], [], pedestalId, file);
+                const metadata = JSON.stringify(artifact.toJson());
+                s3Logic.uploadToS3(artifact.file.buffer, metadata);
+            }
         } catch (error) {
             console.error(error);
         }
+    }
 
+    createFileInput = () => {
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+        return fileInput;
     }
 
     fileDataToAframe = (file, pedestalId) => {
@@ -43,11 +47,13 @@ class FileLogic {
             console.error("Pedestal not found");
             return;
         }
+
         const children = Array.from(pedestal.children).filter(child => child.id === "artifact");
         if (children) {
             console.log("Pedestal already has an artifact");
             children.forEach(child => pedestal.removeChild(child));
         }
+
         const pedestalInteraction = pedestal.components["pedestal-interaction"];
         const model = document.createElement("a-entity");
         model.setAttribute("id", "artifact");

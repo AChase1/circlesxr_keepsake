@@ -10,7 +10,7 @@ class Orb {
         return {
             "key": this.key,
             "userEmail": this.userEmail,
-            "orbName": this.name,
+            "name": this.name,
             "position": this.position
         };
     }
@@ -20,8 +20,6 @@ class Orb {
         const metadata = JSON.stringify(this.toJson());
         s3Logic.uploadToS3("", metadata);
     }
-
-
 
     static fromJson = (json) => {
         return new Orb(json.key, json.userEmail, json.name, json.position);

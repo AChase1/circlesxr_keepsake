@@ -2,9 +2,11 @@ class S3Logic {
     uploadToS3 = async (bodyData, metadata) => {
         try {
             if(!bodyData || !metadata) return;
+
             const formData = new FormData();
             formData.append("body", bodyData);
             formData.append("metadata", metadata);
+            
             const response = await fetch('/s3_upload', {
                 method: 'POST',
                 body: formData,
@@ -31,8 +33,7 @@ class S3Logic {
                 console.log("Objects retrieved successfully!");
                 const jsonResponse = await response.json();
                 const data = jsonResponse.data.Contents;
-                const sortedObjects = data.sort((a, b) => new Date(b.LastModified) - new Date(a.LastModified));
-                return sortedObjects;
+                return data;
             } else {
                 console.log("Error retrieving object");
                 return null;
@@ -45,7 +46,7 @@ class S3Logic {
 
     retrieveObject = async (key) => {
         try {
-            const fileLogic = new FileLogic();
+            const artifactLogic = new ArtifactLogic();
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
             if (response.status == 200) {
                 const jsonResponse = await response.json();

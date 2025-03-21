@@ -13,10 +13,10 @@ class Artifact {
     // file data is not included for metadata
     toJson() {
         return {
-            "objectKey": this.key,
-            "userId": this.userEmail,
-            "objectName": this.name,
-            "objectDescription": this.description,
+            "key": this.key,
+            "userEmail": this.userEmail,
+            "name": this.name,
+            "description": this.description,
             "reactions": this.reactions,
             "comments": this.comments,
             "pedestalId": this.pedestalId,

@@ -12,4 +12,15 @@ class UserLogic {
         });
         return false;
     }
+
+    static getArtifactsByUser(s3Objects, userEmail) {
+        const artifactLogic = new ArtifactLogic();
+        const objects = s3Objects.filter(object => object.userEmail == userEmail && object.file != "");
+        if(objects.length >=0 && objects.length <= 3){
+            objects.forEach(object => {
+                const artifact = Artifact.fromJson(object);
+                artifactLogic.fileDataToAframe(artifact.file, artifact.pedestalId);
+            });
+        }
+    }
 }
