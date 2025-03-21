@@ -1,7 +1,7 @@
 class FileLogic {
     getFileFromSystem = function () {
         try {
-            const s3Repository = new S3Repository();
+            const s3Logic = new S3Logic();
             const basicLogic = new BasicLogic();
 
             const fileInput = document.createElement('input');
@@ -13,10 +13,10 @@ class FileLogic {
                 const file = event.target.files[0];
                 if (file) {
                     const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
-                    console.log(pedestalId);
                     const timestamp = basicLogic.getCurrentTimestamp();
                     const artifact = new Artifact(file.name + timestamp, 1, "", "", [], [], pedestalId, file);
-                    s3Repository.uploadToS3(artifact);
+                    const metadata = JSON.stringify(artifact.toJson());
+                    s3Logic.uploadToS3(artifact.file.buffer, metadata);
                 }
             });
             fileInput.click();

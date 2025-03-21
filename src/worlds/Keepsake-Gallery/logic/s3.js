@@ -1,16 +1,17 @@
-class S3Repository {
-    uploadToS3 = async (artifact) => {
+class S3Logic {
+    uploadToS3 = async (bodyData, metadata) => {
         try {
+            if(!bodyData || !metadata) return;
             const formData = new FormData();
-            formData.append("file", artifact.file);
-            formData.append("artifact", JSON.stringify(artifact.toJson()));
+            formData.append("body", bodyData);
+            formData.append("metadata", metadata);
             const response = await fetch('/s3_upload', {
                 method: 'POST',
                 body: formData,
             });
 
             if (response.status == 200) {
-                console.log("Object uploaded successfully");
+                console.log("Object uploaded successfully!");
                 const uploadUI = document.querySelector('#upload-ui');
                 uploadUI.style.display = 'none';
                 await this.retrieveObject(artifact.objectKey);
@@ -30,9 +31,8 @@ class S3Repository {
                 console.log("Objects retrieved successfully!");
                 const jsonResponse = await response.json();
                 const data = jsonResponse.data.Contents;
-                const sortedArtifacts = data.sort((a, b) => new Date(b.LastModified) - new Date(a.LastModified));
-                const lastArtifact = sortedArtifacts[0];
-                await this.retrieveObject(lastArtifact.Key);
+                const sortedObjects = data.sort((a, b) => new Date(b.LastModified) - new Date(a.LastModified));
+                return sortedObjects;
             } else {
                 console.log("Error retrieving object");
                 return null;

@@ -1,9 +1,9 @@
 class Artifact {
-    constructor(objectKey, userId, objectName, objectDescription, reactions, comments, pedestalId, file) {
-        this.objectKey = objectKey == undefined ? "" : objectKey;
-        this.userId = userId == undefined ? 0 : userId;
-        this.objectName = objectName == undefined ? "" : objectName;
-        this.objectDescription = objectDescription == undefined ? "" : objectDescription;
+    constructor(key, userEmail, name, description, reactions, comments, pedestalId, file) {
+        this.key = key == undefined ? "" : key;
+        this.userEmail = userEmail == undefined ? 0 : userEmail;
+        this.name = name == undefined ? "" : name;
+        this.description = description == undefined ? "" : description;
         this.reactions = reactions == undefined ? [] : reactions;
         this.comments = comments == undefined ? [] : comments;
         this.pedestalId = pedestalId == undefined ? "" : pedestalId;
@@ -13,10 +13,10 @@ class Artifact {
     // file data is not included for metadata
     toJson() {
         return {
-            "objectKey": this.objectKey,
-            "userId": this.userId,
-            "objectName": this.objectName,
-            "objectDescription": this.objectDescription,
+            "objectKey": this.key,
+            "userId": this.userEmail,
+            "objectName": this.name,
+            "objectDescription": this.description,
             "reactions": this.reactions,
             "comments": this.comments,
             "pedestalId": this.pedestalId,
@@ -25,7 +25,7 @@ class Artifact {
 
 
     static fromJson = (json) => {
-        return new Artifact(json.objectKey, json.userId, json.objectName, json.objectDescription, json.reactions, json.comments, json.pedestalId, json.file);
+        return new Artifact(json.key, json.userEmail, json.name, json.description, json.reactions, json.comments, json.pedestalId, json.file);
     }
 
 }

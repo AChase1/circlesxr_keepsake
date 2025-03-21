@@ -12,7 +12,8 @@ AFRAME.registerComponent('circles-user-networked', {
     color_body:                 {type: 'string',    default: ''}, 
 
     visiblename:                {type: 'string',    default: ''},
-    usertype:                   {type: 'string',    default: ''}
+    usertype:                   {type: 'string',    default: ''},
+    email:                      {type: 'string',    default: ''},
   },
   multiple: false, //do not allow multiple instances of this component on this entity
   init: function() {
@@ -39,7 +40,8 @@ AFRAME.registerComponent('circles-user-networked', {
             color_hair:             playerOneNode.getAttribute('circles-hair-color'),
             color_body:             playerOneNode.getAttribute('circles-body-color'),
             visiblename:            playerOneNode.getAttribute('circles-visiblename'),
-            usertype:               playerOneNode.getAttribute('circles-usertype')
+            usertype:               playerOneNode.getAttribute('circles-usertype'),
+            email:                  playerOneNode.getAttribute('circles-email')
           });
 
           //set device icon here too ... I guess :/

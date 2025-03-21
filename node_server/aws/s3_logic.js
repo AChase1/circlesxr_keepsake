@@ -8,12 +8,17 @@ class S3Logic {
         return buffer.toString('base64');
     }
 
-    static configureMetadata = (metadata) => {
-        return {
-            objectKey: metadata['x-amz-meta-objectkey'],
-            userId: metadata['x-amz-meta-userid'],
-            objectName: metadata['x-amz-meta-objectname'],
-            objectDescription: metadata['x-amz-meta-objectdescription'],
+    static configureMetadata = (metadata, isOrb) => {
+        return isOrb ? {
+            key: metadata['x-amz-meta-key'],
+            userEmail: metadata['x-amz-meta-useremail'],
+            name: metadata['x-amz-meta-orbname'],
+            position: metadata['x-amz-meta-position']
+        } : {
+            key: metadata['x-amz-meta-objectkey'],
+            userEmail: metadata['x-amz-meta-userid'],
+            name: metadata['x-amz-meta-objectname'],
+            description: metadata['x-amz-meta-objectdescription'],
             reactions: metadata['x-amz-meta-reactions'],
             comments: metadata['x-amz-meta-comments'],
             pedestalId: metadata['x-amz-meta-pedestalid']
