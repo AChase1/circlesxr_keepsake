@@ -1,12 +1,15 @@
 'use strict';
 
 const router = require('express').Router();
-const s3ApiLogic = require('../aws/s3_apiLogic');
+const s3ApiLogic = require('../aws/s3_api');
 const path = require('path');
 const controller = require('../controllers/controller');
 const fs = require('fs').promises;
 const User = require('../models/user');
 const passport = require('passport');
+
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 /**
  * Authenticated
@@ -52,9 +55,9 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/'
 }));
 
-router.post('/s3_upload', async (req, res) => s3ApiLogic.uploadToS3(req, res));
-router.get('/s3_retrieveObject:key', async (req, res) => s3ApiLogic.retrieveAllObjects(req, res));
-//router.get('/s3_retrieveObject:key', async (req, res) => s3ApiLogic.retrieveObject(req, res));
+router.post('/s3_upload', upload.single('file'), async (req, res) => s3ApiLogic.uploadToS3(req, res));
+router.get('/s3_retrieveAllObjects', async (req, res) => s3ApiLogic.retrieveAllObjects(req, res));
+router.get('/s3_retrieveObject/:key', async (req, res) => s3ApiLogic.retrieveObject(req, res));
 
 //magic links for students
 router.get('/get-magic-links', authenticated, controller.getMagicLinks);
