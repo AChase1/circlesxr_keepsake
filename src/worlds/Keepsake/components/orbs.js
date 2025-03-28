@@ -1,55 +1,61 @@
 AFRAME.registerComponent("orbs", {
 
     init: async function () {
-        const s3Logic = new S3Logic();
-        const allObjects = await s3Logic.retrieveAllObjects();
-        this.checkCurrUserOrb(allObjects);
-        this.loadAllOrbs(allObjects);
+        this.loadUserOrbs();
     },
 
-    loadAllOrbs: function (objects) {
-        objects.forEach((object) => {
-            const isOrb = object.file == "";
-            if (isOrb) {
-                const orb = Orb.fromJson(object);
-                this.createCirclesPortal(orb);
-            }
-        });
+    loadUserOrbs: async function () {
+        let doesCurrUserHaveOrb = false;
+        const allS3Objects = await S3Logic.retrieveAllObjects();
+        if(allS3Objects){
+            allS3Objects.forEach(async (object) => {
+                if(object.Key.startsWith("orb")) {
+                    const orb = await S3Logic.retrieveObject(object.Key);
+                    if(orb.userEmail == UserLogic.getCurrentUserEmail()){
+                        console.log("current user already has orb");
+                        doesCurrUserHaveOrb = true;
+                    }
+                    this.createCirclesPortal(orb);
+                }
+            });
+        }
+        
+        if(!doesCurrUserHaveOrb) {
+            console.log("current user does not have orb");
+            this.createStartOrb();
+        }
         
     },
 
-    createCirclesPortal: function (orb, portal) {
-        portal.setAttribute("object-label", { text: orb.name });
-        portal.setAttribute("circles-portal", {
+    createCirclesPortal: function (orb) {
+        const portalEl = document.createElement("a-entity");
+        portalEl.setAttribute("object-label", { text: orb.name });
+        portalEl.setAttribute("circles-portal", {
             title_text: orb.name,
             link_url:
-                "/w/Keepsake-Gallery?userEmail=" +
-                encodeURIComponent(orb.userEmail) + "&galleryName=" + encodeURIComponent(orb.name),
+                "/w/Keepsake-Gallery?galleryName=" + encodeURIComponent(orb.name),
         });
-        portal.setAttribute("position", orb.position);
+        portalEl.setAttribute("position", orb.position);
         
-        this.el.appendChild(portal);
+        this.el.appendChild(portalEl);
 
-        if (portal.components.pickupable) {
-            object.removeAttribute("pickupable");
-            console.log(`Disabled pickupable on ${objectId}`);
+        if (portalEl.components.pickupable) {
+            portalEl.removeAttribute("pickupable");
+            console.log(`Disabled pickupable on ${portalEl.getAttribute("id")}`);
         }
 
-        this.assignToPlate(portal);
+        this.assignToPlate(portalEl);
     },
 
     assignToPlate: function (object) {
         const plate = document.querySelector("[plate-interaction]");
         if (plate && plate.components["plate-interaction"]) {
-            plate.components["plate-interaction"].objectsLabeled[
-                object.id
-            ] = true;
+            plate.components["plate-interaction"].objectsLabeled[object.id] = true;
         }
     },
 
     checkCurrUserOrb: function (objects) {
-        const userLogic = new UserLogic();
-        const hasOrb = userLogic.doesCurrentUserHaveOrb(objects);
+        const hasOrb = UserLogic.doesCurrentUserHaveOrb(objects);
         if (hasOrb) {
             console.log("User has orb");
             // TODO => UI / Interactions for user with orb

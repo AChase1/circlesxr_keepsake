@@ -46,15 +46,14 @@ AFRAME.registerComponent("object-label", {
 
 function createOrb(object, labelText) {
     const currUserEmail = UserLogic.getCurrentUserEmail();
-    const globalOrbPos = new Vector3();
-    object.object3D.getWorldPosition(globalOrbPos);
-    return new Orb(currUserEmail + labelText, currUserEmail, labelText, globalOrbPos);
+
+    return new Orb("orb_" + currUserEmail +"_"+ labelText, currUserEmail, labelText, plate.getAttribute("id"));
 }
 
 // label creation
 document.addEventListener("DOMContentLoaded", function () {
     // setup label submission
-    const submitLabel = function () {
+    const submitLabel = async function () {
         const labelUI = document.querySelector("#label-ui");
         const labelInput = document.querySelector("#label-input");
 
@@ -69,8 +68,8 @@ document.addEventListener("DOMContentLoaded", function () {
             if (object) {
                 const scene = document.querySelector("a-scene");
                 const orb = createOrb(object, labelText);
-                scene.components["orbs"].createCirclesPortal(orb, object);
-                orb.saveToS3();
+                scene.components["orbs"].createCirclesPortal(orb);
+                S3Logic.uploadToS3("this-is-an-orb", orb.toJson());
             }
         }
 

@@ -13,6 +13,7 @@ class Artifact {
     // file data is not included for metadata
     toJson() {
         return {
+            "isOrb": false,
             "key": this.key,
             "userEmail": this.userEmail,
             "name": this.name,

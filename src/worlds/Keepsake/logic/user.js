@@ -1,14 +1,14 @@
 class UserLogic {
-    static getCurrentUserEmail() {
-        const userData = document.getElementById("Player1").components["circles-email"];
-        console.log(userData);
-        return userData.email;
-    }
+    static getCurrentUserEmail = () =>
+        document.getElementById("Player1").getAttribute("circles-email");
+        
 
-    static doesCurrentUserHaveOrb(objects) {
+    static loadUserOrbs(objects) {
         const currUserEmail = this.getCurrentUserEmail();
         objects.forEach(object => {
-            if (object.userEmail == currUserEmail) return true;
+            const objectMap = JSON.stringify(object);
+            console.log("object.userEmail: "+ objectMap);
+            if (objectMap["userEmail"] == currUserEmail) return true;
         });
         return false;
     }

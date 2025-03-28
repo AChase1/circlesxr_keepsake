@@ -55,7 +55,8 @@ router.post('/login', passport.authenticate('local', {
   failureRedirect: '/'
 }));
 
-router.post('/s3_upload', upload.single('file'), async (req, res) => s3ApiLogic.uploadToS3(req, res));
+router.post('/s3_uploadFile', upload.single('file'), async (req, res) => s3ApiLogic.uploadFileToS3(req, res));
+router.post('/s3_uploadMetadata', async (req, res) => s3ApiLogic.uploadMetadataToS3(req, res));
 router.get('/s3_retrieveAllObjects', async (req, res) => s3ApiLogic.retrieveAllObjects(req, res));
 router.get('/s3_retrieveObject/:key', async (req, res) => s3ApiLogic.retrieveObject(req, res));
 

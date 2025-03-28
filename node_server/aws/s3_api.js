@@ -3,25 +3,26 @@ const bucketName = require('./aws_config').bucketName;
 const aws = require('./aws_config').aws;
 const s3Logic = require('./s3_logic');
 
-const uploadToS3 = async (request, response) => {
-  try {
-    const metadata = {};
-    for (const [key, value] of Object.entries(JSON.parse(request.body.metadata))) {
-      metadata[`x-amz-meta-${key}`] = value.toString(); // Prefix with x-amz-meta- and convert to string
-    }
-
-    const addObjectCmd = new aws.PutObjectCommand({
-      Bucket: bucketName,
-      Key: metadata.key,
-      Body: request.body,
-      ContentType: request.body == "" ? 'application/json' : request.file.mimetype,
-      Metadata: metadata,
-    });
-
+const uploadFileToS3 = async (request, response) => {
+  try {;
+    const metadata = s3Logic.configurePayloadMetadata(JSON.parse(request.body.metadata));
+    const addObjectCmd = s3Logic.createPutObjectCmd(request.file.buffer, metadata, request.file.mimetype);
     const cmdResponse = await s3.send(addObjectCmd);
-    response.status(200).json({ message: 'Object uploaded successfully! ' + cmdResponse });
+    response.status(200).json({ message: 'File uploaded successfully! ' + cmdResponse });
   } catch (error) {
     response.status(500).json({ message: 'Error uploading object: ' + error });
+  }
+}
+
+const uploadMetadataToS3 = async (request, response) => {
+  try {
+    console.log("server test");
+    const metadata = s3Logic.configurePayloadMetadata(request.body);
+    const addObjectCmd = s3Logic.createPutObjectCmd('', metadata, 'application/json');
+    const cmdResponse = await s3.send(addObjectCmd);
+    response.status(200).json({ message: 'Metadata uploaded successfully! ' + cmdResponse });
+  } catch (error) {
+    response.status(500).json({ message: 'Error uploading metadata: ' + error });
   }
 }
 
@@ -48,8 +49,8 @@ const retrieveObject = async (request, response) => {
 
     const cmdResponse = await s3.send(getObjectCmd);
     const isOrb = cmdResponse.ContentType == 'application/json';
-    const fileBuffer = isOrb ? cmdResponse.Body : await s3Logic.configureFileData(cmdResponse.Body);
-    const metadata = s3Logic.configureMetadata(cmdResponse.Metadata, isOrb);
+    const fileBuffer = isOrb ? await s3Logic.streamToString(cmdResponse.Body) : await s3Logic.configureFileData(cmdResponse.Body);
+    const metadata = s3Logic.configureResponseMetadata(cmdResponse.Metadata, isOrb);
     metadata.file = fileBuffer;
 
     response.status(200).json({ message: 'Object retrieved successfully!', data: metadata });
@@ -58,4 +59,4 @@ const retrieveObject = async (request, response) => {
   }
 }
 
-module.exports = { uploadToS3, retrieveAllObjects, retrieveObject };
+module.exports = { uploadFileToS3, uploadMetadataToS3, retrieveAllObjects, retrieveObject };

@@ -1,19 +1,37 @@
 class S3Logic {
-    uploadToS3 = async (bodyData, metadata) => {
+    static uploadToS3 = async (bodyData, metadata) => {
         try {
+            
+            let payload, endpoint, headers = null;
             if(!bodyData || !metadata) return;
 
-            const formData = new FormData();
-            formData.append("body", bodyData);
-            formData.append("metadata", metadata);
+            if(metadata["isOrb"]) {
+                payload = JSON.stringify(metadata);
+                endpoint = '/s3_uploadMetadata';
+                headers = {
+                    'Content-Type': 'application/json'};
+                console.log('uploading orb');
+            } else {
+                const formData = new FormData();
+                formData.append("file", bodyData);
+                formData.append("metadata", JSON.stringify(metadata));
+                payload = formData;
+                endpoint = '/s3_uploadFile';
+                console.log('uploading file');
+            }
             
-            const response = await fetch('/s3_upload', {
+            const response = await fetch(endpoint, {
                 method: 'POST',
-                body: formData,
+                body: payload,
+                headers: headers
             });
+
+            console.log(response);
 
             if (response.status == 200) {
                 console.log("Object uploaded successfully!");
+                // TODO => add UI feedback for successful upload
+                if(metadata["isOrb"]) return;
                 const uploadUI = document.querySelector('#upload-ui');
                 uploadUI.style.display = 'none';
                 await this.retrieveObject(artifact.objectKey);
@@ -26,7 +44,7 @@ class S3Logic {
 
     }
 
-    retrieveAllObjects = async () => {
+    static retrieveAllObjects = async () => {
         try {
             const response = await fetch(`/s3_retrieveAllObjects`);
             if (response.status == 200) {
@@ -44,14 +62,19 @@ class S3Logic {
         }
     }
 
-    retrieveObject = async (key) => {
+    static retrieveObject = async (key) => {
         try {
-            const artifactLogic = new ArtifactLogic();
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
             if (response.status == 200) {
                 const jsonResponse = await response.json();
-                const newArtifact = Artifact.fromJson(jsonResponse.data);
-                fileLogic.fileDataToAframe(newArtifact.file, newArtifact.pedestalId);
+                if(jsonResponse.data.isOrb){
+                    const orb = Orb.fromJson(jsonResponse.data);
+                    return orb;
+                } else  {
+                    const artifact = Artifact.fromJson(jsonResponse.data);
+                    return artifact;
+                }
+                
 
             } else {
                 console.log("Error retrieving object");
