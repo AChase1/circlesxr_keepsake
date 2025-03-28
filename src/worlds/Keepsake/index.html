@@ -7,7 +7,12 @@
     <script src="./components/pickupable.js"></script>
     <script src="./components/plate-interaction.js"></script>
     <script src="./components/object-label.js"></script>
+    <script src="./components/tutorial.js"></script>
+    <script src="./components/select-theme.js"></script>
+
     <script src="./components/interaction-manager.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -96,18 +101,57 @@
         <a-asset-item
           id="reception-desk-model"
           response-type="arraybuffer"
-          src="./assets/models/Desk_BaseColor.glb"
-        ></a-asset-item>
-        <a-asset-item
-          id="computer-model"
-          response-type="arraybuffer"
-          src="./assets/models/Computer_BaseColor.glb"
+          src="./assets/models/Desk_Keepsake.glb"
         ></a-asset-item>
 
-        <!-- orb room model -->
+        <!--Computer Models-->
+        <a-asset-item
+          id="computer-minimal"
+          response-type="arraybuffer"
+          src="./assets/models/Computer_Minimal.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="computer-playground"
+          response-type="arraybuffer"
+          src="./assets/models/Computer_Playground.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="computer-liminal"
+          response-type="arraybuffer"
+          src="./assets/models/Computer_Liminal.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="computer-nature"
+          response-type="arraybuffer"
+          src="./assets/models/Computer_Nature.glb"
+        ></a-asset-item>
+
+        <!--Speech Bubble-->
+        <a-asset-item
+          id="speech-bubble"
+          response-type="arraybuffer"
+          src="./assets/models/Speech_Bubble.glb"
+        ></a-asset-item>
+
+        <!--Receptionist-->
+        <a-asset-item
+          id="receptionist"
+          response-type="arraybuffer"
+          src="./assets/models/Receptionist.glb"
+        ></a-asset-item>
+
+        <!--Lobby Model-->
         <a-asset-item
           id="orb-room-model"
           src="assets/models/Lobby_BaseColor.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!--Lobby NavMesh-->
+        <a-asset-item
+          id="lobby-navmesh"
+          src="assets/models/Lobby_NavMesh.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
@@ -128,19 +172,25 @@
       <circles-manager-avatar />
 
       <!-- put scene stuff here -->
-      <!-- camera -->
-      <a-entity
-        id="camera"
-        camera
-        look-controls
-        wasd-controls
-        twoway-motion="speed: 35"
-        position="0 1.6 0"
-        cursor="rayOrigin: mouse"
-        circles-interactive-object
-        raycaster="objects: .interactive; far: 20; interval: 100"
-      >
-      </a-entity>
+
+      <!-- Camera -->
+       <!--Camera is now inside of a "Rig"; wasd-controls are removed-->
+       <a-entity id="rig"
+        movement-controls="constrainToNavMesh: true">
+            <a-entity
+            id="camera"
+            camera
+            look-controls
+            twoway-motion="speed: 35"
+            position="0 1.6 0"
+            cursor="rayOrigin: mouse"
+            circles-interactive-object
+            raycaster="objects: .interactive; far: 20; interval: 100"
+          >
+      
+        </a-entity>
+       </a-entity>
+
 
       <!--SKY BOX-->
       <a-entity
@@ -174,7 +224,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="minimal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="minimal_plate2"
@@ -184,7 +235,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="minimal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="minimal_plate3"
@@ -194,7 +246,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="minimal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="minimal_plate4"
@@ -204,7 +257,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="minimal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="minimal_plate5"
@@ -214,7 +268,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="minimal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="minimal_plate6"
@@ -224,7 +279,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="minimal interactive"
+            theme-select="">
           </a-cylinder>
 
           <!--Playground Room Plates-->
@@ -235,7 +291,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="playground interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="playground_plate2"
@@ -245,7 +302,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="playground interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="playground_plate3"
@@ -255,7 +313,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="playground interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="playground_plate4"
@@ -265,7 +324,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="playground interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="playground_plate5"
@@ -275,7 +335,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="playground interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="playground_plate6"
@@ -285,7 +346,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="playground interactive"
+            theme-select="">
           </a-cylinder>
 
           <!--Liminal Room Plates-->
@@ -296,7 +358,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="liminal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="liminal_plate2"
@@ -306,7 +369,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="liminal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="liminal_plate3"
@@ -316,7 +380,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="liminal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="liminal_plate4"
@@ -326,7 +391,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="liminal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="liminal_plate5"
@@ -336,7 +402,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="liminal interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="liminal_plate6"
@@ -346,7 +413,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="liminal interactive"
+            theme-select="">
           </a-cylinder>
 
           <!--Nature Room Plates-->
@@ -357,7 +425,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="nature interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="nature_plate2"
@@ -367,7 +436,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="nature interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="nature_plate3"
@@ -377,7 +447,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="nature interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="nature_plate4"
@@ -387,7 +458,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="nature interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="nature_plate5"
@@ -397,7 +469,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="nature interactive"
+            theme-select="">
           </a-cylinder>
 
           <a-cylinder id="nature_plate6"
@@ -407,7 +480,8 @@
             material="color: #e74c3c"
             circles-interactive-object
             plate-interaction
-            class="interactive">
+            class="nature interactive"
+            theme-select="">
           </a-cylinder>
       </a-entity>
 
@@ -482,7 +556,7 @@
         <!--Table-->
         <a-entity
           id="table1"
-          position="7.795 0.1 12.669"
+          position="7.336 0.1 12.669"
           rotation="0 -45 0"
           scale="0.23 0.23 0.23"
           gltf-model="#table-model"
@@ -527,10 +601,10 @@
         <!--Computers-->
         <a-entity
           id="computer1"
-          position="7.812 1 13.251"
-          rotation="0 46.064 0"
+          position="27.021 1 13.318"
+          rotation="0 -45.200 0"
           scale="0.07 0.07 0.07"
-          gltf-model="#computer-model"
+          gltf-model="#computer-minimal"
           shadow="cast:true; receive:true"
           visible="true"
         >
@@ -538,32 +612,30 @@
 
         <a-entity
           id="computer2"
-          position="7.574 1 23.451"
-          rotation="0 135 0"
-          scale="0.07 0.07 0.07"
-          gltf-model="#computer-model"
-          shadow="cast:true; receive:true"
-          visible="true"
-        >
-        </a-entity>
-
-        <a-entity
-          id="computer3"
-          position="27.021 1 13.318"
-          rotation="0 -45.200 0"
-          scale="0.07 0.07 0.07"
-          gltf-model="#computer-model"
-          shadow="cast:true; receive:true"
-          visible="true"
-        >
-        </a-entity>
-
-        <a-entity
-          id="computer4"
           position="27.185 1 23.504"
           rotation="0 -135 0"
           scale="0.07 0.07 0.07"
-          gltf-model="#computer-model"
+          gltf-model="#computer-playground"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+        <a-entity
+          id="computer3"
+          position="7.574 1 23.451"
+          rotation="0 135 0"
+          scale="0.07 0.07 0.07"
+          gltf-model="#computer-liminal"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+        <a-entity
+          id="computer4"
+          position="7.335 1 13.251"
+          rotation="0 46.064 0"
+          scale="0.07 0.07 0.07"
+          gltf-model="#computer-nature"
           shadow="cast:true; receive:true"
           visible="true"
         >
@@ -581,6 +653,56 @@
         >
         </a-entity>
 
+        <a-entity
+          id="receptionist"
+          position="17.360 0.042 19.972"
+          rotation="0 -170.433 0"
+          scale="0.391 0.391 0.391"
+          gltf-model="#receptionist"
+          shadow="cast:true; receive:true"
+          visible="true"
+        >
+        </a-entity>
+
+        <!--Speech Bubble Tutorial-->
+        <a-entity
+          id="speechBubble"
+          class="interactive"
+          position="15.196 1.536 19.870"
+          rotation="0 90 0"
+          scale="0.4 0.4 0.4"
+          gltf-model="#speech-bubble"
+          shadow="cast:true; receive:true"
+          visible="true"
+          tutorial=""
+        >
+          <a-entity id="instructions"
+              text="value:Welcome to Keepsake! The future of memory preservation in virtual reality.\n\nIf this is your first visit, click here for a tutorial.;
+              color:black;
+              font:roboto;
+              width:4.5;
+              anchor:left;
+              baseline:top;
+              wrapCount:25;"
+              position="0 4.0 2.097"
+              rotation="0 90 0"
+          >
+          </a-entity>
+          <a-entity id="instructions-next"
+              text="value:(Click for next);        
+              color:black;
+              font:roboto;
+              width:4.5;
+              anchor:center;
+              baseline:top;
+              wrapCount:25;"
+              position="0 1.465 -1.155"
+              rotation="0 90 0"
+          >
+      </a-entity>
+
+        </a-entity>
+
         <!--Lobby Model-->
         <a-entity
           id="orb-room"
@@ -591,6 +713,18 @@
           shadow="recieve:true;"
         >
         </a-entity>
+
+        <!--Lobby NavMesh-->
+        <a-entity
+          id="lobby-nav-mesh"
+          position="0 0 0"
+          scale="1.0 1.0 1.0"
+          gltf-model="#lobby-navmesh"
+          nav-mesh
+          visible="false"
+        >
+        </a-entity>
+
       </a-entity>
     </a-scene>
 
