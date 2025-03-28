@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     title_text: labelText,
                     link_url:
                         "/w/Keepsake-Gallery?galleryName=" +
-                        encodeURIComponent(labelText),
+                        encodeURIComponent(labelText) + "&galleryTheme=" + encodeURIComponent(selectedTheme), // Now includes GalleryTheme
                 });
 
                 // disable the pickupable component so it can't be picked up again
