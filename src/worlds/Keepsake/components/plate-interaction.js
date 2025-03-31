@@ -19,6 +19,7 @@ AFRAME.registerComponent("plate-interaction", {
 
         self.el.addEventListener("click", () => {
             console.log("Plate clicked");
+            this.deselectAllOtherPlates();
             const manager = self.el.sceneEl.components["interaction-manager"];
             const heldObjectId = manager.pickedUpObject;
 
@@ -81,4 +82,20 @@ AFRAME.registerComponent("plate-interaction", {
 
         self.updatePlatePosition();
     },
+
+    deselectAllOtherPlates: function () {
+        const plates = document.querySelectorAll("[plate-interaction]");
+        plates.forEach((plate) => {
+            if (plate !== this.el) {
+                const plateInteraction = plate.components["plate-interaction"];
+                if (plateInteraction.hasObject) {
+                    const manager = this.el.sceneEl.components["interaction-manager"];
+                    manager.pickedUpObject = plateInteraction.placedObjectId;
+
+                    plateInteraction.hasObject = false;
+                    plateInteraction.placedObjectId = null;
+                }
+            }
+        });
+    }
 });

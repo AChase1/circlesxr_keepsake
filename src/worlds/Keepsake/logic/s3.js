@@ -1,15 +1,15 @@
 class S3Logic {
     static uploadToS3 = async (bodyData, metadata) => {
         try {
-            
-            let payload, endpoint, headers = null;
-            if(!bodyData || !metadata) return;
 
-            if(metadata["isOrb"]) {
+            let payload, endpoint, headers = null;
+            if (!bodyData || !metadata) return;
+            if (metadata["isOrb"]) {
                 payload = JSON.stringify(metadata);
                 endpoint = '/s3_uploadMetadata';
                 headers = {
-                    'Content-Type': 'application/json'};
+                    'Content-Type': 'application/json'
+                };
                 console.log('uploading orb');
             } else {
                 const formData = new FormData();
@@ -19,7 +19,7 @@ class S3Logic {
                 endpoint = '/s3_uploadFile';
                 console.log('uploading file');
             }
-            
+
             const response = await fetch(endpoint, {
                 method: 'POST',
                 body: payload,
@@ -31,7 +31,7 @@ class S3Logic {
             if (response.status == 200) {
                 console.log("Object uploaded successfully!");
                 // TODO => add UI feedback for successful upload
-                if(metadata["isOrb"]) return;
+                if (metadata["isOrb"]) return;
                 const uploadUI = document.querySelector('#upload-ui');
                 uploadUI.style.display = 'none';
                 await this.retrieveObject(artifact.objectKey);
@@ -67,14 +67,14 @@ class S3Logic {
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
             if (response.status == 200) {
                 const jsonResponse = await response.json();
-                if(jsonResponse.data.isOrb){
+                if (jsonResponse.data.isOrb) {
                     const orb = Orb.fromJson(jsonResponse.data);
                     return orb;
-                } else  {
+                } else {
                     const artifact = Artifact.fromJson(jsonResponse.data);
                     return artifact;
                 }
-                
+
 
             } else {
                 console.log("Error retrieving object");

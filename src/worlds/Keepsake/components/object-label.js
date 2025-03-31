@@ -5,6 +5,7 @@ AFRAME.registerComponent("object-label", {
         color: { type: "color", default: "#FFF" },
         size: { type: "number", default: 1.0 },
         yOffset: { type: "number", default: 0.3 }, // distance above object
+        clickedPlateId: { type: "string", default: "" },
     },
 
     init: function () {
@@ -44,10 +45,16 @@ AFRAME.registerComponent("object-label", {
     },
 });
 
-function createOrb(object, labelText) {
+function createOrb(labelText) {
     const currUserEmail = UserLogic.getCurrentUserEmail();
-
-    return new Orb("orb_" + currUserEmail +"_"+ labelText, currUserEmail, labelText, plate.getAttribute("id"));
+    let selectedPlateId = null;
+    const plateElements = document.querySelectorAll("[plate-interaction]");
+    plateElements.forEach((plate) => {
+        if (plate.components["plate-interaction"].hasObject) {
+            selectedPlateId = plate.id;
+        }
+    });
+    return new Orb("orb_" + currUserEmail + "_" + labelText, currUserEmail, labelText, selectedPlateId);
 }
 
 // label creation
@@ -67,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const object = document.getElementById(objectId);
             if (object) {
                 const scene = document.querySelector("a-scene");
-                const orb = createOrb(object, labelText);
+                const orb = createOrb(labelText);
                 scene.components["orbs"].createCirclesPortal(orb);
                 S3Logic.uploadToS3("this-is-an-orb", orb.toJson());
             }

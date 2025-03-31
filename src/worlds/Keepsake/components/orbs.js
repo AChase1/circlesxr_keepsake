@@ -7,11 +7,11 @@ AFRAME.registerComponent("orbs", {
     loadUserOrbs: async function () {
         let doesCurrUserHaveOrb = false;
         const allS3Objects = await S3Logic.retrieveAllObjects();
-        if(allS3Objects){
+        if (allS3Objects) {
             allS3Objects.forEach(async (object) => {
-                if(object.Key.startsWith("orb")) {
+                if (object.Key.startsWith("orb")) {
                     const orb = await S3Logic.retrieveObject(object.Key);
-                    if(orb.userEmail == UserLogic.getCurrentUserEmail()){
+                    if (orb.userEmail == UserLogic.getCurrentUserEmail()) {
                         console.log("current user already has orb");
                         doesCurrUserHaveOrb = true;
                     }
@@ -19,15 +19,16 @@ AFRAME.registerComponent("orbs", {
                 }
             });
         }
-        
-        if(!doesCurrUserHaveOrb) {
+
+        if (!doesCurrUserHaveOrb) {
             console.log("current user does not have orb");
             this.createStartOrb();
         }
-        
+
     },
 
     createCirclesPortal: function (orb) {
+        console.log(orb);
         const portalEl = document.createElement("a-entity");
         portalEl.setAttribute("object-label", { text: orb.name });
         portalEl.setAttribute("circles-portal", {
@@ -35,8 +36,7 @@ AFRAME.registerComponent("orbs", {
             link_url:
                 "/w/Keepsake-Gallery?galleryName=" + encodeURIComponent(orb.name),
         });
-        portalEl.setAttribute("position", orb.position);
-        
+
         this.el.appendChild(portalEl);
 
         if (portalEl.components.pickupable) {
@@ -44,14 +44,22 @@ AFRAME.registerComponent("orbs", {
             console.log(`Disabled pickupable on ${portalEl.getAttribute("id")}`);
         }
 
-        this.assignToPlate(portalEl);
+        this.assignToPlate(portalEl, orb.plateId);
     },
 
-    assignToPlate: function (object) {
-        const plate = document.querySelector("[plate-interaction]");
-        if (plate && plate.components["plate-interaction"]) {
-            plate.components["plate-interaction"].objectsLabeled[object.id] = true;
+    assignToPlate: function (portal, plateId) {
+        const plate = document.getElementById(plateId);
+        if (!plate) {
+            console.error(`Plate with ID ${plateId} not found`);
+            return;
         }
+        plate.components["plate-interaction"].objectsLabeled[portal.getAttribute("id")] = true;
+        const globalPlatePos = plate.object3D.getWorldPosition(new THREE.Vector3());
+        portal.setAttribute("position", {
+            x: globalPlatePos.x,
+            y: globalPlatePos.y + 0.5,
+            z: globalPlatePos.z,
+        });
     },
 
     checkCurrUserOrb: function (objects) {
