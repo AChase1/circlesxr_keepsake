@@ -8,7 +8,7 @@ AFRAME.registerComponent("orbs", {
         let doesCurrUserHaveOrb = false;
         const allS3Objects = await S3Logic.retrieveAllObjects();
         if (allS3Objects) {
-            allS3Objects.forEach(async (object) => {
+            for (const object of allS3Objects) {
                 if (object.Key.startsWith("orb")) {
                     const orb = await S3Logic.retrieveObject(object.Key);
                     if (orb.userEmail == UserLogic.getCurrentUserEmail()) {
@@ -17,13 +17,14 @@ AFRAME.registerComponent("orbs", {
                     }
                     this.createCirclesPortal(orb);
                 }
-            });
+            }
+            if (!doesCurrUserHaveOrb) {
+                console.log("current user does not have orb");
+                this.createStartOrb();
+            }
         }
 
-        if (!doesCurrUserHaveOrb) {
-            console.log("current user does not have orb");
-            this.createStartOrb();
-        }
+
 
     },
 
@@ -34,7 +35,7 @@ AFRAME.registerComponent("orbs", {
         portalEl.setAttribute("circles-portal", {
             title_text: orb.name,
             link_url:
-                "/w/Keepsake-Gallery?galleryName=" + encodeURIComponent(orb.name),
+                `/w/Keepsake-Gallery?galleryName=${encodeURIComponent(orb.name)}&userEmail=${encodeURIComponent(orb.userEmail)}`,
         });
 
         this.el.appendChild(portalEl);
