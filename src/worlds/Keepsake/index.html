@@ -11,6 +11,7 @@
     <script src="./components/select-theme.js"></script>
 
     <script src="./components/interaction-manager.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
 
     <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
     <script src="./components/orbs.js"></script>
@@ -201,6 +202,10 @@
         </a-entity>
        </a-entity>
 
+
+      <!-- hand ctrls -->
+      <a-entity id="left-hand" oculus-touch-controls="hand: left" blink-controls></a-entity>
+      <a-entity id="right-hand" oculus-touch-controls="hand: right"></a-entity>
 
       <!--SKY BOX-->
       <a-entity
