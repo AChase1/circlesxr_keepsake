@@ -1,8 +1,8 @@
 class BasicLogic{
-    getCurrentTimestamp() {
+    static getCurrentTimestamp() {
         const now = new Date();
         const year = now.getFullYear();
-        const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const month = String(now.getMonth() + 1).padStart(2, '0');
         const day = String(now.getDate()).padStart(2, '0');
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
@@ -12,7 +12,7 @@ class BasicLogic{
         return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
     }
 
-    arrayBufferToBase64(buffer) {
+    static arrayBufferToBase64(buffer) {
         let binary = '';
         const bytes = new Uint8Array(buffer);
         const len = bytes.byteLength;
@@ -20,5 +20,12 @@ class BasicLogic{
             binary += String.fromCharCode(bytes[i]);
         }
         return window.btoa(binary);
+    }
+
+    static hideUploadUI(){
+        const uploadUI = document.getElementById("upload-ui");
+        if (uploadUI) {
+            uploadUI.style.display = "none";
+        }
     }
 }

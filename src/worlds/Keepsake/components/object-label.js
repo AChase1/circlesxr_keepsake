@@ -5,6 +5,7 @@ AFRAME.registerComponent("object-label", {
         color: { type: "color", default: "#FFF" },
         size: { type: "number", default: 1.0 },
         yOffset: { type: "number", default: 0.3 }, // distance above object
+        clickedPlateId: { type: "string", default: "" },
     },
 
     init: function () {
@@ -44,10 +45,22 @@ AFRAME.registerComponent("object-label", {
     },
 });
 
+function createOrb(labelText) {
+    const currUserEmail = UserLogic.getCurrentUserEmail();
+    let selectedPlateId = null;
+    const plateElements = document.querySelectorAll("[plate-interaction]");
+    plateElements.forEach((plate) => {
+        if (plate.components["plate-interaction"].hasObject) {
+            selectedPlateId = plate.id;
+        }
+    });
+    return new Orb("orb_" + currUserEmail + "_" + labelText, currUserEmail, labelText, selectedPlateId);
+}
+
 // label creation
 document.addEventListener("DOMContentLoaded", function () {
     // setup label submission
-    const submitLabel = function () {
+    const submitLabel = async function () {
         const labelUI = document.querySelector("#label-ui");
         const labelInput = document.querySelector("#label-input");
 
@@ -60,38 +73,18 @@ document.addEventListener("DOMContentLoaded", function () {
             // get obj and add label
             const object = document.getElementById(objectId);
             if (object) {
-                // add the label text to the object
-                object.setAttribute("object-label", { text: labelText });
-                console.log(`Set label "${labelText}" on object ${objectId}`);
-
-                // add circles-portal attribute with the label text
-                // include the gallery name as a URL parameter
-                object.setAttribute("circles-portal", {
-                    title_text: labelText,
-                    link_url:
-                        "/w/Keepsake-Gallery?galleryName=" +
-                        encodeURIComponent(labelText) + "&galleryTheme=" + encodeURIComponent(selectedTheme), // Now includes GalleryTheme
-                });
-
-                // disable the pickupable component so it can't be picked up again
-                if (object.components.pickupable) {
-                    object.removeAttribute("pickupable");
-                    console.log(`Disabled pickupable on ${objectId}`);
-                }
-
-                // mark this object as labeled
-                const plate = document.querySelector("[plate-interaction]");
-                if (plate && plate.components["plate-interaction"]) {
-                    plate.components["plate-interaction"].objectsLabeled[
-                        objectId
-                    ] = true;
-                }
+                const scene = document.querySelector("a-scene");
+                const orb = createOrb(labelText);
+                scene.components["orbs"].createCirclesPortal(orb);
+                S3Logic.uploadOrbToS3(orb.toJson());
             }
         }
 
         // hide ui
         labelUI.style.display = "none";
     };
+
+
 
     // submit label
     const submitButton = document.querySelector("#submit-label");

@@ -3,16 +3,20 @@
     <!-- Circles' head scripts [REQUIRED] -->
     <circles-start-scripts />
     <!-- custom scripts are added here-->
-    <script src="./logic/file.js"></script>
-    <script src="./logic/basic.js"></script>
-    <script src="./model/artifact.js"></script>
-    <script src="./repository/s3.js"></script>
+
     <script src="./components/circles-interactive-obj.js"></script>
     <script src="./components/pedestal-interaction.js"></script>
     <script src="./components/gallery-name-display.js"></script>
+    <script src="./components/load-artifacts.js"></script>
     <script src="./components/ui-handler.js"></script>
     <script src="../Keepsake/components/interaction-manager.js"></script>
     <script src="../Keepsake/components/pickupable.js"></script>
+    <script src="../Keepsake/logic/artifact.js"></script>
+    <script src="../Keepsake/logic/basic.js"></script>
+    <script src="../Keepsake/logic/s3.js"></script>
+    <script src="../Keepsake/logic/user.js"></script>
+    <script src="../Keepsake/models/artifact.js"></script>
+    <script src="../Keepsake/models/all-artifacts.js"></script>
 
 
     <script src="./components/gallery-theme.js"></script>
@@ -55,14 +59,23 @@
       <div class="center">
         <h2 style="color: white">Upload to Keepsake</h2>
         <p style="color: white">Acceptable file types 3D:.glb, .gltf</p>
-        <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
+        <button
+          id="upload-btn"
+          onclick="new ArtifactLogic().getFileFromSystem()"
+        >
           Choose File
         </button>
       </div>
     </div>
 
     <!-- a-scene with 'circles-properties' component [REQUIRED] -->
-    <a-scene circles_scene_properties interaction-manager gallery-name-display gallery-theme>
+    <a-scene
+      circles_scene_properties
+      interaction-manager
+      gallery-name-display
+      load-artifacts
+      gallery-theme
+    >
       <a-assets>
         <!-- put all assets here -->
         <!--Skybox-->

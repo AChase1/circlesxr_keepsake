@@ -231,6 +231,7 @@ const modifyServeWorld = (world_id, searchParamsObj, user, pathStr, req, res) =>
       }
 
       let result = data.replace(/__WORLDNAME__/g, world_id);
+      result = result.replace(/__EMAIL__/g, user.email);
       result = result.replace(/__USERTYPE__/g, user.usertype);
       result = result.replace(/__VISIBLENAME__/g, u_name + specialStatus);
       result = result.replace(/__FACE_MAP__/g, CIRCLES.CONSTANTS.DEFAULT_FACE_HAPPY_MAP);

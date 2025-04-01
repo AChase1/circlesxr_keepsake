@@ -98,6 +98,7 @@ AFRAME.registerComponent('circles-portal', {
   setDefaultModel : function(useDefaultModel) {
     const CONTEXT_AF = this;
     const data = CONTEXT_AF.data;
+    console.log(data.useDefaultModel);
     
     if (useDefaultModel) {
       //create sphere component for portal
