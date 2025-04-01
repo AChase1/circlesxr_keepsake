@@ -18,24 +18,40 @@ AFRAME.registerComponent("orbs", {
                     this.createCirclesPortal(orb);
                 }
             }
-            if (!doesCurrUserHaveOrb) {
-                console.log("current user does not have orb");
-                this.createStartOrb();
-            }
         }
 
+        if (!doesCurrUserHaveOrb) {
+            console.log("current user does not have orb");
+            this.createStartOrb();
+        }S
+    },
 
+    getOrbTheme: function (orb) {
+        const pedestal = document.getElementById(orb.plateId);
+        const theme = pedestal.getAttribute("class");
+        switch (theme) {
+            case "minimal interactive":
+                return "minimal";
+            case "playground interactive":
+                return "playground";
+            case "liminal interactive":
+                return "liminal";
+            case "nature interactive":
+                return "nature";
+            default:
+                return "minimal";
+        }
 
     },
 
     createCirclesPortal: function (orb) {
-        console.log(orb);
+        const orbTheme = this.getOrbTheme(orb);
         const portalEl = document.createElement("a-entity");
         portalEl.setAttribute("object-label", { text: orb.name });
         portalEl.setAttribute("circles-portal", {
             title_text: orb.name,
             link_url:
-                `/w/Keepsake-Gallery?galleryName=${encodeURIComponent(orb.name)}&userEmail=${encodeURIComponent(orb.userEmail)}`,
+                `/w/Keepsake-Gallery?galleryName=${encodeURIComponent(orb.name)}&userEmail=${encodeURIComponent(orb.userEmail)}&galleryTheme=${encodeURIComponent(orbTheme)}`,
         });
 
         this.el.appendChild(portalEl);
