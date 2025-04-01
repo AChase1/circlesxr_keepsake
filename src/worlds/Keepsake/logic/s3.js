@@ -35,7 +35,7 @@ class S3Logic {
                 await this.retrieveObject(artifact.key);
         
         } catch (error) {
-            console.error("Error uploading orb: " + error);
+            console.error("Error uploading file: " + error);
         }
 
     }
@@ -43,17 +43,11 @@ class S3Logic {
     static retrieveAllObjects = async () => {
         try {
             const response = await fetch(`/s3_retrieveAllObjects`);
-            if (response.status == 200) {
-                console.log("Objects retrieved successfully!");
-                const jsonResponse = await response.json();
-                const data = jsonResponse.data.Contents;
-                return data;
-            } else {
-                console.log("Error retrieving object");
-                return null;
-            }
+            console.log("Objects retrieved successfully!");
+            const jsonResponse = await response.json();
+            return jsonResponse.data.Contents;
         } catch (error) {
-            console.error(error);
+            console.error("Error retrieving all objects: " + error);
             return null;
         }
     }
@@ -61,23 +55,25 @@ class S3Logic {
     static retrieveObject = async (key) => {
         try {
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
-            if (response.status == 200) {
-                const jsonResponse = await response.json();
-                if (jsonResponse.data.isOrb) {
-                    const orb = Orb.fromJson(jsonResponse.data);
-                    return orb;
-                } else {
-                    const artifact = Artifact.fromJson(jsonResponse.data);
-                    return artifact;
-                }
-
-
+            const jsonResponse = await response.json();
+            if (jsonResponse.data.isOrb) {
+                const orb = Orb.fromJson(jsonResponse.data);
+                return orb;
             } else {
-                console.log("Error retrieving object");
-                return null;
+                const artifact = Artifact.fromJson(jsonResponse.data);
+                return artifact;
             }
         } catch (error) {
-            console.error(error);
+            console.error("Error retrieving object: " + key + " : " + error);
+            return null;
+        }
+    }
+
+    static deleteObject = async (key) => {
+        try {
+            await fetch(`/s3_deleteObject/${encodeURIComponent(key)}`);  
+        } catch (error) {
+            console.error("Error delete object: " + key + " : " + error);
             return null;
         }
     }

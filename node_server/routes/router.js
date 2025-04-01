@@ -57,8 +57,9 @@ router.post('/login', passport.authenticate('local', {
 
 router.post('/s3_uploadFile', upload.single('file'), async (req, res) => s3ApiLogic.uploadFileToS3(req, res));
 router.post('/s3_uploadMetadata', async (req, res) => s3ApiLogic.uploadMetadataToS3(req, res));
-router.get('/s3_retrieveAllObjects', async (req, res) => s3ApiLogic.retrieveAllObjects(req, res));
-router.get('/s3_retrieveObject/:key', async (req, res) => s3ApiLogic.retrieveObject(req, res));
+router.get('/s3_retrieveAllObjects', async (req, res) => s3ApiLogic.retrieveAllS3Objects(req, res));
+router.get('/s3_retrieveObject/:key', async (req, res) => s3ApiLogic.retrieveS3Object(req, res));
+router.get('/s3_deleteObject/:key', async (req, res) => s3ApiLogic.deleteS3Object(req, res));
 
 //magic links for students
 router.get('/get-magic-links', authenticated, controller.getMagicLinks);

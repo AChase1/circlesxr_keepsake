@@ -39,10 +39,10 @@ class S3Logic {
       plateId: metadata['x-amz-meta-plateid']
     } : {
       isOrb: false,
-      key: metadata['x-amz-meta-objectkey'],
+      key: metadata['x-amz-meta-key'],
       userEmail: metadata['x-amz-meta-useremail'],
-      name: metadata['x-amz-meta-objectname'],
-      description: metadata['x-amz-meta-objectdescription'],
+      name: metadata['x-amz-meta-name'],
+      description: metadata['x-amz-meta-description'],
       reactions: metadata['x-amz-meta-reactions'],
       comments: metadata['x-amz-meta-comments'],
       pedestalId: metadata['x-amz-meta-pedestalid']

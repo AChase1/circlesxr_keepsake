@@ -27,7 +27,7 @@ const uploadMetadataToS3 = async (request, response) => {
   }
 }
 
-const retrieveAllObjects = async (request, response) => {
+const retrieveAllS3Objects = async (request, response) => {
   try {
     const getAllObjectsCmd = new aws.ListObjectsCommand({
       Bucket: bucketName,
@@ -40,7 +40,7 @@ const retrieveAllObjects = async (request, response) => {
   }
 }
 
-const retrieveObject = async (request, response) => {
+const retrieveS3Object = async (request, response) => {
   try {
     const key = decodeURIComponent(request.params.key);
     const getObjectCmd = new aws.GetObjectCommand({
@@ -60,4 +60,19 @@ const retrieveObject = async (request, response) => {
   }
 }
 
-module.exports = { uploadFileToS3, uploadMetadataToS3, retrieveAllObjects, retrieveObject };
+const deleteS3Object = async (request, response) => {
+  try {
+    const key = decodeURIComponent(request.params.key);
+    const getObjectCmd = new aws.DeleteObjectCommand({
+      Bucket: bucketName,
+      Key: key,
+    });
+
+    const cmdResponse = await s3.send(getObjectCmd);
+    response.status(200).json({ message: 'Object deleted successfully!', data: cmdResponse });
+  } catch (error) {
+    response.status(500).json({ message: 'Error retrieving object: ' + error });
+  }
+}
+
+module.exports = { uploadFileToS3, uploadMetadataToS3, retrieveAllS3Objects, retrieveS3Object, deleteS3Object};
