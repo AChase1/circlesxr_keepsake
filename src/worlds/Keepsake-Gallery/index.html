@@ -9,8 +9,12 @@
     <script src="./repository/s3.js"></script>
     <script src="./components/circles-interactive-obj.js"></script>
     <script src="./components/pedestal-interaction.js"></script>
+    <script src="./components/frame-interaction.js"></script>
     <script src="./components/gallery-name-display.js"></script>
     <script src="./components/ui-handler.js"></script>
+    <script src="./components/note-debug.js"></script>
+    <script src="./components/note-creator.js"></script>
+    <script src="./components/reaction-creator.js"></script>
     <script src="../Keepsake/components/interaction-manager.js"></script>
     <script src="../Keepsake/components/pickupable.js"></script>
 
@@ -34,7 +38,7 @@
     <!-- this is used to create our enter UI that creates a 2D overlay to capture a user gesture for sound/mic access etc. -->
     <circles-start-ui />
 
-    <!-- Upload UI -->
+    <!-- Upload 3D UI -->
     <div id="upload-ui">
       <span id="close-btn">&times;</span>
       <div class="center">
@@ -43,6 +47,29 @@
         <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
           Choose File
         </button>
+      </div>
+    </div>
+
+    <!-- Upload 2D UI -->
+    <div id="upload-2D-ui">
+      <span id="close-btn-2D">&times;</span>
+      <div class="center">
+        <h2 style="color: white">Upload to Keepsake</h2>
+        <p style="color: white">Acceptable file types 2D:.pdf</p>
+        <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
+          Choose File
+        </button>
+      </div>
+    </div>
+
+    <!-- Notes UI -->
+    <div id="notes-ui">
+      <span id="close-btn-notes">&times;</span>
+      <div class="center">
+        <h2 style="color: white">Write a Note</h2>
+        <textarea id="fname" name="fname" placeholder="Write your note here..."></textarea><br><br>
+        <button id="confirm-btn-notes">Create Note</button>
+        <p style="color: white; margin-top: 10px;">Click the note to pick it up. Click again to place it.</p>
       </div>
     </div>
 
@@ -80,6 +107,29 @@
           crossorigin="anonymous"
         ></a-asset-item>
 
+        <!-- note -->
+        <a-asset-item
+          id="note-model"
+          src="assets/models/sticky_note.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- heart -->
+        <a-asset-item
+          id="heart-model"
+          src="assets/models/heart_reaction.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- laugh -->
+        <a-asset-item
+          id="laugh-model"
+          src="assets/models/laughing_reaction.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
         <!-- pdf model -->
 
         <!-- Circles' built-in assets [REQUIRED] -->
@@ -103,7 +153,52 @@
       >
       </a-entity>
 
-      <!-- pedestal (this is huge)-->
+      <!-- note box -->
+      <a-box 
+      id="note-creator-box"
+      class="interactive"
+      position="1.956 1 5.312"
+      rotation="0 180 0" 
+      color="#FFD700"
+      width="0.3"
+      height="0.3"
+      depth="0.1"
+      note-creator
+    >
+      <a-text 
+        value="Create Note" 
+        position="0 0.25 0" 
+        align="center" 
+        color="#000"
+        width="1"
+      ></a-text>
+    </a-box>
+
+    <!-- heart -->
+    <a-box 
+    id="heart-reaction-box"
+    class="interactive"
+    reaction-creator="type: heart" 
+    position="1.391 1 5.312" 
+    width="0.3"
+    height="0.3"
+    depth="0.1"
+    color="red">
+  </a-box>
+
+    <!-- laughing -->
+    <a-box 
+    id="laugh-reaction-box"
+    class="interactive"
+    reaction-creator="type: laugh" 
+    position="0.948 1 5.312" 
+    width="0.3"
+    height="0.3"
+    depth="0.1"
+    color="yellow">
+  </a-box>
+
+      <!-- pedestal -->
       <a-entity
         id="pedestal-1"
         class="interactive"
@@ -152,6 +247,7 @@
         rotation="0 90 0"
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
+        frame-interaction
         shadow="cast:true; recieve:true;"
       >
       </a-entity>
@@ -164,6 +260,7 @@
         rotation="0 0 0"
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
+        frame-interaction
         shadow="cast:true; recieve:true;"
       >
       </a-entity>
@@ -176,6 +273,7 @@
         rotation="0 -90 0"
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
+        frame-interaction
         shadow="cast:true; recieve:true;"
       >
       </a-entity>

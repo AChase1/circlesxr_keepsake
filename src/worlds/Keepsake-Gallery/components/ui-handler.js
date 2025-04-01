@@ -7,3 +7,14 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const closeBtn2D = document.getElementById("close-btn-2D");
+    if (closeBtn2D) {
+        closeBtn2D.addEventListener("click", function () {
+            document.getElementById("upload-2D-ui").style.display = "none";
+        });
+    }
+});
+
+// comment box

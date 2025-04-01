@@ -8,6 +8,7 @@
     <script src="./components/plate-interaction.js"></script>
     <script src="./components/object-label.js"></script>
     <script src="./components/interaction-manager.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-blink-controls/dist/aframe-blink-controls.min.js"></script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -141,6 +142,10 @@
         raycaster="objects: .interactive; far: 20; interval: 100"
       >
       </a-entity>
+
+      <!-- hand ctrls -->
+      <a-entity id="left-hand" oculus-touch-controls="hand: left" blink-controls></a-entity>
+      <a-entity id="right-hand" oculus-touch-controls="hand: right"></a-entity>
 
       <!--SKY BOX-->
       <a-entity
