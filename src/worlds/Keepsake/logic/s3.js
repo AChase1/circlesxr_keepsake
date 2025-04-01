@@ -1,45 +1,41 @@
 class S3Logic {
-    static uploadToS3 = async (bodyData, metadata) => {
+    static uploadOrbToS3 = async (body) => {
+        try {        
+                await fetch('/s3_uploadMetadata', {
+                    method: 'POST',
+                    body: JSON.stringify(body),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+                console.log("Orb uploaded successfully!");
+                // TODO => add UI feedback for successful upload          
+        } catch (error) {
+            console.error("Error uploading orb: " + error);
+        }
+    }
+
+    static uploadFileToS3 = async (fileData, metadata) => {
         try {
-
-            let payload, endpoint, headers = null;
-            if (!bodyData || !metadata) return;
-            if (metadata["isOrb"]) {
-                payload = JSON.stringify(metadata);
-                endpoint = '/s3_uploadMetadata';
-                headers = {
-                    'Content-Type': 'application/json'
-                };
-                console.log('uploading orb');
-            } else {
                 const formData = new FormData();
-                formData.append("file", bodyData);
+                formData.append("file", fileData);
                 formData.append("metadata", JSON.stringify(metadata));
-                payload = formData;
-                endpoint = '/s3_uploadFile';
-                console.log('uploading file');
-            }
+                const response = await fetch('/s3_uploadFile', {
+                    method: 'POST',
+                    body: formData,
+                });           
 
-            const response = await fetch(endpoint, {
-                method: 'POST',
-                body: payload,
-                headers: headers
-            });
-
-            console.log(response);
-
-            if (response.status == 200) {
-                console.log("Object uploaded successfully!");
+                console.log("File uploaded successfully!");
                 // TODO => add UI feedback for successful upload
-                if (metadata["isOrb"]) return;
+          
                 const uploadUI = document.querySelector('#upload-ui');
                 uploadUI.style.display = 'none';
-                await this.retrieveObject(artifact.objectKey);
-            } else {
-                console.error("Error uploading object");
-            }
+
+                const artifact = Artifact.fromJson(response.data);
+                await this.retrieveObject(artifact.key);
+        
         } catch (error) {
-            console.error(error);
+            console.error("Error uploading orb: " + error);
         }
 
     }

@@ -40,7 +40,7 @@ class S3Logic {
     } : {
       isOrb: false,
       key: metadata['x-amz-meta-objectkey'],
-      userEmail: metadata['x-amz-meta-userid'],
+      userEmail: metadata['x-amz-meta-useremail'],
       name: metadata['x-amz-meta-objectname'],
       description: metadata['x-amz-meta-objectdescription'],
       reactions: metadata['x-amz-meta-reactions'],

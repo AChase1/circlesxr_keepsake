@@ -7,19 +7,15 @@ class ArtifactLogic {
 
     readAndUploadFile = async (event) => {
         try {
-            const basicLogic = new BasicLogic();
             const file = event.target.files[0];
-            if (file) {
-                const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
-                const timestamp = basicLogic.getCurrentTimestamp();
-                const artifact = new Artifact("file_" + file.name + "_" + timestamp, 1, "", "", [], [], pedestalId, file);
-                const metadata = JSON.stringify(artifact.toJson());
-                await S3Logic.uploadToS3(artifact.file, metadata);
-                const uploadedArtifact = await S3Logic.retrieveObject(artifact.key);
-                if (uploadedArtifact) {
-                    this.fileDataToAframe(uploadedArtifact.file, uploadedArtifact.pedestalId);
-                }
-            }
+            const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
+            const timestamp = BasicLogic.getCurrentTimestamp();
+            const currUserEmail = UserLogic.getCurrentUserEmail();
+            const artifact = new Artifact("file_" + file.name + "_" + timestamp, currUserEmail, "", "", [], [], pedestalId, file);
+            
+            await S3Logic.uploadFileToS3(artifact.file, artifact.toJson());
+            const uploadedArtifact = await S3Logic.retrieveObject(artifact.key);
+            this.fileDataToAframe(uploadedArtifact.file, uploadedArtifact.pedestalId);
         } catch (error) {
             console.error(error);
         }

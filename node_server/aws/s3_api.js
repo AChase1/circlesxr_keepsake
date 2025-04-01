@@ -6,6 +6,7 @@ const s3Logic = require('./s3_logic');
 const uploadFileToS3 = async (request, response) => {
   try {;
     const metadata = s3Logic.configurePayloadMetadata(JSON.parse(request.body.metadata));
+    console.log("metadata: " + JSON.stringify(request.body.metadata));
     const addObjectCmd = s3Logic.createPutObjectCmd(request.file.buffer, metadata, request.file.mimetype);
     const cmdResponse = await s3.send(addObjectCmd);
     response.status(200).json({ message: 'File uploaded successfully! ' + cmdResponse });

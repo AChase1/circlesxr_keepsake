@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const scene = document.querySelector("a-scene");
                 const orb = createOrb(labelText);
                 scene.components["orbs"].createCirclesPortal(orb);
-                S3Logic.uploadToS3("this-is-an-orb", orb.toJson());
+                S3Logic.uploadOrbToS3(orb.toJson());
             }
         }
 
