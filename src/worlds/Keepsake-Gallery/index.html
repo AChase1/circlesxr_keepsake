@@ -176,6 +176,74 @@
           crossorigin="anonymous"
         ></a-asset-item>
 
+        <!-- Playground Room Model -->
+        <a-asset-item
+          id="playground-room-model"
+          src="assets/models/Playground/Playground_Room.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-slides"
+          src="assets/models/Playground Room/Slides.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-chair-yellow"
+          src="assets/models/Playground Room/Chair_Yellow.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-chair-orange"
+          src="assets/models/Playground Room/Chair_Orange.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-chair-blue"
+          src="assets/models/Playground Room/Chair_Blue.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-chair-green"
+          src="assets/models/Playground Room/Chair_Green.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-monkeybar"
+          src="assets/models/Playground Room/Monkey_Bar.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-table"
+          src="assets/models/Playground Room/Table_Yellow.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-fence-yellow"
+          src="assets/models/Playground Room/Fence_Yellow.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-fence-red"
+          src="assets/models/Playground Room/Fence_Red.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-room-fence-green"
+          src="assets/models/Playground Room/Fence_Green.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
         <!-- note -->
         <a-asset-item
           id="note-model"
@@ -287,7 +355,7 @@
         scale="0.05 0.05 0.05"
         gltf-model="#pedestal-model"
         pedestal-interaction
-        shadow="cast:true; recieve:true;"
+        shadow="cast:true; receive:true;"
         visible="false"
       >
       </a-entity>
@@ -301,7 +369,7 @@
         scale="0.045 0.045 0.045"
         gltf-model="#pedestal-model"
         pedestal-interaction
-        shadow="cast:true; recieve:true;"
+        shadow="cast:true; receive:true;"
         visible="false"
       >
       </a-entity>
@@ -314,7 +382,7 @@
         scale="0.03 0.03 0.03"
         gltf-model="#pedestal-model"
         pedestal-interaction
-        shadow="cast:true; recieve:true;"
+        shadow="cast:true; receive:true;"
         visible="false"
       >
       </a-entity>
@@ -331,7 +399,7 @@
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
         frame-interaction
-        shadow="cast:true; recieve:true;"
+        shadow="cast:true; receive:true;"
       >
       </a-entity>
 
@@ -344,7 +412,7 @@
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
         frame-interaction
-        shadow="cast:true; recieve:true;"
+        shadow="cast:true; receive:true;"
       >
       </a-entity>
 
@@ -369,7 +437,7 @@
         rotation="0 0 0"
         scale="0.23 0.23 0.23"
         gltf-model="#minimal-room-model"
-        shadow="recieve:false; cast:false;"
+        shadow="receive:true; cast:false;"
         visible="false"
       >
       </a-entity>
@@ -390,7 +458,7 @@
         rotation="0 -90 0"
         scale="0.23 0.23 0.23"
         gltf-model="#liminal-room-model"
-        shadow="recieve:false; cast:false;"
+        shadow="receive:false; cast:false;"
         visible="false"
       >
       </a-entity>
@@ -403,7 +471,7 @@
         rotation="0 0 0"
         scale="0.23 0.23 0.23"
         gltf-model="#liminal-room-roof"
-        shadow="recieve:false; cast:false;"
+        shadow="receive:false; cast:false;"
         visible="false"
       >
       </a-entity>
@@ -416,7 +484,7 @@
         rotation="0 0 0"
         scale="0.155 0.155 0.155"
         gltf-model="#vent-model"
-        shadow="recieve:false; cast:false;"
+        shadow="receive:false; cast:false;"
         visible="false"
       >
       </a-entity>
@@ -427,7 +495,7 @@
         rotation="0 -180 0"
         scale="0.134 0.134 0.134"
         gltf-model="#vent-model"
-        shadow="recieve:false; cast:false;"
+        shadow="receive:false; cast:false;"
         visible="false"
       >
       </a-entity>
@@ -440,7 +508,7 @@
         rotation="0 0 0"
         scale="0.134 0.134 0.134"
         gltf-model="#lightbulb"
-        shadow="recieve:false; cast:false;"
+        shadow="receive:false; cast:false;"
         visible="false"
       >
       </a-entity>
@@ -463,7 +531,7 @@
         scale="0.076 0.076 0.076"
         gltf-model="#foldable-chair"
         pedestal-interaction
-        shadow="cast:true; recieve:true;"
+        shadow="cast:true; receive:true;"
         visible="false"
       >
       </a-entity>
@@ -475,7 +543,7 @@
         scale="0.076 0.076 0.076"
         gltf-model="#foldable-chair"
         pedestal-interaction
-        shadow="cast:true; recieve:true;"
+        shadow="cast:true; receive:true;"
         visible="false"
       >
       </a-entity>
@@ -487,10 +555,87 @@
         scale="0.076 0.076 0.076"
         gltf-model="#foldable-chair"
         pedestal-interaction
-        shadow="cast:true; recieve:true;"
+        shadow="cast:true; receive:true;"
         visible="false"
       >
       </a-entity>
+
+      <!--Playground Room-->
+      <a-entity
+        id="playground-room"
+        class="playground-room"
+        position="0 0 0"
+        rotation="0 -90 0"
+        scale="0.23 0.23 0.23"
+        gltf-model="#playground-room-model"
+        shadow="receive:false; cast:false;"
+        visible="true"
+      ></a-entity>
+
+      <a-entity
+        id="playground-room-slides"
+        class="playground-room"
+        position="-2.35 0 -4.1"
+        rotation="0 0 0"
+        scale="0.32 0.32 0.32"
+        gltf-model="#playground-room-slides"
+        shadow="receive:true; cast:false;"
+        visible="true"
+      ></a-entity>
+
+      <a-entity
+        id="playground-room-monkeybar"
+        class="playground-room"
+        position="3.8 0 2.84"
+        rotation="0 90 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#playground-room-monkeybar"
+        shadow="receive:true; cast:false;"
+        visible="true"
+      ></a-entity>
+
+      <a-entity
+        id="playground-pedastal-1"
+        class="playground-room"
+        position="0 0 0"
+        rotation="0 0 0"
+        scale="0.32 0.32 0.32"
+        gltf-model="#playground-room-chair-blue"
+        shadow="receive:false; cast:false;"
+        visible="true"
+      ></a-entity>
+
+      <a-entity
+        id="playground-pedestal-2"
+        class="playground-room"
+        position="1 0 2"
+        rotation="0 0 0"
+        scale="0.32 0.32 0.32"
+        gltf-model="#playground-room-chair-green"
+        shadow="receive:true; cast:false;"
+        visible="true"
+      ></a-entity>
+
+      <a-entity
+        id="playground-pedestal-3"
+        class="playground-room"
+        position="4 0 6"
+        rotation="0 0 0"
+        scale="0.32 0.32 0.32"
+        gltf-model="#playground-room-chair-yellow"
+        shadow="receive:true; cast:false;"
+        visible="true"
+      ></a-entity>
+
+      
+
+      <a-entity light="type: point;
+                      intensity: 7;
+                      color: #dedbba"
+        position="-2.946 4.009 3.413"
+        class="playground-room"
+        visible="true"
+      ></a-entity>
 
       <!-- EXIT: back to lobby portal -->
       <a-entity
