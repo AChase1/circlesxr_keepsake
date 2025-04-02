@@ -23,14 +23,14 @@ AFRAME.registerComponent("gallery-theme", {
                   }
 
             }else if(galleryTheme === "playground"){
-                playgroundModels = document.querySelectorAll('.playground-room');
-                document.querySelector('#playground-pedestal-1').setAttribute("visible", "true");
-                document.querySelector('#playground-pedestal-2').setAttribute("visible", "true");
-                document.querySelector('#playground-pedestal-3').setAttribute("visible", "true");
+                  playgroundModels = document.querySelectorAll('.playground-room');
+                  document.querySelector('#playground-pedestal-1').setAttribute("visible", "true");
+                  document.querySelector('#playground-pedestal-2').setAttribute("visible", "true");
+                  document.querySelector('#playground-pedestal-3').setAttribute("visible", "true");
 
-                for (let i = 0; i < playgroundModels.length; i++) {
-                    playgroundModels[i].setAttribute("visible", "true");
-                  }
+                  for (let i = 0; i < playgroundModels.length; i++) {
+                      playgroundModels[i].setAttribute("visible", "true");
+                    }
 
             }else if(galleryTheme === "liminal"){
                 liminalModels = document.querySelectorAll('.limimal-room');
