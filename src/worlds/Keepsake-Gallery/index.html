@@ -3,16 +3,29 @@
     <!-- Circles' head scripts [REQUIRED] -->
     <circles-start-scripts />
     <!-- custom scripts are added here-->
-    <script src="./logic/file.js"></script>
-    <script src="./logic/basic.js"></script>
-    <script src="./model/artifact.js"></script>
-    <script src="./repository/s3.js"></script>
+
     <script src="./components/circles-interactive-obj.js"></script>
     <script src="./components/pedestal-interaction.js"></script>
+    <script src="./components/frame-interaction.js"></script>
     <script src="./components/gallery-name-display.js"></script>
+    <script src="./components/load-artifacts.js"></script>
     <script src="./components/ui-handler.js"></script>
+    <script src="./components/note-debug.js"></script>
+    <script src="./components/note-creator.js"></script>
+    <script src="./components/reaction-creator.js"></script>
     <script src="../Keepsake/components/interaction-manager.js"></script>
     <script src="../Keepsake/components/pickupable.js"></script>
+    <script src="../Keepsake/logic/artifact.js"></script>
+    <script src="../Keepsake/logic/basic.js"></script>
+    <script src="../Keepsake/logic/s3.js"></script>
+    <script src="../Keepsake/logic/user.js"></script>
+    <script src="../Keepsake/models/artifact.js"></script>
+    <script src="../Keepsake/models/all-artifacts.js"></script>
+
+
+    <script src="./components/gallery-theme.js"></script>
+
+    <script src="../Keepsake/components/select-theme.js"></script>
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,21 +41,66 @@
     />
     <link rel="stylesheet" href="css/user-gesture.css" />
     <!-- Adding CSS for Upload UI -->
+
+    <script>
+      //Include start-experience in a-scene to run on startup
+      AFRAME.registerComponent('start-experience', {
+              init:function(){
+                      console.log(selectedTheme); 
+              }
+      });
+    </script>
+
   </head>
 
   <body>
     <!-- this is used to create our enter UI that creates a 2D overlay to capture a user gesture for sound/mic access etc. -->
     <circles-start-ui />
 
-    <!-- Upload UI -->
+    <!-- Upload 3D UI -->
     <div id="upload-ui">
       <span id="close-btn">&times;</span>
       <div class="center">
-        <h2 style="color: white">Upload a Keepsake</h2>
+        <h2 style="color: white">Upload to Keepsake</h2>
         <p style="color: white">Acceptable file types 3D:.glb, .gltf</p>
+        <button id="upload-btn" onclick="new ArtifactLogic().getFileFromSystem()">
+          Choose File
+        </button>
+      </div>
+    </div>
+
+      <!-- Upload 2D UI -->
+    <div id="upload-2D-ui">
+      <span id="close-btn-2D">&times;</span>
+      <div class="center">
+        <h2 style="color: white">Upload to Keepsake</h2>
+        <p style="color: white">Acceptable file types 2D:.pdf</p>
         <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
           Choose File
         </button>
+      </div>
+    </div>
+
+    <!-- Upload 2D UI -->
+    <div id="upload-2D-ui">
+      <span id="close-btn-2D">&times;</span>
+      <div class="center">
+        <h2 style="color: white">Upload to Keepsake</h2>
+        <p style="color: white">Acceptable file types 2D:.pdf</p>
+        <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
+          Choose File
+        </button>
+      </div>
+    </div>
+
+    <!-- Notes UI -->
+    <div id="notes-ui">
+      <span id="close-btn-notes">&times;</span>
+      <div class="center">
+        <h2 style="color: white">Write a Note</h2>
+        <textarea id="fname" name="fname" placeholder="Write your note here..."></textarea><br><br>
+        <button id="confirm-btn-notes">Create Note</button>
+        <p style="color: white; margin-top: 10px;">Click the note to pick it up. Click again to place it.</p>
       </div>
     </div>
 
@@ -51,10 +109,18 @@
       circles_scene_properties
       interaction-manager
       gallery-name-display
-      background="color: black"
+      load-artifacts
+      gallery-theme
     >
       <a-assets>
         <!-- put all assets here -->
+        <!--Skybox-->
+        <img
+          id="sky_map"
+          src="assets/textures/minimal_skybox.jpg"
+          crossorigin="anonymous"
+        />
+
         <!-- pedestal -->
         <a-asset-item
           id="pedestal-model"
@@ -77,38 +143,63 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-  <!-- a-scene with 'circles-properties' component [REQUIRED] -->
-  <a-scene circles_scene_properties interaction-manager gallery-name-display background="color: black">
-    <a-assets>
-      <!-- put all assets here -->
-      <!--Skybox-->
-      <img id="sky_map" src="assets/textures/minimal_skybox.jpg" crossorigin="anonymous">
 
-
-      <!-- pedestal -->
-      <a-asset-item id="pedestal-model" src="assets/models/Pedestal.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-      <!-- frame -->
-      <a-asset-item id="frame-model" src="assets/models/Frame.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-      
-      <!-- minimal gallery model -->
-      <a-asset-item id="minimal-room-model" src="assets/models/Minimal_Room.glb" response-type="arraybuffer" crossorigin="anonymous"></a-asset-item>
-
-        <!-- polycam models -->
-        <!-- bread -->
+      <!--Liminal Room Models-->
         <a-asset-item
-          id="bread-model"
-          src="assets/models/bread.glb"
+          id="liminal-room-model"
+          src="assets/models/Liminal_Room.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="liminal-room-roof"
+          src="assets/models/Liminal_Room_Roof.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="lightbulb"
+          src="assets/models/Lightbulb.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="foldable-chair"
+          src="assets/models/Foldable_Chair.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="vent-model"
+          src="assets/models/Vent.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
 
-        <!-- croissants -->
+        <!-- note -->
         <a-asset-item
-          id="croissants-model"
-          src="assets/models/croissants.glb"
+          id="note-model"
+          src="assets/models/sticky_note.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
+
+        <!-- heart -->
+        <a-asset-item
+          id="heart-model"
+          src="assets/models/heart_reaction.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- laugh -->
+        <a-asset-item
+          id="laugh-model"
+          src="assets/models/laughing_reaction.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <!-- pdf model -->
 
         <!-- Circles' built-in assets [REQUIRED] -->
         <circles-assets />
@@ -127,14 +218,69 @@
         twoway-motion="speed: 35"
         position="0 1.6 0"
         cursor="rayOrigin: mouse"
-        circles-interactive-object
         raycaster="objects: .interactive; far: 20; interval: 100"
       >
       </a-entity>
 
-      <!-- pedestal (this is huge)-->
       <a-entity
-        id="pedestal-1"
+        id="sky-box"
+        geometry="primitive:sphere; radius:100"
+        position="0 -50 0"
+        material="src: #sky_map; side:back; shader:flat"
+        visible="true"
+      >
+      </a-entity>
+
+      <!--MINIMAL MODELS-->
+      <!--Minimal Pedestals-->
+      <!-- note box -->
+      <a-box 
+      id="note-creator-box"
+      class="interactive"
+      position="1.956 1 5.312"
+      rotation="0 180 0" 
+      color="#FFD700"
+      width="0.3"
+      height="0.3"
+      depth="0.1"
+      note-creator
+    >
+      <a-text 
+        value="Create Note" 
+        position="0 0.25 0" 
+        align="center" 
+        color="#000"
+        width="1"
+      ></a-text>
+    </a-box>
+
+    <!-- heart -->
+    <a-box 
+    id="heart-reaction-box"
+    class="interactive"
+    reaction-creator="type: heart" 
+    position="1.391 1 5.312" 
+    width="0.3"
+    height="0.3"
+    depth="0.1"
+    color="red">
+  </a-box>
+
+    <!-- laughing -->
+    <a-box 
+    id="laugh-reaction-box"
+    class="interactive"
+    reaction-creator="type: laugh" 
+    position="0.948 1 5.312" 
+    width="0.3"
+    height="0.3"
+    depth="0.1"
+    color="yellow">
+  </a-box>
+
+      <!-- pedestal -->
+      <a-entity
+        id="minimal-pedestal-1"
         class="interactive"
         position="3.150 0 -1.822"
         rotation="0 90 0"
@@ -142,12 +288,13 @@
         gltf-model="#pedestal-model"
         pedestal-interaction
         shadow="cast:true; recieve:true;"
+        visible="false"
       >
       </a-entity>
 
       <!-- scale="0.045 0.045 0.045"-->
       <a-entity
-        id="pedestal-2"
+        id="minimal-pedestal-2"
         class="interactive"
         position="-2.87 0 -3.581"
         rotation="0 90 0"
@@ -155,11 +302,12 @@
         gltf-model="#pedestal-model"
         pedestal-interaction
         shadow="cast:true; recieve:true;"
+        visible="false"
       >
       </a-entity>
 
       <a-entity
-        id="pedestal-3"
+        id="minimal-pedestal-3"
         class="interactive"
         position="4.592 0 3.352"
         rotation="0 90 0"
@@ -167,17 +315,12 @@
         gltf-model="#pedestal-model"
         pedestal-interaction
         shadow="cast:true; recieve:true;"
+        visible="false"
       >
       </a-entity>
 
       <!-- pdf test -->
-      <a-entity
-        id="pdf-test"
-        position="-5.631 2.690 -1.629"
-        rotation="0 90 0"
-        scale="2.0 2.0 2.0"
-        circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"
-      ></a-entity>
+      <a-entity id="pdf-test" position="-5.631 2.690 -1.629" rotation="0 90 0" scale="2.0 2.0 2.0" circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"></a-entity>
 
       <!-- frame (1)-->
       <a-entity
@@ -187,6 +330,7 @@
         rotation="0 90 0"
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
+        frame-interaction
         shadow="cast:true; recieve:true;"
       >
       </a-entity>
@@ -199,6 +343,7 @@
         rotation="0 0 0"
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
+        frame-interaction
         shadow="cast:true; recieve:true;"
       >
       </a-entity>
@@ -211,52 +356,139 @@
         rotation="0 -90 0"
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
+        frame-interaction
         shadow="cast:true; recieve:true;"
       >
       </a-entity>
 
-      <!-- croissant -->
-      <a-entity
-        id="croissants"
-        class="interactive"
-        pickupable
-        circles-interactive-obj="
-        type:scale;
-        "
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="1.5 1.5 1.5"
-        gltf-model="#croissants-model"
-        shadow="cast:true; receive:true"
-        visible="true"
-      >
-      </a-entity>
-
-      <!-- bread -->
-      <a-entity
-        id="bread"
-        class="interactive"
-        pickupable
-        circles-interactive-obj="
-        type:scale;
-        "
-        position="2 0 0"
-        rotation="0 0 0"
-        scale="1.5 1.5 1.5"
-        gltf-model="#bread-model"
-        shadow="cast:true; receive:true"
-        visible="true"
-      >
-      </a-entity>
-
-      <!-- testing minimal room model -->
+      <!-- Minimal Room -->
       <a-entity
         id="minimal-room"
+        class="minimal-room"
         position="0 0 0"
         rotation="0 0 0"
         scale="0.23 0.23 0.23"
         gltf-model="#minimal-room-model"
         shadow="recieve:false; cast:false;"
+        visible="false"
+      >
+      </a-entity>
+
+      <!--Minimal Light-->
+      <!--NOTE: Need to be repaired-->
+      <a-entity light="type: ambient"
+        class="minimal-room"
+        visible="false"
+      ></a-entity>
+
+      <!--LIMINAL MODELS-->
+      <!--Liminal Room -->
+      <a-entity
+        id="limimal-room"
+        class="limimal-room"
+        position="0 0 0"
+        rotation="0 -90 0"
+        scale="0.23 0.23 0.23"
+        gltf-model="#liminal-room-model"
+        shadow="recieve:false; cast:false;"
+        visible="false"
+      >
+      </a-entity>
+
+      <!--Liminal Roof-->
+      <a-entity
+        id="limimal-roof"
+        class="limimal-room"
+        position="0 0.023 0"
+        rotation="0 0 0"
+        scale="0.23 0.23 0.23"
+        gltf-model="#liminal-room-roof"
+        shadow="recieve:false; cast:false;"
+        visible="false"
+      >
+      </a-entity>
+
+      <!--Liminal Vents-->
+      <a-entity
+        id="vent1"
+        class="limimal-room"
+        position="-5.734 1.263 1.674"
+        rotation="0 0 0"
+        scale="0.155 0.155 0.155"
+        gltf-model="#vent-model"
+        shadow="recieve:false; cast:false;"
+        visible="false"
+      >
+      </a-entity>
+      <a-entity
+        id="vent2"
+        class="limimal-room"
+        position="5.779 0.336 -3.157"
+        rotation="0 -180 0"
+        scale="0.134 0.134 0.134"
+        gltf-model="#vent-model"
+        shadow="recieve:false; cast:false;"
+        visible="false"
+      >
+      </a-entity>
+
+      <!--Liminal Lightbulb-->
+      <a-entity
+        id="lightbulb"
+        class="limimal-room"
+        position="-3.240 0.116 3.625"
+        rotation="0 0 0"
+        scale="0.134 0.134 0.134"
+        gltf-model="#lightbulb"
+        shadow="recieve:false; cast:false;"
+        visible="false"
+      >
+      </a-entity>
+
+      <!--Liminal Point Light-->
+      <a-entity light="type: point;
+                      intensity: 7;
+                      color: #dedbba"
+        position="-2.946 4.009 3.413"
+        class="limimal-room"
+        visible="false"
+        ></a-entity>
+
+      <!--Liminal Chair Pedestals-->
+      <a-entity
+        id="liminal-pedestal-1"
+        class="liminal-room interactive"
+        position="1.712 0 -2.357"
+        rotation="0 -145.028 0"
+        scale="0.076 0.076 0.076"
+        gltf-model="#foldable-chair"
+        pedestal-interaction
+        shadow="cast:true; recieve:true;"
+        visible="false"
+      >
+      </a-entity>
+      <a-entity
+        id="liminal-pedestal-2"
+        class="liminal-room interactive"
+        position="-3.753 0 -2.885"
+        rotation="0 -30.434 0"
+        scale="0.076 0.076 0.076"
+        gltf-model="#foldable-chair"
+        pedestal-interaction
+        shadow="cast:true; recieve:true;"
+        visible="false"
+      >
+      </a-entity>
+      <a-entity
+        id="liminal-pedestal-3"
+        class="liminal-room interactive"
+        position="3.500 0 2.650"
+        rotation="0 117.182 0"
+        scale="0.076 0.076 0.076"
+        gltf-model="#foldable-chair"
+        pedestal-interaction
+        shadow="cast:true; recieve:true;"
+        visible="false"
       >
       </a-entity>
 

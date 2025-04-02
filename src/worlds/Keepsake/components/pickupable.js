@@ -54,9 +54,9 @@ AFRAME.registerComponent("pickupable", {
 
                 // position in front of camera
                 self.el.setAttribute("position", {
-                    x: 0.8,
-                    y: -0.6, // slightly below center of view
-                    z: 1, // closer to camera so it appears in hand
+                    x: 0.7,
+                    y: -0.4, // slightly below center of view
+                    z: 0.7, // closer to camera so it appears in hand
                 });
 
                 self.el.setAttribute("rotation", {

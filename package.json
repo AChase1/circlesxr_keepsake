@@ -10,7 +10,12 @@
     "url": "https://github.com/PlumCantaloupe/circles_framework/issues"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@aws-sdk/client-s3": "^3.758.0",
+    "aframe-extras": "^7.5.4",
+=======
+    "@aws-sdk/client-s3": "^3.772.0",
+>>>>>>> notes-and-reactions
     "bcrypt": "^5.1.1",
     "body-parser": "^1.19.0",
     "connect-mongo": "^5.1.0",
