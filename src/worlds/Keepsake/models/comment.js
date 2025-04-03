@@ -18,9 +18,6 @@ class Comment {
     }
 
     static fromJson = (json) => {
-        console.log("json: " + json['x-amz-meta-key']);
-        console.log("strinfied: " + JSON.stringify(json)['x-amz-meta-key']);
-        console.log("parsed: " + JSON.parse(json)['x-amz-meta-key']);
         const data = JSON.parse(json);
         return new Comment(data['x-amz-meta-key'], data['x-amz-meta-orbemail'], data['x-amz-meta-text'], data['x-amz-meta-position'], data['x-amz-meta-rotation']);
     }

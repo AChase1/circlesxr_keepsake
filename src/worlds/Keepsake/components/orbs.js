@@ -10,7 +10,8 @@ AFRAME.registerComponent("orbs", {
         if (allS3Objects) {
             for (const object of allS3Objects) {
                 if (object.Key.startsWith("orb")) {
-                    const orb = await S3Logic.retrieveObject(object.Key);
+                    const s3Object = await S3Logic.retrieveObject(object.Key);
+                    const orb = Orb.fromJson(s3Object);
                     if (orb.userEmail == UserLogic.getCurrentUserEmail()) {
                         console.log("current user already has orb");
                         doesCurrUserHaveOrb = true;
@@ -27,6 +28,7 @@ AFRAME.registerComponent("orbs", {
     },
 
     getOrbTheme: function (orb) {
+        console.log("orb: " + JSON.stringify(orb));
         const pedestal = document.getElementById(orb.plateId);
         const theme = pedestal.getAttribute("class");
         switch (theme) {
