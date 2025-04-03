@@ -3,7 +3,7 @@ class ArtifactLogic {
         const currUserEmail = UserLogic.getCurrentUserEmail();
         const urlParams = new URLSearchParams(window.location.search);
         const userEmail = urlParams.get("userEmail");
-        if(userEmail != currUserEmail) return;
+        if (userEmail != currUserEmail) return;
         const fileInput = this.createFileInput();
         fileInput.addEventListener('change', (event) => this.uploadFile(event));
         fileInput.click();
@@ -11,7 +11,7 @@ class ArtifactLogic {
 
     removeExistingArtifacts = async (pedestalId) => {
         const pedestal = document.getElementById(pedestalId);
-        if(!pedestal.children) return;
+        if (!pedestal.children) return;
         const artifacts = Array.from(pedestal.children).filter(child => child.id === "artifact");
         if (artifacts.length > 0) {
             console.log("Pedestal already has an artifact");
@@ -37,12 +37,12 @@ class ArtifactLogic {
             const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
             const timestamp = BasicLogic.getCurrentTimestamp();
             const currUserEmail = UserLogic.getCurrentUserEmail();
-            const artifact = new Artifact("file_" + file.name + "_" + timestamp, currUserEmail, "", "", [], [], pedestalId, file);
+            const artifact = new Artifact("file_" + file.name + "_" + timestamp, currUserEmail, "", "", pedestalId, file);
             this.removeExistingArtifacts(artifact.pedestalId);
             await S3Logic.uploadFileToS3(artifact.file, artifact.toJson());
             const uploadedArtifact = await S3Logic.retrieveObject(artifact.key);
             this.fileDataToAframe(uploadedArtifact);
-            
+
         } catch (error) {
             console.error(error);
         }
@@ -80,7 +80,7 @@ class ArtifactLogic {
         model.setAttribute("gltf-model", `url(${URL.createObjectURL(file)})`);
         pedestal.appendChild(model);
         model.setAttribute("scale", "70 70 70");
-        model.setAttribute("position", {x: pedestalInteraction.pedestalTop.x + 73, y: pedestalInteraction.pedestalTop.y + 15, z: pedestalInteraction.pedestalTop.z + 13});
+        model.setAttribute("position", { x: pedestalInteraction.pedestalTop.x + 73, y: pedestalInteraction.pedestalTop.y + 15, z: pedestalInteraction.pedestalTop.z + 13 });
     }
 }
 

@@ -1,7 +1,7 @@
 class Comment {
-    constructor(id, pedestalId, text, position, rotation) {
-        this.id = id
-        this.pedestalId = pedestalId
+    constructor(key, orbEmail, text, position, rotation) {
+        this.key = key
+        this.orbEmail = orbEmail
         this.text = text;
         this.position = position;
         this.rotation = rotation;
@@ -9,16 +9,19 @@ class Comment {
 
     toJson() {
         return JSON.stringify({
-            id: this.id,
-            pedestalId: this.pedestalId,
+            key: this.key,
+            orbEmail: this.orbEmail,
             text: this.text,
-            position: this.position,
-            rotation: this.rotation
+            position: `${this.position.x} ${this.position.y} ${this.position.z}`,
+            rotation: `${this.rotation.x} ${this.rotation.y} ${this.rotation.z}`,
         });
     }
 
-    static fromJson(json) {
+    static fromJson = (json) => {
+        console.log("json: " + json['x-amz-meta-key']);
+        console.log("strinfied: " + JSON.stringify(json)['x-amz-meta-key']);
+        console.log("parsed: " + JSON.parse(json)['x-amz-meta-key']);
         const data = JSON.parse(json);
-        return new Comment(data.id, data.pedestalId, data.text, data.position, data.rotation);
+        return new Comment(data['x-amz-meta-key'], data['x-amz-meta-orbemail'], data['x-amz-meta-text'], data['x-amz-meta-position'], data['x-amz-meta-rotation']);
     }
 }

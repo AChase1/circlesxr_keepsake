@@ -4,7 +4,8 @@ const aws = require('./aws_config').aws;
 const s3Logic = require('./s3_logic');
 
 const uploadFileToS3 = async (request, response) => {
-  try {;
+  try {
+    ;
     const metadata = s3Logic.configurePayloadMetadata(JSON.parse(request.body.metadata));
     console.log("metadata: " + JSON.stringify(request.body.metadata));
     const addObjectCmd = s3Logic.createPutObjectCmd(request.file.buffer, metadata, request.file.mimetype);
@@ -49,12 +50,12 @@ const retrieveS3Object = async (request, response) => {
     });
 
     const cmdResponse = await s3.send(getObjectCmd);
-    const isOrb = cmdResponse.ContentType == 'application/json';
-    const fileBuffer = isOrb ? await s3Logic.streamToString(cmdResponse.Body) : await s3Logic.configureFileData(cmdResponse.Body);
-    const metadata = s3Logic.configureResponseMetadata(cmdResponse.Metadata, isOrb);
-    metadata.file = fileBuffer;
+    const isMetadata = cmdResponse.ContentType == 'application/json';
+    const fileBuffer = isMetadata ? await s3Logic.streamToString(cmdResponse.Body) : await s3Logic.configureFileData(cmdResponse.Body);
+    const responseData = cmdResponse.Metadata;
+    responseData.file = fileBuffer;
 
-    response.status(200).json({ message: 'Object retrieved successfully!', data: metadata });
+    response.status(200).json({ message: 'Object retrieved successfully!', data: responseData });
   } catch (error) {
     response.status(500).json({ message: 'Error retrieving object: ' + error });
   }
@@ -75,4 +76,4 @@ const deleteS3Object = async (request, response) => {
   }
 }
 
-module.exports = { uploadFileToS3, uploadMetadataToS3, retrieveAllS3Objects, retrieveS3Object, deleteS3Object};
+module.exports = { uploadFileToS3, uploadMetadataToS3, retrieveAllS3Objects, retrieveS3Object, deleteS3Object };

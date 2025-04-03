@@ -21,7 +21,8 @@
     <script src="../Keepsake/logic/user.js"></script>
     <script src="../Keepsake/models/artifact.js"></script>
     <script src="../Keepsake/models/all-artifacts.js"></script>
-
+    <script src="../Keepsake/models/comment.js"></script>
+    <script src="../Keepsake/models/reaction.js"></script>
 
     <script src="./components/gallery-theme.js"></script>
 
@@ -46,13 +47,12 @@
 
     <script>
       //Include start-experience in a-scene to run on startup
-      AFRAME.registerComponent('start-experience', {
-              init:function(){
-                      console.log(selectedTheme); 
-              }
+      AFRAME.registerComponent("start-experience", {
+        init: function () {
+          console.log(selectedTheme);
+        },
       });
     </script>
-
   </head>
 
   <body>
@@ -65,13 +65,16 @@
       <div class="center">
         <h2 style="color: white">Upload to Keepsake</h2>
         <p style="color: white">Acceptable file types 3D:.glb, .gltf</p>
-        <button id="upload-btn" onclick="new ArtifactLogic().getFileFromSystem()">
+        <button
+          id="upload-btn"
+          onclick="new ArtifactLogic().getFileFromSystem()"
+        >
           Choose File
         </button>
       </div>
     </div>
 
-      <!-- Upload 2D UI -->
+    <!-- Upload 2D UI -->
     <div id="upload-2D-ui">
       <span id="close-btn-2D">&times;</span>
       <div class="center">
@@ -100,9 +103,16 @@
       <span id="close-btn-notes">&times;</span>
       <div class="center">
         <h2 style="color: white">Write a Note</h2>
-        <textarea id="fname" name="fname" placeholder="Write your note here..."></textarea><br><br>
+        <textarea
+          id="fname"
+          name="fname"
+          placeholder="Write your note here..."
+        ></textarea
+        ><br /><br />
         <button id="confirm-btn-notes">Create Note</button>
-        <p style="color: white; margin-top: 10px;">Click the note to pick it up. Click again to place it.</p>
+        <p style="color: white; margin-top: 10px">
+          Click the note to pick it up. Click again to place it.
+        </p>
       </div>
     </div>
 
@@ -154,7 +164,7 @@
           crossorigin="anonymous"
         ></a-asset-item>
 
-      <!--Liminal Room Models-->
+        <!--Liminal Room Models-->
         <a-asset-item
           id="liminal-room-model"
           src="assets/models/Liminal_Room.glb"
@@ -302,8 +312,7 @@
 
       <!-- put scene stuff here -->
       <!-- camera -->
-      <a-entity id="rig"
-        movement-controls="constrainToNavMesh: true">
+      <a-entity id="rig" movement-controls="constrainToNavMesh: true">
         <a-entity
           id="camera"
           camera
@@ -311,7 +320,8 @@
           twoway-motion="speed: 35"
           position="0 1.6 0"
           cursor="rayOrigin: mouse"
-          raycaster="objects: .interactive; far: 20; interval: 100">
+          raycaster="objects: .interactive; far: 20; interval: 100"
+        >
         </a-entity>
       </a-entity>
 
@@ -327,49 +337,51 @@
       <!--MINIMAL MODELS-->
       <!--Minimal Pedestals-->
       <!-- note box -->
-      <a-box 
-      id="note-creator-box"
-      class="interactive"
-      position="1.956 1 5.312"
-      rotation="0 180 0" 
-      color="#FFD700"
-      width="0.3"
-      height="0.3"
-      depth="0.1"
-      note-creator
-    >
-      <a-text 
-        value="Create Note" 
-        position="0 0.25 0" 
-        align="center" 
-        color="#000"
-        width="1"
-      ></a-text>
-    </a-box>
+      <a-box
+        id="note-creator-box"
+        class="interactive"
+        position="1.956 1 5.312"
+        rotation="0 180 0"
+        color="#FFD700"
+        width="0.3"
+        height="0.3"
+        depth="0.1"
+        note-creator
+      >
+        <a-text
+          value="Create Note"
+          position="0 0.25 0"
+          align="center"
+          color="#000"
+          width="1"
+        ></a-text>
+      </a-box>
 
-    <!-- heart -->
-    <a-box 
-    id="heart-reaction-box"
-    class="interactive"
-    reaction-creator="type: heart" 
-    position="1.391 1 5.312" 
-    width="0.3"
-    height="0.3"
-    depth="0.1"
-    color="red">
-  </a-box>
+      <!-- heart -->
+      <a-box
+        id="heart-reaction-box"
+        class="interactive"
+        reaction-creator="type: heart"
+        position="1.391 1 5.312"
+        width="0.3"
+        height="0.3"
+        depth="0.1"
+        color="red"
+      >
+      </a-box>
 
-    <!-- laughing -->
-    <a-box 
-    id="laugh-reaction-box"
-    class="interactive"
-    reaction-creator="type: laugh" 
-    position="0.948 1 5.312" 
-    width="0.3"
-    height="0.3"
-    depth="0.1"
-    color="yellow">
-  </a-box>
+      <!-- laughing -->
+      <a-box
+        id="laugh-reaction-box"
+        class="interactive"
+        reaction-creator="type: laugh"
+        position="0.948 1 5.312"
+        width="0.3"
+        height="0.3"
+        depth="0.1"
+        color="yellow"
+      >
+      </a-box>
 
       <!-- pedestal -->
       <a-entity
@@ -413,7 +425,13 @@
       </a-entity>
 
       <!-- pdf test -->
-      <a-entity id="pdf-test" position="-5.631 2.690 -1.629" rotation="0 90 0" scale="2.0 2.0 2.0" circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"></a-entity>
+      <a-entity
+        id="pdf-test"
+        position="-5.631 2.690 -1.629"
+        rotation="0 90 0"
+        scale="2.0 2.0 2.0"
+        circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"
+      ></a-entity>
 
       <!-- frame (1)-->
       <a-entity
@@ -463,7 +481,8 @@
         scale="0.23 0.23 0.23"
         gltf-model="#minimal-room-model"
         shadow="receive:true; cast:false;"
-        visible="false">
+        visible="false"
+      >
       </a-entity>
 
       <!--Minimal NavMesh-->
@@ -476,12 +495,14 @@
         scale="0 0 0"
         gltf-model="#minimal-navmesh-model"
         shadow="receive:false; cast:false;"
-        visible="false">
+        visible="false"
+      >
       </a-entity>
 
       <!--Minimal Light-->
       <!--NOTE: Need to be repaired-->
-      <a-entity light="type: ambient"
+      <a-entity
+        light="type: ambient"
         class="minimal-room"
         visible="false"
       ></a-entity>
@@ -496,7 +517,8 @@
         scale="0.23 0.23 0.23"
         gltf-model="#liminal-room-model"
         shadow="receive:false; cast:false;"
-        visible="false">
+        visible="false"
+      >
       </a-entity>
 
       <!--Liminal Roof-->
@@ -508,12 +530,12 @@
         scale="0.23 0.23 0.23"
         gltf-model="#liminal-room-roof"
         shadow="receive:false; cast:false;"
-        visible="false">
+        visible="false"
+      >
       </a-entity>
 
       <!--Liminal NavMesh-->
       <a-entity
- 
         id="liminal-navmesh"
         class="liminal-room"
         position="15 0 0"
@@ -521,7 +543,8 @@
         scale="1.0 1.0 1.0"
         gltf-model="#liminal-navmesh-model"
         shadow="receive:false; cast:false;"
-        visible="false">
+        visible="false"
+      >
       </a-entity>
 
       <!--Liminal Vents-->
@@ -562,13 +585,14 @@
       </a-entity>
 
       <!--Liminal Point Light-->
-      <a-entity light="type: point;
+      <a-entity
+        light="type: point;
                       intensity: 7;
                       color: #dedbba"
         position="-2.946 4.009 3.413"
         class="limimal-room"
         visible="false"
-        ></a-entity>
+      ></a-entity>
 
       <!--Liminal Chair Pedestals-->
       <a-entity
@@ -622,7 +646,6 @@
 
       <!--Playground NavMesh-->
       <a-entity
-        
         id="playground-navmesh"
         class="playground-room"
         position="30 0 0"
@@ -630,7 +653,8 @@
         scale="1.0 1.0 1.0"
         gltf-model="#playground-navmesh-model"
         shadow="receive:false; cast:false;"
-        visible="false">
+        visible="false"
+      >
       </a-entity>
 
       <a-entity
@@ -737,7 +761,7 @@
       ></a-entity>
 
       <!--Playground Lighting-->
-      <a-entity 
+      <a-entity
         light="type: point; intensity: 50; color: #ffffff; decay:1"
         position="0 9.7 0"
         class="playground-room"

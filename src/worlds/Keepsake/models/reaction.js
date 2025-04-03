@@ -1,7 +1,7 @@
 class Reaction {
-    constructor(id, pedestalId, reactionNum, position, rotation) {
+    constructor(id, orbEmail, reactionNum, position, rotation) {
         this.id = id
-        this.pedestalId = pedestalId
+        this.orbEmail = orbEmail
         this.reactionNum = reactionNum;
         this.position = position;
         this.rotation = rotation;
@@ -10,7 +10,7 @@ class Reaction {
     toJson() {
         return JSON.stringify({
             id: this.id,
-            pedestalId: this.pedestalId,
+            orbEmail: this.orbEmail,
             reactionNum: this.reactionNum,
             position: this.position,
             rotation: this.rotation
@@ -19,6 +19,6 @@ class Reaction {
 
     static fromJson(json) {
         const data = JSON.parse(json);
-        return new Comment(data.id, data.pedestalId, data.reactionNum, data.position, data.rotation);
+        return new Reaction(data.id, data.orbEmail, data.reactionNum, data.position, data.rotation);
     }
 }
