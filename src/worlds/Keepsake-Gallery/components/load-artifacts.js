@@ -9,7 +9,7 @@ AFRAME.registerComponent("load-artifacts", {
                 if (object.Key.startsWith("file")) {
                     const objectJson = await S3Logic.retrieveObject(object.Key);
                     const artifact = Artifact.fromJson(objectJson);
-                    if (artifact.userEmail == userEmail) {
+                    if (artifact.userEmail === userEmail) {
                         console.log("loading " + artifact.userEmail + " artifact");
                         new ArtifactLogic().fileDataToAframe(artifact);
                     }
