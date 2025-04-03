@@ -21,8 +21,8 @@
 //dressed     : true/false that states whether the user visited "wardrobe" area yet
 
 const CONSTANTS = require('./circles_constants');
-const UTILS     = require('./circles_utils');
-const RESEARCH  = require('./circles_research');
+const UTILS = require('./circles_utils');
+const RESEARCH = require('./circles_research');
 
 let circlesWebsocket = null;
 let circlesResearchWebsocket = null;
@@ -32,140 +32,151 @@ let errorLogsEnabled = true;
 let circlesWebsocketConnectTime = 0;
 
 const DISPLAY_MODES = {
-  MODE_AVATAR       : 0,
-  MODE_BOUNDINGBOX  : 1,
-  MODE_HYBRID       : 2
+  MODE_AVATAR: 0,
+  MODE_BOUNDINGBOX: 1,
+  MODE_HYBRID: 2
 }
 
 const USER_COLLISION_STATE = {
-  NO_COLLISION    : 0,
-  FAR_COLLISION   : 1,
-  NEAR_COLLISION  : 2,
-  COLLISION       : 3
+  NO_COLLISION: 0,
+  FAR_COLLISION: 1,
+  NEAR_COLLISION: 2,
+  COLLISION: 3
 }
 
 const MODEL_TYPE = {
-  HEAD        : 'HEAD',
-  HAIR        : 'HAIR',
-  BODY        : 'BODY',
-  HAND_LEFT   : 'HAND_LEFT',
-  HAND_RIGHT  : 'HAND_RIGHT'
+  HEAD: 'HEAD',
+  HAIR: 'HAIR',
+  BODY: 'BODY',
+  HAND_LEFT: 'HAND_LEFT',
+  HAND_RIGHT: 'HAND_RIGHT'
 };
 
 const MODEL_FORMAT = {
-  GLTF  : 'GLTF',
-  OBJ   : 'OBJ',
-  NONE  : 'NONE'
+  GLTF: 'GLTF',
+  OBJ: 'OBJ',
+  NONE: 'NONE'
 };
 
 const USER_TYPE = {
-  STUDENT     : 'Student',
-  TEACHER     : 'Teacher',
-  RESEARCHER  : 'Researcher',
-  PARTICIPANT : 'Participant',
-  TESTER      : 'TESTER',
-  NONE        : 'NONE',
+  STUDENT: 'Student',
+  TEACHER: 'Teacher',
+  RESEARCHER: 'Researcher',
+  PARTICIPANT: 'Participant',
+  TESTER: 'TESTER',
+  NONE: 'NONE',
 };
 
 const MODEL_HEAD_TYPE = {
-  head_0   : '/global/assets/models/gltf/head/Head_Circle.glb',
-  head_1   : '/global/assets/models/gltf/head/Head_Jaw.glb',
-  head_2   : '/global/assets/models/gltf/head/Head_Oval.glb',
-  head_3   : '/global/assets/models/gltf/head/Head_Square.glb',
-  head_4   : '/global/assets/models/gltf/head/Head_Thin.glb',
+  head_0: '/global/assets/models/gltf/head/Head_Circle.glb',
+  head_1: '/global/assets/models/gltf/head/Head_Jaw.glb',
+  head_2: '/global/assets/models/gltf/head/Head_Oval.glb',
+  head_3: '/global/assets/models/gltf/head/Head_Square.glb',
+  head_4: '/global/assets/models/gltf/head/Head_Thin.glb',
 };
 
 const MODEL_HAIR_TYPE = {
-  hair_0   : '/global/assets/models/gltf/hair/Hair_Curly.glb',
-  hair_1   : '/global/assets/models/gltf/hair/Hair_Long.glb',
-  hair_2   : '/global/assets/models/gltf/hair/Hair_PonyTail.glb',
-  hair_3   : '/global/assets/models/gltf/hair/Hair_Hat.glb',
-  hair_4   : '/global/assets/models/gltf/hair/Hair_Hat_OpenXR.glb',
-  hair_5   : '/global/assets/models/gltf/hair/Hair_Hat_Aframe.glb'
+  hair_0: '/global/assets/models/gltf/hair/Hair_Curly.glb',
+  hair_1: '/global/assets/models/gltf/hair/Hair_Long.glb',
+  hair_2: '/global/assets/models/gltf/hair/Hair_PonyTail.glb',
+  hair_3: '/global/assets/models/gltf/hair/Hair_Hat.glb',
+  hair_4: '/global/assets/models/gltf/hair/Hair_Hat_OpenXR.glb',
+  hair_5: '/global/assets/models/gltf/hair/Hair_Hat_Aframe.glb'
 };
 
 const MODEL_BODY_TYPE = {
-  body_0  : '/global/assets/models/gltf/body/Body_Belly.glb',
-  body_1  : '/global/assets/models/gltf/body/Body_Hourglass.glb',
-  body_2  : '/global/assets/models/gltf/body/Body_Rectangle.glb',
-  body_3  : '/global/assets/models/gltf/body/Body_Strong.glb',
-  body_4  : '/global/assets/models/gltf/body/Body_Thin.glb',
+  body_0: '/global/assets/models/gltf/body/Body_Belly.glb',
+  body_1: '/global/assets/models/gltf/body/Body_Hourglass.glb',
+  body_2: '/global/assets/models/gltf/body/Body_Rectangle.glb',
+  body_3: '/global/assets/models/gltf/body/Body_Strong.glb',
+  body_4: '/global/assets/models/gltf/body/Body_Thin.glb',
 };
 
 const EVENTS = {
-  READY                     : 'CIRCLES_READY',
-  CAMERA_ATTACHED           : 'CAMERA_ATTACHED',
-  OBJECT_HIGHLIGHT_LOADED   : 'OBJECT_HIGHLIGHT_LOADED',
-  AVATAR_LOADED             : 'AVATAR_LOADED',
-  AVATAR_RIG_LOADED         : 'AVATAR_RIG_LOADED',
-  AVATAR_COSTUME_CHANGED    : 'AVATAR_COSTUME_CHANGED',
-  CUSTOM_MAT_SET            : 'CUSTOM_MAT_SET',
-  SELECT_THIS_OBJECT        : 'SELECT_THIS_OBJECT',
-  PICKUP_THIS_OBJECT        : 'PICKUP_THIS_OBJECT',
-  RELEASE_THIS_OBJECT       : 'RELEASE_THIS_OBJECT',
-  RELEASE_THIS_OBJECT_PRE   : 'RELEASE_THIS_OBJECT_PRE',
-  OBJECT_OWNERSHIP_GAINED   : 'OBJECT_OWNERSHIP_GAINED',
-  OBJECT_OWNERSHIP_LOST     : 'OBJECT_OWNERSHIP_LOST',
-  OBJECT_OWNERSHIP_CHANGED  : 'OBJECT_OWNERSHIP_CHANGED',
-  OBJECT_NETWORKED_ATTACHED : 'OBJECT_NETWORKED_ATTACHED',
-  OBJECT_NETWORKED_DETACHED : 'OBJECT_NETWORKED_DETACHED',
-  WS_CONNECTED              : 'WS_CONNECTED',
-  WS_RESEARCH_CONNECTED     : 'WS_RESEARCH_CONNECTED',
-  REQUEST_DATA_SYNC         : 'REQUEST_DATA_SYNC',
-  SEND_DATA_SYNC            : 'SEND_DATA_SYNC',
-  RECEIVE_DATA_SYNC         : 'RECEIVE_DATA_SYNC',
-  SYNC_OBJECT_RELEASE       : 'CIRCLES_SYNC_OBJECT_RELEASE',
-  SYNC_OBJECT_PICKUP        : 'CIRCLES_SYNC_OBJECT_PICKUP',
-  QUESTION_OBJECT_STATE     : 'CIRCLES_QUESTION_OBJECT_STATE',
-  ANSWER_OBJECT_STATE       : 'CIRCLES_ANSWER_OBJECT_STATE',
-  OBJECT_OWNER_GONE         : 'CIRCLES_OBJECT_OWNER_GONE',
+  READY: 'CIRCLES_READY',
+  CAMERA_ATTACHED: 'CAMERA_ATTACHED',
+  OBJECT_HIGHLIGHT_LOADED: 'OBJECT_HIGHLIGHT_LOADED',
+  AVATAR_LOADED: 'AVATAR_LOADED',
+  AVATAR_RIG_LOADED: 'AVATAR_RIG_LOADED',
+  AVATAR_COSTUME_CHANGED: 'AVATAR_COSTUME_CHANGED',
+  CUSTOM_MAT_SET: 'CUSTOM_MAT_SET',
+  SELECT_THIS_OBJECT: 'SELECT_THIS_OBJECT',
+  PICKUP_THIS_OBJECT: 'PICKUP_THIS_OBJECT',
+  RELEASE_THIS_OBJECT: 'RELEASE_THIS_OBJECT',
+  RELEASE_THIS_OBJECT_PRE: 'RELEASE_THIS_OBJECT_PRE',
+  OBJECT_OWNERSHIP_GAINED: 'OBJECT_OWNERSHIP_GAINED',
+  OBJECT_OWNERSHIP_LOST: 'OBJECT_OWNERSHIP_LOST',
+  OBJECT_OWNERSHIP_CHANGED: 'OBJECT_OWNERSHIP_CHANGED',
+  OBJECT_NETWORKED_ATTACHED: 'OBJECT_NETWORKED_ATTACHED',
+  OBJECT_NETWORKED_DETACHED: 'OBJECT_NETWORKED_DETACHED',
+  WS_CONNECTED: 'WS_CONNECTED',
+  WS_RESEARCH_CONNECTED: 'WS_RESEARCH_CONNECTED',
+  REQUEST_DATA_SYNC: 'REQUEST_DATA_SYNC',
+  SEND_DATA_SYNC: 'SEND_DATA_SYNC',
+  RECEIVE_DATA_SYNC: 'RECEIVE_DATA_SYNC',
+  SYNC_OBJECT_RELEASE: 'CIRCLES_SYNC_OBJECT_RELEASE',
+  SYNC_OBJECT_PICKUP: 'CIRCLES_SYNC_OBJECT_PICKUP',
+  QUESTION_OBJECT_STATE: 'CIRCLES_QUESTION_OBJECT_STATE',
+  ANSWER_OBJECT_STATE: 'CIRCLES_ANSWER_OBJECT_STATE',
+  OBJECT_OWNER_GONE: 'CIRCLES_OBJECT_OWNER_GONE',
   // OBJECT_CREATED            : 'CIRCLES_OBJECT_CREATED',
   // OBJECT_DESTROYED          : 'CIRCLES_OBJECT_DESTROYED',
 };
 
 const VR_PLATFORMS = {
-  DESKTOP              : 'DESKTOP',
-  MOBILE_PHONE         : 'MOBILE',
-  MOBILE_TABLET        : 'MOBILE_TABLET',
-  HMD_STANDALONE       : 'HMD_MOBILE',
-  HMD_WIRED            : 'HMD_OTHER',
+  DESKTOP: 'DESKTOP',
+  MOBILE_PHONE: 'MOBILE',
+  MOBILE_TABLET: 'MOBILE_TABLET',
+  HMD_STANDALONE: 'HMD_MOBILE',
+  HMD_WIRED: 'HMD_OTHER',
 };
 
 const NETWORKED_TEMPLATES = {
-  AVATAR              : 'circles-user-template',
-  INTERACTIVE_OBJECT  : 'circles-interactive-object-template',
-  BASIC_OBJECT        : 'circles-basic-object-template',
-  ARTEFACT            : 'circles-artefact-template',
-  TEXT                : 'circles-text-template'
+  AVATAR: 'circles-user-template',
+  INTERACTIVE_OBJECT: 'circles-interactive-object-template',
+  BASIC_OBJECT: 'circles-basic-object-template',
+  ARTEFACT: 'circles-artefact-template',
+  TEXT: 'circles-text-template'
 };
 
 //!!DEPRE 8 color
 const COLOR_PALETTE = {
-  PEARL     : {r:255,  g:252,  b:250},
-  TURQUOISE : {r:2,    g:191,  b:155},
-  EMERALD   : {r:33,   g:211,  b:105},
-  RIVER     : {r:43,   g:146,  b:223},
-  AMETHYST  : {r:155,  g:71,   b:186},
-  ASPHALT   : {r:51,   g:73,   b:96},
-  SUNFLOWER : {r:243,  g:201,  b:3},
-  CARROT    : {r:233,  g:126,  b:1},
-  MANDARIN  : {r:233,  g:65,   b:4},
-  OCEAN     : {r:30,   g:100,  b:230}
+  PEARL: { r: 255, g: 252, b: 250 },
+  TURQUOISE: { r: 2, g: 191, b: 155 },
+  EMERALD: { r: 33, g: 211, b: 105 },
+  RIVER: { r: 43, g: 146, b: 223 },
+  AMETHYST: { r: 155, g: 71, b: 186 },
+  ASPHALT: { r: 51, g: 73, b: 96 },
+  SUNFLOWER: { r: 243, g: 201, b: 3 },
+  CARROT: { r: 233, g: 126, b: 1 },
+  MANDARIN: { r: 233, g: 65, b: 4 },
+  OCEAN: { r: 30, g: 100, b: 230 },
+  LIME: { r: 191, g: 255, b: 0 },
+  SKY: { r: 135, g: 206, b: 235 },
+  CORAL: { r: 255, g: 127, b: 80 },
+  SALMON: { r: 250, g: 128, b: 114 },
+  GOLD: { r: 255, g: 215, b: 0 },
+  INDIGO: { r: 75, g: 0, b: 130 },
+  VIOLET: { r: 238, g: 130, b: 238 },
+  CRIMSON: { r: 220, g: 20, b: 60 },
+  FOREST: { r: 34, g: 139, b: 34 },
+  TEAL: { r: 0, g: 128, b: 128 }
+
 };
 
 //from here: https://gist.github.com/jed/92883
-const getUUID = function() {
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+const getUUID = function () {
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
 };
 
 //time that the socket connected
-const getCirclesConnectTime = function() {
+const getCirclesConnectTime = function () {
   return circlesWebsocketConnectTime;
 }
 
-const setupCirclesWebsocket = function() {
+const setupCirclesWebsocket = function () {
   // console.log('setupCirclesWebsocket');
 
   circlesWebsocketConnectTime = new Date();
@@ -197,49 +208,49 @@ const setupCirclesWebsocket = function() {
   }
 };
 
-const getCirclesWebsocket = function() {
-  if ( !circlesWebsocket ) {
+const getCirclesWebsocket = function () {
+  if (!circlesWebsocket) {
     console.warn('CIRCLES: web socket not set up. Use CIRCLES.setupCirclesWebSocket() to set up and listen for CIRCLES.EVENTS.WS_CONNECTED to flag ready');
   }
   return circlesWebsocket;
 };
 
-const getCirclesResearchWebsocket = function() {
-  if ( !circlesResearchWebsocket ) {
+const getCirclesResearchWebsocket = function () {
+  if (!circlesResearchWebsocket) {
     console.warn('[circles_framework]: web socket not set up. Use CIRCLES.setupCirclesWebSocket() to set up and listen for CIRCLES.EVENTS.WS_RESEARCH_CONNECTED to flag ready');
   }
   return circlesResearchWebsocket;
 };
 
-const getCirclesGroupName = function() {
+const getCirclesGroupName = function () {
   return getCirclesManagerComp().getRoom();
 }
 
-const getCirclesUserName = function() {
+const getCirclesUserName = function () {
   return getCirclesManagerComp().getUser();
 }
 
-const getCirclesWorldName = function() {
+const getCirclesWorldName = function () {
   return getCirclesManagerComp().getWorld();
 }
 
-const getCirclesManagerElement = function() {
+const getCirclesManagerElement = function () {
   return document.querySelector('[circles-manager]');
 }
 
-const getCirclesManagerComp = function() {
+const getCirclesManagerComp = function () {
   return getCirclesManagerElement().components['circles-manager'];
 }
 
-const isReady = function() {
+const isReady = function () {
   return getCirclesManagerComp().isCirclesReady();
 }
 
-const isCirclesWebsocketReady = function() {
+const isCirclesWebsocketReady = function () {
   return (circlesWebsocket) ? true : false;
 }
 
-const getMainCameraElement = function() {
+const getMainCameraElement = function () {
   const elem = document.querySelector('#' + CIRCLES.CONSTANTS.PRIMARY_USER_ID + 'Cam');
   if (!elem) {
     console.warn("[circles_framework]: make sure to access the camera after the CIRCLES.READY event has fired on the scene (or CIRCLES.isReady() is true).");
@@ -247,7 +258,7 @@ const getMainCameraElement = function() {
   return elem;
 }
 
-const getAvatarElement = function() {
+const getAvatarElement = function () {
   const elem = document.querySelector('#' + CIRCLES.CONSTANTS.PRIMARY_USER_ID).querySelector('.avatar');
 
   if (!elem) {
@@ -256,7 +267,7 @@ const getAvatarElement = function() {
   return elem;
 }
 
-const getAvatarHolderElementBody = function() {
+const getAvatarHolderElementBody = function () {
   const elem = document.querySelector('#' + CIRCLES.CONSTANTS.PRIMARY_USER_ID).querySelector('.head_holder');
 
   if (!elem) {
@@ -265,62 +276,62 @@ const getAvatarHolderElementBody = function() {
   return elem;
 }
 
-const getAvatarRigElement = function() {
+const getAvatarRigElement = function () {
   const elem = document.querySelector('#' + CIRCLES.CONSTANTS.PRIMARY_USER_ID);
   return elem;
 }
 
-const getCirclesSceneElement = function() {
+const getCirclesSceneElement = function () {
   return document.querySelector('a-scene');
 }
 
-const getNAFAvatarElements = function() {
+const getNAFAvatarElements = function () {
   return document.querySelectorAll('[circles-user-networked]');  //return all avatars being networked by NAF
 }
 
-const getAllNAFElements = function() {
+const getAllNAFElements = function () {
   return document.querySelectorAll('[networked]');              //returns all NAF networked objects. You may have to dig into children for more detail.             
 }
 
-const getPickedUpElement = function() {
+const getPickedUpElement = function () {
   return getCirclesManagerComp().pickedUpElem;             //returns reference to held element, or null if no held object on this player/client            
 }
 
-const getNonNetworkedID = function(elem) {
+const getNonNetworkedID = function (elem) {
   return (elem.hasAttribute('circles-object-world')) ? elem.components['circles-object-world'].data.id : elem.id;             //returns reference to held element, or null if no held object on this player/client            
 }
 
 //CIRCLES.log(text);
-const log = function(text) {
+const log = function (text) {
   if (basicLogsEnabled === true) {
     console.log(text);
   }
 }
-const enableLogs = function(enable) {
+const enableLogs = function (enable) {
   basicLogsEnabled = enabled;
 }
 
 //CIRCLES.warn(text);
-const warn = function(text) {
+const warn = function (text) {
   if (warningLogsEnabled === true) {
     console.warn(text);
   }
 }
-const enableWarning = function(enable) {
+const enableWarning = function (enable) {
   warningLogsEnabled = enabled;
 }
 
 //CIRCLES.error(text);
-const error = function(text) {
+const error = function (text) {
   if (errorLogsEnabled === true) {
     console.error(text);
   }
 }
-const enableErrors = function(enable) {
+const enableErrors = function (enable) {
   errorLogsEnabled = enabled;
 }
 
-const getVRPlatform = function() {
+const getVRPlatform = function () {
   let vr_platform = 'not_available';
 
   if (AFRAME.utils.device.checkHeadsetConnected() === true) {
@@ -335,7 +346,7 @@ const getVRPlatform = function() {
     //alert('isMobile!!!');
     vr_platform = VR_PLATFORMS.MOBILE_PHONE;
   }
-  else if (AFRAME.utils.device.isTablet() === true || AFRAME.utils.device.isMobileDeviceRequestingDesktopSite() === true ) {
+  else if (AFRAME.utils.device.isTablet() === true || AFRAME.utils.device.isMobileDeviceRequestingDesktopSite() === true) {
     //alert('isTabletVR!!!');
     vr_platform = VR_PLATFORMS.MOBILE_TABLET;
   }

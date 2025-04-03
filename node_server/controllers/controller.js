@@ -2,15 +2,15 @@
 
 require('../../src/core/circles_server');
 const mongoose = require('mongoose');
-const User     = require('../models/user');
-const Model3D  = require('../models/model3D');
-const path     = require('path');
-const fs       = require('fs');
-const crypto   = require('crypto');
-const dotenv   = require('dotenv');
-const url      = require('url');
+const User = require('../models/user');
+const Model3D = require('../models/model3D');
+const path = require('path');
+const fs = require('fs');
+const crypto = require('crypto');
+const dotenv = require('dotenv');
+const url = require('url');
 const dotenvParseVariables = require('dotenv-parse-variables');
-const jwt      = require('jsonwebtoken');
+const jwt = require('jsonwebtoken');
 const { CONSTANTS } = require('../../src/core/circles_research');
 
 //load in config
@@ -75,44 +75,44 @@ const updateUserInfo = (req, res, next) => {
 
     //Mongoose promises http://mongoosejs.com/docs/promises.html
     const promises = [
-      Model3D.findOne({name: req.body.headModel}).exec(),
-      Model3D.findOne({name: req.body.hairModel}).exec(),
-      Model3D.findOne({name: req.body.bodyModel}).exec(),
-      Model3D.findOne({name: req.body.handLeftModel}).exec(),
-      Model3D.findOne({name: req.body.handRightModel}).exec(),
-      User.findOne({_id:req.user._id}).exec()
+      Model3D.findOne({ name: req.body.headModel }).exec(),
+      Model3D.findOne({ name: req.body.hairModel }).exec(),
+      Model3D.findOne({ name: req.body.bodyModel }).exec(),
+      Model3D.findOne({ name: req.body.handLeftModel }).exec(),
+      Model3D.findOne({ name: req.body.handRightModel }).exec(),
+      User.findOne({ _id: req.user._id }).exec()
     ];
 
-    Promise.all(promises).then( (results) => {
+    Promise.all(promises).then((results) => {
       //add properties dynamically after, depending on what was updated ...
       const userData = {};
 
       //console.log(results);
 
       //basic info
-      if ( req.body.firstname !== results[5].firstname ) {
+      if (req.body.firstname !== results[5].firstname) {
         userData.firstname = req.body.firstname;
       }
 
-      if ( req.body.lastname !== results[5].lastname ) {
+      if (req.body.lastname !== results[5].lastname) {
         userData.lastname = req.body.lastname;
       }
 
-      if ( req.body.email !== results[5].email ) {
+      if (req.body.email !== results[5].email) {
         userData.email = req.body.email;
       }
 
       //check to make sure passwords match better some day far away ....
-      if ( results[0].url !== results[5].gltf_head_url ) {
+      if (results[0].url !== results[5].gltf_head_url) {
         userData.gltf_head_url = results[0].url;
       }
 
       //paths to models
-      if ( results[1].url !== results[5].gltf_hair_url ) {
+      if (results[1].url !== results[5].gltf_hair_url) {
         userData.gltf_hair_url = results[1].url;
       }
 
-      if ( results[2].url !== results[5].gltf_body_url ) {
+      if (results[2].url !== results[5].gltf_body_url) {
         userData.gltf_body_url = results[2].url;
       }
 
@@ -125,44 +125,44 @@ const updateUserInfo = (req, res, next) => {
       // }
 
       //colors
-      if ( req.body.color_head !== results[5].color_head ) {
+      if (req.body.color_head !== results[5].color_head) {
         userData.color_head = req.body.color_head;
       }
 
-      if ( req.body.color_hair !== results[5].color_hair ) {
+      if (req.body.color_hair !== results[5].color_hair) {
         userData.color_hair = req.body.color_hair;
       }
 
-      if ( req.body.color_body !== results[5].color_body ) {
+      if (req.body.color_body !== results[5].color_body) {
         userData.color_body = req.body.color_body;
       }
 
-      if ( req.body.color_hand_left !== results[5].color_hand_left ) {
+      if (req.body.color_hand_left !== results[5].color_hand_left) {
         userData.color_hand_left = req.body.color_hand_left;
       }
 
-      if ( req.body.color_hand_right !== results[5].color_hand_right ) {
+      if (req.body.color_hand_right !== results[5].color_hand_right) {
         userData.color_hand_right = req.body.color_hand_right;
       }
 
-      let doc   = null;
+      let doc = null;
       let error = null;
       async function updateItems() {
         try {
-          doc = await User.findOneAndUpdate({_id:req.user._id}, userData, {new:true});
-        } catch(err) {
+          doc = await User.findOneAndUpdate({ _id: req.user._id }, userData, { new: true });
+        } catch (err) {
           error = err;
         }
       }
 
-      updateItems().then(function() {
+      updateItems().then(function () {
         if (error) {
           return next(error);
         } else {
           return res.redirect('/profile');
         }
       });
-    }).catch(function(err){
+    }).catch(function (err) {
       console.log(err);
     });
   }
@@ -170,7 +170,7 @@ const updateUserInfo = (req, res, next) => {
 
 const modifyServeWorld = (world_id, searchParamsObj, user, pathStr, req, res) => {
   // Ensure the world file exists
-  fs.readFile(pathStr, {encoding: 'utf-8'}, (error, data) => {
+  fs.readFile(pathStr, { encoding: 'utf-8' }, (error, data) => {
     if (error) {
       return res.redirect('/profile');
     }
@@ -222,7 +222,7 @@ const modifyServeWorld = (world_id, searchParamsObj, user, pathStr, req, res) =>
       //to be added later
       // head_tex=0
       // body_tex=0
-      
+
       if (user.usertype === CIRCLES.USER_TYPE.TEACHER) {
         specialStatus = ' (T)';
       }
@@ -258,12 +258,12 @@ const serveWorld = (req, res, next) => {
   //need to make sure we have the trailing slash to signify a folder so that relative links works correctly
   //https://stackoverflow.com/questions/30373218/handling-relative-urls-in-a-node-js-http-server 
   const splitURL = req.url.split('?');
-  const baseURL = (splitURL.length > 0)?splitURL[0]:'';
-  const urlParamsStr = (splitURL.length > 1)?splitURL[1]:'';
+  const baseURL = (splitURL.length > 0) ? splitURL[0] : '';
+  const urlParamsStr = (splitURL.length > 1) ? splitURL[1] : '';
 
   if (splitURL.length > 0) {
     if (baseURL.charAt(baseURL.length - 1) !== '/') {
-      const fixedURL = baseURL + "/"  + ((urlParamsStr === '')?'':'?' + urlParamsStr);
+      const fixedURL = baseURL + "/" + ((urlParamsStr === '') ? '' : '?' + urlParamsStr);
       res.writeHead(302, { "Location": fixedURL });
       res.end();
       return;
@@ -275,7 +275,7 @@ const serveWorld = (req, res, next) => {
   const searchParamsObj = urlObj.searchParams;
   //if no group indicated then assume the group 'explore'
   if (!searchParamsObj.has('group')) {
-    const fixedURL = baseURL + "?" + 'group=explore' + ((urlParamsStr === '')?'':'&' + urlParamsStr);
+    const fixedURL = baseURL + "?" + 'group=explore' + ((urlParamsStr === '') ? '' : '&' + urlParamsStr);
     res.writeHead(302, { "Location": fixedURL });
     res.end();
     return;
@@ -302,9 +302,9 @@ const serveProfile = (req, res, next) => {
 
   //Mongoose promises http://mongoosejs.com/docs/promises.html
   const promises = [
-    Model3D.find({type: CIRCLES.MODEL_TYPE.HEAD}).exec(),
-    Model3D.find({type: CIRCLES.MODEL_TYPE.HAIR}).exec(),
-    Model3D.find({type: CIRCLES.MODEL_TYPE.BODY}).exec(),
+    Model3D.find({ type: CIRCLES.MODEL_TYPE.HEAD }).exec(),
+    Model3D.find({ type: CIRCLES.MODEL_TYPE.HAIR }).exec(),
+    Model3D.find({ type: CIRCLES.MODEL_TYPE.BODY }).exec(),
     //Model3D.find({type: CIRCLES.MODEL_TYPE.HAND_LEFT}).exec(),
     //Model3D.find({type: CIRCLES.MODEL_TYPE.HAND_RIGHT}).exec()
   ];
@@ -320,10 +320,10 @@ const serveProfile = (req, res, next) => {
   Promise.all(promises).then((results) => {
     let optionStrs = [];   //save all option str to replace after ...
 
-    for ( let r = 0; r < results.length; r++ ) {
-      let optionsStr  = '';
+    for (let r = 0; r < results.length; r++) {
+      let optionsStr = '';
       let models = results[r];
-      for ( let i = 0; i < models.length; i++ ) {
+      for (let i = 0; i < models.length; i++) {
         if (models[i].url === queryChecks[r]) {
           optionsStr += '<option selected>' + models[i].name + '</option>';
         }
@@ -365,17 +365,17 @@ const serveProfile = (req, res, next) => {
       userInfo: userInfo,
       userOptions: userOptions
     });
-  }).catch(function(err){
+  }).catch(function (err) {
     console.log(err);
   });
 };
 
 const registerUser = (req, res, next) => {
   //!!
-  console.log('disabling register feature for prototype'); 
+  console.log('disabling register feature for prototype');
   return next();
   //!!
-  
+
   /*
   if (
     req.body.firstname &&
@@ -453,21 +453,21 @@ const serveRegister = (req, res, next) => {
   //Mongoose promises http://mongoosejs.com/docs/promises.html
 
   const promises = [
-    Model3D.find({type: CIRCLES.MODEL_TYPE.HEAD}).exec(),
-    Model3D.find({type: CIRCLES.MODEL_TYPE.HAIR}).exec(),
-    Model3D.find({type: CIRCLES.MODEL_TYPE.BODY}).exec(),
-    Model3D.find({type: CIRCLES.MODEL_TYPE.HAND_LEFT}).exec(),
-    Model3D.find({type: CIRCLES.MODEL_TYPE.HAND_RIGHT}).exec()
+    Model3D.find({ type: CIRCLES.MODEL_TYPE.HEAD }).exec(),
+    Model3D.find({ type: CIRCLES.MODEL_TYPE.HAIR }).exec(),
+    Model3D.find({ type: CIRCLES.MODEL_TYPE.BODY }).exec(),
+    Model3D.find({ type: CIRCLES.MODEL_TYPE.HAND_LEFT }).exec(),
+    Model3D.find({ type: CIRCLES.MODEL_TYPE.HAND_RIGHT }).exec()
   ];
 
   Promise.all(promises).then((results) => {
     let optionStrs = [];   //save all option str to replace after ...
 
-    for ( let r = 0; r < results.length; r++ ) {
-      let optionsStr  = '';
+    for (let r = 0; r < results.length; r++) {
+      let optionsStr = '';
       let models = results[r];
-      for ( let i = 0; i < models.length; i++ ) {
-        if (i==0) {
+      for (let i = 0; i < models.length; i++) {
+        if (i == 0) {
           optionsStr += '<option selected>' + models[i].name + '</option>';
         }
         else {
@@ -490,7 +490,7 @@ const serveRegister = (req, res, next) => {
       title: `Register for Circles`,
       userOptions: userOptions,
     });
-  }).catch(function(err){
+  }).catch(function (err) {
     console.log(err);
   });
 };
@@ -558,16 +558,16 @@ const generateAuthLink = (email, baseURL, route, expiryTimeMin) => {
     expiresIn: expiryTimeMin + 'm',
   };
 
-  const token = jwt.sign({data:email}, env.JWT_SECRET, jwtOptions); //expects seconds as expiration
+  const token = jwt.sign({ data: email }, env.JWT_SECRET, jwtOptions); //expects seconds as expiration
   return baseURL + '/magic-login?token=' + token + '&route=' + route;
 };
 
 const getMagicLinks = (req, res, next) => {
   const route = req.query.route;
-  const usernameAsking  = req.query.usernameAsking;
-  const emailAsking     = req.query.emailAsking;
-  const userTypeAsking  = req.query.userTypeAsking;
-  const expiryTimeMin   = req.query.expiryTimeMin;
+  const usernameAsking = req.query.usernameAsking;
+  const emailAsking = req.query.emailAsking;
+  const userTypeAsking = req.query.userTypeAsking;
+  const expiryTimeMin = req.query.expiryTimeMin;
   let allAccounts = [];
 
   //ignore req.protocol as it will try and re-direct to https anyhow.
@@ -577,57 +577,57 @@ const getMagicLinks = (req, res, next) => {
   let error = null;
   async function getItems() {
     try {
-      users = await User.find({usertype: (userTypeAsking === CIRCLES.USER_TYPE.TEACHER) ? CIRCLES.USER_TYPE.STUDENT : CIRCLES.USER_TYPE.PARTICIPANT }).exec();
-    } catch(err) {
+      users = await User.find({ usertype: (userTypeAsking === CIRCLES.USER_TYPE.TEACHER) ? CIRCLES.USER_TYPE.STUDENT : CIRCLES.USER_TYPE.PARTICIPANT }).exec();
+    } catch (err) {
       error = err;
     }
   }
 
-  getItems().then(function() {
+  getItems().then(function () {
     if (error) {
       res.send(error);
     }
 
     //add "self" first
-    allAccounts.push({username:usernameAsking, email:emailAsking, magicLink:generateAuthLink(emailAsking, baseURL, route, expiryTimeMin)});
+    allAccounts.push({ username: usernameAsking, email: emailAsking, magicLink: generateAuthLink(emailAsking, baseURL, route, expiryTimeMin) });
 
     for (let i = 0; i < users.length; i++) {
-      allAccounts.push({username:users[i].username, email:users[i].email, magicLink:generateAuthLink(users[i].email, baseURL, route, expiryTimeMin)});
+      allAccounts.push({ username: users[i].username, email: users[i].email, magicLink: generateAuthLink(users[i].email, baseURL, route, expiryTimeMin) });
 
-      if (i === users.length - 1 ) {
+      if (i === users.length - 1) {
         res.json(allAccounts);
       }
     }
   });
 };
 
-const loopAndGetFolderNames =  async (folderPath) => {
+const loopAndGetFolderNames = async (folderPath) => {
   let allSubFolderNames = [];
   // Get the files as an array
   let files = null;
-  try{
+  try {
     files = await fs.promises.readdir(folderPath);
   }
-  catch(e) {
+  catch (e) {
     console.log(e.message);
     return allSubFolderNames;
   }
 
   // Loop them all with the new for...of
   let worldName = "";
-  for( const file of files ) {
-      // Get the full paths
-      const fullPath = path.join( folderPath, file );
+  for (const file of files) {
+    // Get the full paths
+    const fullPath = path.join(folderPath, file);
 
-      // Stat the file to see if we have a file or dir
-      const stat = await fs.promises.stat( fullPath );
+    // Stat the file to see if we have a file or dir
+    const stat = await fs.promises.stat(fullPath);
 
-      if( stat.isDirectory() ) {
-          //console.log( fullPath + " is a directory.");
-          worldName = file;
-          worldName.replace(folderPath, "");
-          allSubFolderNames.push(file);
-      }
+    if (stat.isDirectory()) {
+      //console.log( fullPath + " is a directory.");
+      worldName = file;
+      worldName.replace(folderPath, "");
+      allSubFolderNames.push(file);
+    }
   }
   allSubFolderNames.sort();
 
@@ -636,106 +636,106 @@ const loopAndGetFolderNames =  async (folderPath) => {
 
 const getWorldsList = async (req, res, next) => {
   const folderPath = __dirname + '/../../src/worlds';
-  loopAndGetFolderNames(folderPath).then(function(data) {
+  loopAndGetFolderNames(folderPath).then(function (data) {
     res.json(data);
   });
 }
 
 
 const addTestUsers = () => {
-  let usersToAdd  = [];
-  let tenColors   = [ CIRCLES.COLOR_PALETTE.PEARL, CIRCLES.COLOR_PALETTE.TURQUOISE, CIRCLES.COLOR_PALETTE.EMERALD, CIRCLES.COLOR_PALETTE.RIVER, CIRCLES.COLOR_PALETTE.AMETHYST,
-                      CIRCLES.COLOR_PALETTE.ASPHALT, CIRCLES.COLOR_PALETTE.SUNFLOWER, CIRCLES.COLOR_PALETTE.CARROT, CIRCLES.COLOR_PALETTE.MANDARIN, CIRCLES.COLOR_PALETTE.OCEAN];
+  let usersToAdd = [];
+  let twentyColors = [CIRCLES.COLOR_PALETTE.PEARL, CIRCLES.COLOR_PALETTE.TURQUOISE, CIRCLES.COLOR_PALETTE.EMERALD, CIRCLES.COLOR_PALETTE.RIVER, CIRCLES.COLOR_PALETTE.AMETHYST,
+  CIRCLES.COLOR_PALETTE.ASPHALT, CIRCLES.COLOR_PALETTE.SUNFLOWER, CIRCLES.COLOR_PALETTE.CARROT, CIRCLES.COLOR_PALETTE.MANDARIN, CIRCLES.COLOR_PALETTE.OCEAN, CIRCLES.COLOR_PALETTE.LIME, CIRCLES.COLOR_PALETTE.SKY, CIRCLES.COLOR_PALETTE.CORAL, CIRCLES.COLOR_PALETTE.SALMON, CIRCLES.COLOR_PALETTE.GOLD, CIRCLES.COLOR_PALETTE.INDIGO, CIRCLES.COLOR_PALETTE.VIOLET, CIRCLES.COLOR_PALETTE.CRIMSON, CIRCLES.COLOR_PALETTE.FOREST, CIRCLES.COLOR_PALETTE.TEAL];
   let threeColors = [CIRCLES.COLOR_PALETTE.SUNFLOWER, CIRCLES.COLOR_PALETTE.AMETHYST, CIRCLES.COLOR_PALETTE.RIVER];
 
   usersToAdd.push({
-    username:               'Teacher1',
-    usertype:               CIRCLES.USER_TYPE.TEACHER,
-    firstname:              'Teacher',
-    lastname:               '1',
-    email:                  't1@circlesxr.com',
-    password:               env.DEFAULT_PASSWORD,
-    gltf_head_url:          '/global/assets/models/gltf/head/Head_Oval.glb',
-    gltf_hair_url:          '/global/assets/models/gltf/hair/Hair_PonyTail.glb',
-    gltf_body_url:          '/global/assets/models/gltf/body/Body_Hourglass.glb',
+    username: 'Teacher1',
+    usertype: CIRCLES.USER_TYPE.TEACHER,
+    firstname: 'Teacher',
+    lastname: '1',
+    email: 't1@circlesxr.com',
+    password: env.DEFAULT_PASSWORD,
+    gltf_head_url: '/global/assets/models/gltf/head/Head_Oval.glb',
+    gltf_hair_url: '/global/assets/models/gltf/hair/Hair_PonyTail.glb',
+    gltf_body_url: '/global/assets/models/gltf/body/Body_Hourglass.glb',
     //gltf_hand_left_url:     '/global/assets/models/gltf/hands/left/Hand_Basic_L.glb', 
     //gltf_hand_right_url:    '/global/assets/models/gltf/hands/left/Hand_Basic_R.glb',
-    color_head:             'rgb(59, 45, 37)',
-    color_hair:             'rgb(10, 7, 5)',
-    color_body:             'rgb(101, 255, 101)',
-    color_hand_right:       'rgb(59, 45, 37)',
-    color_hand_left:        'rgb(59, 45, 37)',
+    color_head: 'rgb(59, 45, 37)',
+    color_hair: 'rgb(10, 7, 5)',
+    color_body: 'rgb(101, 255, 101)',
+    color_hand_right: 'rgb(59, 45, 37)',
+    color_hand_left: 'rgb(59, 45, 37)',
   });
 
   usersToAdd.push({
-    username:               'Researcher1',
-    usertype:               CIRCLES.USER_TYPE.RESEARCHER,
-    firstname:              'Researcher',
-    lastname:               '1',
-    email:                  'r1@circlesxr.com',
-    password:               env.DEFAULT_PASSWORD,
-    gltf_head_url:          '/global/assets/models/gltf/head/Head_Circle.glb',
-    gltf_hair_url:          '/global/assets/models/gltf/hair/Hair_Hat.glb',
-    gltf_body_url:          '/global/assets/models/gltf/body/Body_Thin.glb',
+    username: 'Researcher1',
+    usertype: CIRCLES.USER_TYPE.RESEARCHER,
+    firstname: 'Researcher',
+    lastname: '1',
+    email: 'r1@circlesxr.com',
+    password: env.DEFAULT_PASSWORD,
+    gltf_head_url: '/global/assets/models/gltf/head/Head_Circle.glb',
+    gltf_hair_url: '/global/assets/models/gltf/hair/Hair_Hat.glb',
+    gltf_body_url: '/global/assets/models/gltf/body/Body_Thin.glb',
     //gltf_hand_left_url:     '/global/assets/models/gltf/hands/left/Hand_Basic_L.glb',
     //gltf_hand_right_url:    '/global/assets/models/gltf/hands/left/Hand_Basic_R.glb',
-    color_head:             'rgb(237, 194, 122)',
-    color_hair:             'rgb(23, 22, 21)',
-    color_body:             'rgb(242, 246, 252)',
-    color_hand_right:       'rgb(237, 194, 122)',
-    color_hand_left:        'rgb(237, 194, 122)',
+    color_head: 'rgb(237, 194, 122)',
+    color_hair: 'rgb(23, 22, 21)',
+    color_body: 'rgb(242, 246, 252)',
+    color_hand_right: 'rgb(237, 194, 122)',
+    color_hand_left: 'rgb(237, 194, 122)',
   });
 
   //add students
-  for (let i = 0; i < tenColors.length; i++) {
+  for (let i = 0; i < twentyColors.length; i++) {
     usersToAdd.push({
-      username:               'Student' + i,
-      usertype:               CIRCLES.USER_TYPE.STUDENT,
-      firstname:              'Student',
-      lastname:               i,
-      email:                  's' + i + '@circlesxr.com',
-      password:               env.DEFAULT_PASSWORD,
-      gltf_head_url:          CIRCLES.CONSTANTS.DEFAULT_GLTF_HEAD,
-      gltf_hair_url:          CIRCLES.CONSTANTS.DEFAULT_GLTF_HAIR,
-      gltf_body_url:          CIRCLES.CONSTANTS.DEFAULT_GLTF_BODY,
+      username: 'Student' + i,
+      usertype: CIRCLES.USER_TYPE.STUDENT,
+      firstname: 'Student',
+      lastname: i,
+      email: 's' + i + '@circlesxr.com',
+      password: env.DEFAULT_PASSWORD,
+      gltf_head_url: CIRCLES.CONSTANTS.DEFAULT_GLTF_HEAD,
+      gltf_hair_url: CIRCLES.CONSTANTS.DEFAULT_GLTF_HAIR,
+      gltf_body_url: CIRCLES.CONSTANTS.DEFAULT_GLTF_BODY,
       //gltf_hand_left_url:     CIRCLES.CONSTANTS.DEFAULT_GLTF_HAND_LEFT,
       //gltf_hand_right_url:    CIRCLES.CONSTANTS.DEFAULT_GLTF_HAND_RIGHT,
-      color_head:             'rgb(' + tenColors[i].r + ',' + tenColors[i].g + ',' + tenColors[i].b + ')',
-      color_hair:             'rgb(' + tenColors[i].r + ',' + tenColors[i].g + ',' + tenColors[i].b + ')',
-      color_body:             'rgb(' + tenColors[i].r + ',' + tenColors[i].g + ',' + tenColors[i].b + ')',
-      color_hand_right:       'rgb(' + tenColors[i].r + ',' + tenColors[i].g + ',' + tenColors[i].b + ')',
-      color_hand_left:        'rgb(' + tenColors[i].r + ',' + tenColors[i].g + ',' + tenColors[i].b + ')',
+      color_head: 'rgb(' + twentyColors[i].r + ',' + twentyColors[i].g + ',' + twentyColors[i].b + ')',
+      color_hair: 'rgb(' + twentyColors[i].r + ',' + twentyColors[i].g + ',' + twentyColors[i].b + ')',
+      color_body: 'rgb(' + twentyColors[i].r + ',' + twentyColors[i].g + ',' + twentyColors[i].b + ')',
+      color_hand_right: 'rgb(' + twentyColors[i].r + ',' + twentyColors[i].g + ',' + twentyColors[i].b + ')',
+      color_hand_left: 'rgb(' + twentyColors[i].r + ',' + twentyColors[i].g + ',' + twentyColors[i].b + ')',
     });
   }
 
   //add students
   for (let i = 0; i < threeColors.length; i++) {
     usersToAdd.push({
-      username:               'Participant' + i,
-      usertype:               CIRCLES.USER_TYPE.PARTICIPANT,
-      firstname:              'Participant',
-      lastname:               i,
-      email:                  'p' + i + '@circlesxr.com',
-      password:               env.DEFAULT_PASSWORD,
-      gltf_head_url:          CIRCLES.CONSTANTS.DEFAULT_GLTF_HEAD,
-      gltf_hair_url:          CIRCLES.CONSTANTS.DEFAULT_GLTF_HAIR,
-      gltf_body_url:          CIRCLES.CONSTANTS.DEFAULT_GLTF_BODY,
+      username: 'Participant' + i,
+      usertype: CIRCLES.USER_TYPE.PARTICIPANT,
+      firstname: 'Participant',
+      lastname: i,
+      email: 'p' + i + '@circlesxr.com',
+      password: env.DEFAULT_PASSWORD,
+      gltf_head_url: CIRCLES.CONSTANTS.DEFAULT_GLTF_HEAD,
+      gltf_hair_url: CIRCLES.CONSTANTS.DEFAULT_GLTF_HAIR,
+      gltf_body_url: CIRCLES.CONSTANTS.DEFAULT_GLTF_BODY,
       //gltf_hand_left_url:     CIRCLES.CONSTANTS.DEFAULT_GLTF_HAND_LEFT,
       //gltf_hand_right_url:    CIRCLES.CONSTANTS.DEFAULT_GLTF_HAND_RIGHT,
-      color_head:             'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
-      color_hair:             'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
-      color_body:             'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
-      color_hand_right:       'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
-      color_hand_left:        'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
+      color_head: 'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
+      color_hair: 'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
+      color_body: 'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
+      color_hand_right: 'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
+      color_hand_left: 'rgb(' + threeColors[i].r + ',' + threeColors[i].g + ',' + threeColors[i].b + ')',
     });
   }
 
-  let user   = null;
-  let error   = null;
+  let user = null;
+  let error = null;
   async function findUser(userToAdd) {
     try {
       user = await User.findOne(userToAdd).exec();
-    } catch(err) {
+    } catch (err) {
       error = err;
     }
 
@@ -744,7 +744,7 @@ const addTestUsers = () => {
   async function createUser(userToAdd) {
     try {
       user = await User.create(userToAdd);
-    } catch(err) {
+    } catch (err) {
       error = err;
     }
 
@@ -752,13 +752,13 @@ const addTestUsers = () => {
   }
 
   for (let i = 0; i < usersToAdd.length; i++) {
-    findUser(usersToAdd[i]).then(function() {
+    findUser(usersToAdd[i]).then(function () {
       if (error) {
         console.log("findUser error on [" + usersToAdd[i].username + "]: " + error.message);
       }
       else {
         //add model
-        createUser(usersToAdd[i]).then(function() {
+        createUser(usersToAdd[i]).then(function () {
           if (error) {
             console.log("createUser error on [" + usersToAdd[i].username + "]: " + error.message);
           } else {
@@ -781,137 +781,137 @@ const addAvatarModels = () => {
 
   //head
   modelsToAdd.push({
-    name:           "Head_Circle",
-    url:            '/global/assets/models/gltf/head/Head_Circle.glb',
-    type:           CIRCLES.MODEL_TYPE.HEAD,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Head_Circle",
+    url: '/global/assets/models/gltf/head/Head_Circle.glb',
+    type: CIRCLES.MODEL_TYPE.HEAD,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Head_Jaw",
-    url:            '/global/assets/models/gltf/head/Head_Jaw.glb',
-    type:           CIRCLES.MODEL_TYPE.HEAD,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Head_Jaw",
+    url: '/global/assets/models/gltf/head/Head_Jaw.glb',
+    type: CIRCLES.MODEL_TYPE.HEAD,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Head_Oval",
-    url:            '/global/assets/models/gltf/head/Head_Oval.glb',
-    type:           CIRCLES.MODEL_TYPE.HEAD,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Head_Oval",
+    url: '/global/assets/models/gltf/head/Head_Oval.glb',
+    type: CIRCLES.MODEL_TYPE.HEAD,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Head_Square",
-    url:            '/global/assets/models/gltf/head/Head_Square.glb',
-    type:           CIRCLES.MODEL_TYPE.HEAD,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Head_Square",
+    url: '/global/assets/models/gltf/head/Head_Square.glb',
+    type: CIRCLES.MODEL_TYPE.HEAD,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Head_Thin",
-    url:            '/global/assets/models/gltf/head/Head_Thin.glb',
-    type:           CIRCLES.MODEL_TYPE.HEAD,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Head_Thin",
+    url: '/global/assets/models/gltf/head/Head_Thin.glb',
+    type: CIRCLES.MODEL_TYPE.HEAD,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   //hairs
   modelsToAdd.push({
-    name:           "Hair_Curly",
-    url:            '/global/assets/models/gltf/hair/Hair_Curly.glb',
-    type:           CIRCLES.MODEL_TYPE.HAIR,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Hair_Curly",
+    url: '/global/assets/models/gltf/hair/Hair_Curly.glb',
+    type: CIRCLES.MODEL_TYPE.HAIR,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Hair_Hat",
-    url:            '/global/assets/models/gltf/hair/Hair_Hat.glb',
-    type:           CIRCLES.MODEL_TYPE.HAIR,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Hair_Hat",
+    url: '/global/assets/models/gltf/hair/Hair_Hat.glb',
+    type: CIRCLES.MODEL_TYPE.HAIR,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Hair_Long",
-    url:            '/global/assets/models/gltf/hair/Hair_Long.glb',
-    type:           CIRCLES.MODEL_TYPE.HAIR,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Hair_Long",
+    url: '/global/assets/models/gltf/hair/Hair_Long.glb',
+    type: CIRCLES.MODEL_TYPE.HAIR,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Hair_PonyTail",
-    url:            '/global/assets/models/gltf/hair/Hair_PonyTail.glb',
-    type:           CIRCLES.MODEL_TYPE.HAIR,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Hair_PonyTail",
+    url: '/global/assets/models/gltf/hair/Hair_PonyTail.glb',
+    type: CIRCLES.MODEL_TYPE.HAIR,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Hair_Bald",
-    url:            "", //empty string - easy to compare later
-    type:           CIRCLES.MODEL_TYPE.HAIR,
-    format3D:       CIRCLES.MODEL_FORMAT.NONE //don't show/render
+    name: "Hair_Bald",
+    url: "", //empty string - easy to compare later
+    type: CIRCLES.MODEL_TYPE.HAIR,
+    format3D: CIRCLES.MODEL_FORMAT.NONE //don't show/render
   });
 
   //bodies
   modelsToAdd.push({
-    name:           "Body_Belly",
-    url:            '/global/assets/models/gltf/body/Body_Belly.glb',
-    type:           CIRCLES.MODEL_TYPE.BODY,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Body_Belly",
+    url: '/global/assets/models/gltf/body/Body_Belly.glb',
+    type: CIRCLES.MODEL_TYPE.BODY,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Body_HourGlass",
-    url:            '/global/assets/models/gltf/body/Body_Hourglass.glb',
-    type:           CIRCLES.MODEL_TYPE.BODY,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Body_HourGlass",
+    url: '/global/assets/models/gltf/body/Body_Hourglass.glb',
+    type: CIRCLES.MODEL_TYPE.BODY,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Body_Rectangle",
-    url:            '/global/assets/models/gltf/body/Body_Rectangle.glb',
-    type:           CIRCLES.MODEL_TYPE.BODY,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Body_Rectangle",
+    url: '/global/assets/models/gltf/body/Body_Rectangle.glb',
+    type: CIRCLES.MODEL_TYPE.BODY,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Body_Strong",
-    url:            '/global/assets/models/gltf/body/Body_Strong.glb',
-    type:           CIRCLES.MODEL_TYPE.BODY,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Body_Strong",
+    url: '/global/assets/models/gltf/body/Body_Strong.glb',
+    type: CIRCLES.MODEL_TYPE.BODY,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
   modelsToAdd.push({
-    name:           "Body_Thin",
-    url:            '/global/assets/models/gltf/body/Body_Thin.glb',
-    type:           CIRCLES.MODEL_TYPE.BODY,
-    format3D:       CIRCLES.MODEL_FORMAT.GLTF
+    name: "Body_Thin",
+    url: '/global/assets/models/gltf/body/Body_Thin.glb',
+    type: CIRCLES.MODEL_TYPE.BODY,
+    format3D: CIRCLES.MODEL_FORMAT.GLTF
   });
 
-  let model   = null;
-  let error   = null;
+  let model = null;
+  let error = null;
   async function findModel(modelToAdd) {
     try {
       model = await Model3D.findOne(modelToAdd).exec();
-    } catch(err) {
+    } catch (err) {
       error = err;
     }
   }
   async function createModel(modelToAdd) {
     try {
       model = await Model3D.create(modelToAdd);
-    } catch(err) {
+    } catch (err) {
       error = err;
     }
   }
 
   for (let i = 0; i < modelsToAdd.length; i++) {
-    findModel(modelsToAdd[i]).then(function() {
+    findModel(modelsToAdd[i]).then(function () {
       if (error) {
         console.log("findModel error on [" + modelsToAdd[i].name + "]: " + error.message);
       }
       else {
         //add model
-        createModel(modelsToAdd[i]).then(function() {
+        createModel(modelsToAdd[i]).then(function () {
           if (error) {
             console.log("createModel error on [" + modelsToAdd[i].name + "]: " + error.message);
           } else {
