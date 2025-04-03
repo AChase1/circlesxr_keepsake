@@ -22,7 +22,8 @@ class Artifact {
 
 
     static fromJson = (json) => {
-        return new Artifact(json['x-amz-meta-key'], json['x-amz-meta-useremail'], json['x-amz-meta-name'], json['x-amz-meta-description'], json['x-amz-meta-pedestalid'], json.file);
+        const data = JSON.parse(json);
+        return new Artifact(data['x-amz-meta-key'], data['x-amz-meta-useremail'], data['x-amz-meta-name'], data['x-amz-meta-description'], data['x-amz-meta-pedestalid'], data.file);
     }
 
 }
