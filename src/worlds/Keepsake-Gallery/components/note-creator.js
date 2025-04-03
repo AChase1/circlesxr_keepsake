@@ -1,62 +1,56 @@
 AFRAME.registerComponent('note-creator', {
   init: function () {
     var self = this;
-    
+
     self.notesUI = document.getElementById('notes-ui');
     self.noteInput = document.getElementById('fname');
     self.confirmBtn = document.getElementById('confirm-btn-notes');
     self.closeBtn = self.notesUI.querySelector('#close-btn-notes');
-    
+
     // event listeners
-    self.el.addEventListener('click', function() {
+    self.el.addEventListener('click', function () {
       self.showNoteUI();
     });
-    
-    self.closeBtn.addEventListener('click', function() {
+
+    self.closeBtn.addEventListener('click', function () {
       self.hideNoteUI();
     });
-    
-    self.confirmBtn.addEventListener('click', function() {
+
+    self.confirmBtn.addEventListener('click', function () {
       self.createNote();
     });
-    
-    // init local note storage
-    if (!localStorage.getItem('galleryNotes')) {
-      localStorage.setItem('galleryNotes', JSON.stringify([]));
-    }
-    
-    // load notes
+
     self.loadSavedNotes();
-    
+
     console.log('Note creator init');
   },
-  
-  showNoteUI: function() {
+
+  showNoteUI: function () {
     this.notesUI.style.display = 'block';
     this.noteInput.focus();
   },
-  
-  hideNoteUI: function() {
+
+  hideNoteUI: function () {
     this.notesUI.style.display = 'none';
     this.noteInput.value = '';
   },
-  
-  createNote: function() {
+
+  createNote: function () {
     var self = this;
     var noteText = self.noteInput.value.trim();
-    
+
     if (!noteText) {
       alert('Please write something in your note!');
       return;
     }
-    
+
     // creating a note & assigning a unique ID
     var noteId = 'note-' + Date.now();
     var noteEntity = document.createElement('a-entity');
     noteEntity.setAttribute('id', noteId);
-    
+
     var noteBoxPosition = self.el.getAttribute('position');
-    
+
     // pos generated note above note box
     var notePosition = {
       x: noteBoxPosition.x,
@@ -69,16 +63,16 @@ AFRAME.registerComponent('note-creator', {
       y: 180,
       z: 0
     });
-    
+
     noteEntity.setAttribute('position', notePosition);
-    
+
     // creating a plane for note
     var notePlane = document.createElement('a-plane');
     notePlane.setAttribute('color', '#f5f5dc');
     notePlane.setAttribute('width', '0.3');
     notePlane.setAttribute('height', '0.3');
     notePlane.setAttribute('class', 'interactive');
-    
+
     // adding user input text
     var noteTextEl = document.createElement('a-text');
     noteTextEl.setAttribute('value', noteText);
@@ -87,131 +81,125 @@ AFRAME.registerComponent('note-creator', {
     noteTextEl.setAttribute('align', 'center');
     noteTextEl.setAttribute('position', '0 0 0.01');
     noteTextEl.setAttribute('wrap-count', '15');
-    
+
     notePlane.appendChild(noteTextEl);
     noteEntity.appendChild(notePlane);
-    
+
     document.querySelector('a-scene').appendChild(noteEntity);
-    
+
     // slight delay to make sure it is loaded into scene
-    setTimeout(function() {
+    setTimeout(function () {
       // make pickupable
       noteEntity.setAttribute('pickupable', '');
-      
+
       console.log('Added pickupable to note:', noteId);
       console.log('Note components:', noteEntity.components);
-      
+
       // click debugger
-      noteEntity.addEventListener('click', function(e) {
+      noteEntity.addEventListener('click', function (e) {
         console.log('Note clicked:', noteId);
       });
-      
+
       // when note released, save position
-      noteEntity.addEventListener('object-released', function() {
+      noteEntity.addEventListener('object-released', function () {
         console.log('Note released');
         self.saveNotePosition(noteEntity, noteText);
       });
-      
+
       noteEntity.classList.add('interactive');
-      
+
       // instruction pop up
       self.showMessage('Note created above the box! Click to pick it up.');
     }, 100);
-    
+
     self.hideNoteUI();
-    
+
     return noteEntity;
   },
-  
-  saveNotePosition: function(noteEntity, noteText) {
+
+  checkForExistingNote: async function (noteId) {
+    const s3Objects = await S3Logic.retrieveAllObjects();
+    s3Objects.forEach(object => {
+      if (object.Key === noteId) {
+        console.log('Note already exists:', noteId);
+        S3Logic.deleteObject(noteId);
+        console.log('Note deleted:', noteId);
+      }
+    });
+  },
+
+  saveNotePosition: function (noteEntity, noteText) {
     // get current position and rotation
     var position = noteEntity.getAttribute('position');
     var rotation = noteEntity.getAttribute('rotation');
-    
-    // creating note data
-    var noteData = {
-      id: noteEntity.id,
-      text: noteText || noteEntity.querySelector('a-text').getAttribute('value'),
-      position: position,
-      rotation: rotation,
-      timestamp: Date.now()
-    };
-    
-    // get existing notes
-    var notes = JSON.parse(localStorage.getItem('galleryNotes') || '[]');
-    
-    var existingIndex = notes.findIndex(function(note) {
-      return note.id === noteData.id;
-    });
-    
-    if (existingIndex >= 0) {
-      notes[existingIndex] = noteData;
-    } else {
-      // add new note
-      notes.push(noteData);
-    }
-    
-    // save to localStorage
-    localStorage.setItem('galleryNotes', JSON.stringify(notes));
-    console.log('Note position saved:', noteData);
-    
+
+    const note = new Comment("comment_" + noteEntity.getAttribute('id'), UserLogic.getCurrentGalleryEmail(), noteText, position, rotation);
+    this.checkForExistingNote(note.id);
+    S3Logic.uploadMetadataToS3(note.toJson());
+
     this.showMessage('Your note has been posted :)');
   },
-  
-  loadSavedNotes: function() {
+
+  loadSavedNotes: async function () {
     var self = this;
-    var notes = JSON.parse(localStorage.getItem('galleryNotes') || '[]');
-    
-    console.log('Loading saved notes:', notes.length);
-    
-    notes.forEach(function(note) {
-      if (!note.text) return;
-      
-      console.log('Loading note:', note.id, 'at position:', note.position);
-      
-      // creating note entity
-      var noteEntity = document.createElement('a-entity');
-      noteEntity.setAttribute('id', note.id || 'note-' + Date.now());
-      
-      noteEntity.setAttribute('position', note.position);
-      noteEntity.setAttribute('rotation', note.rotation || {x: 0, y: 0, z: 0});
-      
-      var notePlane = document.createElement('a-plane');
-      notePlane.setAttribute('color', '#f5f5dc');
-      notePlane.setAttribute('width', '0.3');
-      notePlane.setAttribute('height', '0.3');
-      notePlane.setAttribute('class', 'interactive');
-      
-      var noteTextEl = document.createElement('a-text');
-      noteTextEl.setAttribute('value', note.text);
-      noteTextEl.setAttribute('color', '#000000');
-      noteTextEl.setAttribute('width', '0.5');
-      noteTextEl.setAttribute('align', 'center');
-      noteTextEl.setAttribute('position', '0 0 0.01');
-      noteTextEl.setAttribute('wrap-count', '15');
-      
-      notePlane.appendChild(noteTextEl);
-      noteEntity.appendChild(notePlane);
-      
-      document.querySelector('a-scene').appendChild(noteEntity);
-      
-      setTimeout(function() {
-        noteEntity.setAttribute('pickupable', '');
-        noteEntity.classList.add('interactive');
-        
-        noteEntity.addEventListener('object-released', function() {
-          self.saveNotePosition(noteEntity, note.text);
-        });
-        
-        console.log('Loaded saved note:', noteEntity.id);
-      }, 100);
-    });
+
+    const allS3Objects = await S3Logic.retrieveAllObjects();
+
+    for (const object of allS3Objects) {
+      if (object.Key.startsWith("comment")) {
+
+        console.log("Loading note:", object.Key);
+        const objectJson = await S3Logic.retrieveObject(object.Key);
+        const note = Comment.fromJson(objectJson);
+
+        if (note && note.orbEmail === UserLogic.getCurrentGalleryEmail()) {
+          console.log("Loading note:", note.key, "at position:", note.position);
+
+          var noteEntity = document.createElement('a-entity');
+          noteEntity.setAttribute('id', note.key || 'note-' + Date.now());
+
+          noteEntity.setAttribute('position', note.position);
+          noteEntity.setAttribute('rotation', note.rotation || { x: 0, y: 0, z: 0 });
+
+          var notePlane = document.createElement('a-plane');
+          notePlane.setAttribute('color', '#f5f5dc');
+          notePlane.setAttribute('width', '0.3');
+          notePlane.setAttribute('height', '0.3');
+          notePlane.setAttribute('class', 'interactive');
+
+          var noteTextEl = document.createElement('a-text');
+          noteTextEl.setAttribute('value', note.text);
+          noteTextEl.setAttribute('color', '#000000');
+          noteTextEl.setAttribute('width', '0.5');
+          noteTextEl.setAttribute('align', 'center');
+          noteTextEl.setAttribute('position', '0 0 0.01');
+          noteTextEl.setAttribute('wrap-count', '15');
+
+          notePlane.appendChild(noteTextEl);
+          noteEntity.appendChild(notePlane);
+
+          document.querySelector('a-scene').appendChild(noteEntity);
+
+          setTimeout(function () {
+            noteEntity.setAttribute('pickupable', '');
+            noteEntity.classList.add('interactive');
+
+            noteEntity.addEventListener('object-released', function () {
+              self.saveNotePosition(noteEntity, note.text);
+            });
+
+            console.log('Loaded saved note:', noteEntity.id);
+          }, 100);
+        }
+      }
+    }
+
   },
-  
+
   // instruction pop ups
-  showMessage: function(text) {
+  showMessage: function (text) {
     var messageEl = document.getElementById('note-message');
-    
+
     if (!messageEl) {
       messageEl = document.createElement('div');
       messageEl.id = 'note-message';
@@ -227,16 +215,16 @@ AFRAME.registerComponent('note-creator', {
       messageEl.style.fontFamily = "'Open Sans', sans-serif";
       document.body.appendChild(messageEl);
     }
-    
+
     messageEl.textContent = text;
     messageEl.style.display = 'block';
-    
-    setTimeout(function() {
+
+    setTimeout(function () {
       messageEl.style.display = 'none';
     }, 3000);
   },
-  
-  remove: function() {
+
+  remove: function () {
     this.el.removeEventListener('click', this.showNoteUI);
     this.closeBtn.removeEventListener('click', this.hideNoteUI);
     this.confirmBtn.removeEventListener('click', this.createNote);

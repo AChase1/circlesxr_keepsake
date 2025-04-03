@@ -43,8 +43,6 @@ class S3Logic {
       userEmail: metadata['x-amz-meta-useremail'],
       name: metadata['x-amz-meta-name'],
       description: metadata['x-amz-meta-description'],
-      reactions: metadata['x-amz-meta-reactions'],
-      comments: metadata['x-amz-meta-comments'],
       pedestalId: metadata['x-amz-meta-pedestalid']
     };
   }

@@ -23,7 +23,7 @@ AFRAME.registerComponent("orbs", {
         if (!doesCurrUserHaveOrb) {
             console.log("current user does not have orb");
             this.createStartOrb();
-        }S
+        }
     },
 
     getOrbTheme: function (orb) {

@@ -7,13 +7,13 @@ class Orb {
     }
 
     toJson() {
-        return {
-            "isOrb": true,
-            "key": this.key,
-            "userEmail": this.userEmail,
-            "name": this.name,
-            "plateId": this.plateId
-        };
+        return JSON.stringify({
+            isOrb: true,
+            key: this.key,
+            userEmail: this.userEmail,
+            name: this.name,
+            plateId: this.plateId
+        });
     }
 
     static fromJson = (json) => {

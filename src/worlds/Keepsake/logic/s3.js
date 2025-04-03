@@ -1,39 +1,39 @@
 class S3Logic {
-    static uploadOrbToS3 = async (body) => {
-        try {        
-                await fetch('/s3_uploadMetadata', {
-                    method: 'POST',
-                    body: JSON.stringify(body),
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-                console.log("Orb uploaded successfully!");
-                // TODO => add UI feedback for successful upload          
+    static uploadMetadataToS3 = async (body) => {
+        try {
+            await fetch('/s3_uploadMetadata', {
+                method: 'POST',
+                body: body,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            console.log("Metadata uploaded successfully!");
+            // TODO => add UI feedback for successful upload          
         } catch (error) {
-            console.error("Error uploading orb: " + error);
+            console.error("Error uploading metadata: " + error);
         }
     }
 
     static uploadFileToS3 = async (fileData, metadata) => {
         try {
-                const formData = new FormData();
-                formData.append("file", fileData);
-                formData.append("metadata", JSON.stringify(metadata));
-                const response = await fetch('/s3_uploadFile', {
-                    method: 'POST',
-                    body: formData,
-                });           
+            const formData = new FormData();
+            formData.append("file", fileData);
+            formData.append("metadata", JSON.stringify(metadata));
+            const response = await fetch('/s3_uploadFile', {
+                method: 'POST',
+                body: formData,
+            });
 
-                console.log("File uploaded successfully!");
-                // TODO => add UI feedback for successful upload
-          
-                const uploadUI = document.querySelector('#upload-ui');
-                uploadUI.style.display = 'none';
+            console.log("File uploaded successfully!");
+            // TODO => add UI feedback for successful upload
 
-                const artifact = Artifact.fromJson(response.data);
-                await this.retrieveObject(artifact.key);
-        
+            const uploadUI = document.querySelector('#upload-ui');
+            uploadUI.style.display = 'none';
+
+            const artifact = Artifact.fromJson(response.data);
+            await this.retrieveObject(artifact.key);
+
         } catch (error) {
             console.error("Error uploading file: " + error);
         }
@@ -56,13 +56,7 @@ class S3Logic {
         try {
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
             const jsonResponse = await response.json();
-            if (jsonResponse.data.isOrb) {
-                const orb = Orb.fromJson(jsonResponse.data);
-                return orb;
-            } else {
-                const artifact = Artifact.fromJson(jsonResponse.data);
-                return artifact;
-            }
+            return JSON.stringify(jsonResponse.data);
         } catch (error) {
             console.error("Error retrieving object: " + key + " : " + error);
             return null;
@@ -71,7 +65,7 @@ class S3Logic {
 
     static deleteObject = async (key) => {
         try {
-            await fetch(`/s3_deleteObject/${encodeURIComponent(key)}`);  
+            await fetch(`/s3_deleteObject/${encodeURIComponent(key)}`);
         } catch (error) {
             console.error("Error delete object: " + key + " : " + error);
             return null;
