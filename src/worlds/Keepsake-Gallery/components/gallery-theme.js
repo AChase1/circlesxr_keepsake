@@ -21,16 +21,19 @@ AFRAME.registerComponent("gallery-theme", {
                 for (let i = 0; i < minimalModels.length; i++) {
                     minimalModels[i].setAttribute("visible", "true");
                   }
+                document.querySelector('#minimal-navmesh').setAttribute("visible", "false");
+                document.querySelector('#minimal-navmesh').setAttribute("scale", {x:1.0, y:1.0, z:1.0});
 
             }else if(galleryTheme === "playground"){
-                playgroundModels = document.querySelectorAll('.playground-room');
-                document.querySelector('#playground-pedestal-1').setAttribute("visible", "true");
-                document.querySelector('#playground-pedestal-2').setAttribute("visible", "true");
-                document.querySelector('#playground-pedestal-3').setAttribute("visible", "true");
+                  playgroundModels = document.querySelectorAll('.playground-room');
+                  document.querySelector('#playground-pedestal-1').setAttribute("visible", "true");
+                  document.querySelector('#playground-pedestal-2').setAttribute("visible", "true");
+                  document.querySelector('#playground-pedestal-3').setAttribute("visible", "true");
 
-                for (let i = 0; i < playgroundModels.length; i++) {
-                    playgroundModels[i].setAttribute("visible", "true");
-                  }
+                  for (let i = 0; i < playgroundModels.length; i++) {
+                      playgroundModels[i].setAttribute("visible", "true");
+                    }
+                document.querySelector('#playground-navmesh').setAttribute("visible", "false");
 
             }else if(galleryTheme === "liminal"){
                 liminalModels = document.querySelectorAll('.limimal-room');
@@ -41,6 +44,7 @@ AFRAME.registerComponent("gallery-theme", {
                 for (let i = 0; i < liminalModels.length; i++) {
                     liminalModels[i].setAttribute("visible", "true");
                   }
+                document.querySelector('#liminal-navmesh').setAttribute("visible", "false");
                 
             }else if(galleryTheme === "nature"){
                 natureModels = document.querySelectorAll('.nature-room');
@@ -51,6 +55,7 @@ AFRAME.registerComponent("gallery-theme", {
                 for (let i = 0; i < natureModels.length; i++) {
                     natureModels[i].setAttribute("visible", "true");
                   }
+                document.querySelector('#nature-navmesh').setAttribute("visible", "false");
             }
 
         } else {
