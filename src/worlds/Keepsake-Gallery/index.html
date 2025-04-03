@@ -27,6 +27,8 @@
 
     <script src="../Keepsake/components/select-theme.js"></script>
 
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.5.4/dist/aframe-extras.min.js"></script>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>entering gallery...</title>
@@ -136,10 +138,18 @@
           crossorigin="anonymous"
         ></a-asset-item>
 
-        <!-- minimal gallery model -->
+        <!--Minimal Room Models-->
         <a-asset-item
           id="minimal-room-model"
           src="assets/models/Minimal_Room.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!--Minimal NavMesh-->
+        <a-asset-item
+          id="minimal-navmesh-model"
+          src="assets/models/NavMeshes/MinimalNavMesh.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
@@ -154,6 +164,13 @@
         <a-asset-item
           id="liminal-room-roof"
           src="assets/models/Liminal_Room_Roof.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <!--Liminal NavMesh-->
+        <a-asset-item
+          id="liminal-navmesh-model"
+          src="assets/models/NavMeshes/LiminalNavMesh.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
@@ -176,70 +193,77 @@
           crossorigin="anonymous"
         ></a-asset-item>
 
-        <!-- Playground Room Model -->
+        <!-- Playground Room Models -->
         <a-asset-item
           id="playground-room-model"
           src="assets/models/Playground/Playground_Room.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
+        <!--Playground NavMesh-->
+        <a-asset-item
+          id="playground-navmesh-model"
+          src="assets/models/NavMeshes/PlaygroundNavMesh.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
         <a-asset-item
           id="playground-room-slides"
-          src="assets/models/Playground Room/Slides.glb"
+          src="assets/models/Playground/Slides.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-chair-yellow"
-          src="assets/models/Playground Room/Chair_Yellow.glb"
+          src="assets/models/Playground/Chair_Yellow.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-chair-orange"
-          src="assets/models/Playground Room/Chair_Orange.glb"
+          src="assets/models/Playground/Chair_Orange.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-chair-blue"
-          src="assets/models/Playground Room/Chair_Blue.glb"
+          src="assets/models/Playground/Chair_Blue.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-chair-green"
-          src="assets/models/Playground Room/Chair_Green.glb"
+          src="assets/models/Playground/Chair_Green.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-monkeybar"
-          src="assets/models/Playground Room/Monkey_Bar.glb"
+          src="assets/models/Playground/Monkey_Bar.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-table"
-          src="assets/models/Playground Room/Table_Yellow.glb"
+          src="assets/models/Playground/Table_Yellow.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-fence-yellow"
-          src="assets/models/Playground Room/Fence_Yellow.glb"
+          src="assets/models/Playground/Fence_Yellow.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-fence-red"
-          src="assets/models/Playground Room/Fence_Red.glb"
+          src="assets/models/Playground/Fence_Red.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
         <a-asset-item
           id="playground-room-fence-green"
-          src="assets/models/Playground Room/Fence_Green.glb"
+          src="assets/models/Playground/Fence_Green.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
@@ -278,16 +302,17 @@
 
       <!-- put scene stuff here -->
       <!-- camera -->
-      <a-entity
-        id="camera"
-        camera
-        look-controls
-        wasd-controls
-        twoway-motion="speed: 35"
-        position="0 1.6 0"
-        cursor="rayOrigin: mouse"
-        raycaster="objects: .interactive; far: 20; interval: 100"
-      >
+      <a-entity id="rig"
+        movement-controls="constrainToNavMesh: true">
+        <a-entity
+          id="camera"
+          camera
+          look-controls
+          twoway-motion="speed: 35"
+          position="0 1.6 0"
+          cursor="rayOrigin: mouse"
+          raycaster="objects: .interactive; far: 20; interval: 100">
+        </a-entity>
       </a-entity>
 
       <a-entity
@@ -438,8 +463,20 @@
         scale="0.23 0.23 0.23"
         gltf-model="#minimal-room-model"
         shadow="receive:true; cast:false;"
-        visible="false"
-      >
+        visible="false">
+      </a-entity>
+
+      <!--Minimal NavMesh-->
+      <a-entity
+        nav-mesh
+        id="minimal-navmesh"
+        class="minimal-room"
+        position="0 0 0"
+        rotation="0 0 0"
+        scale="0 0 0"
+        gltf-model="#minimal-navmesh-model"
+        shadow="receive:false; cast:false;"
+        visible="false">
       </a-entity>
 
       <!--Minimal Light-->
@@ -459,8 +496,7 @@
         scale="0.23 0.23 0.23"
         gltf-model="#liminal-room-model"
         shadow="receive:false; cast:false;"
-        visible="false"
-      >
+        visible="false">
       </a-entity>
 
       <!--Liminal Roof-->
@@ -472,8 +508,20 @@
         scale="0.23 0.23 0.23"
         gltf-model="#liminal-room-roof"
         shadow="receive:false; cast:false;"
-        visible="false"
-      >
+        visible="false">
+      </a-entity>
+
+      <!--Liminal NavMesh-->
+      <a-entity
+ 
+        id="liminal-navmesh"
+        class="liminal-room"
+        position="15 0 0"
+        rotation="0 0 0"
+        scale="1.0 1.0 1.0"
+        gltf-model="#liminal-navmesh-model"
+        shadow="receive:false; cast:false;"
+        visible="false">
       </a-entity>
 
       <!--Liminal Vents-->
@@ -572,10 +620,23 @@
         visible="false"
       ></a-entity>
 
+      <!--Playground NavMesh-->
+      <a-entity
+        
+        id="playground-navmesh"
+        class="playground-room"
+        position="30 0 0"
+        rotation="0 0 0"
+        scale="1.0 1.0 1.0"
+        gltf-model="#playground-navmesh-model"
+        shadow="receive:false; cast:false;"
+        visible="false">
+      </a-entity>
+
       <a-entity
         id="playground-room-slides"
         class="playground-room"
-        position="-2.35 0 -4.1"
+        position="-1.149 0 -3.636"
         rotation="0 0 0"
         scale="0.32 0.32 0.32"
         gltf-model="#playground-room-slides"
@@ -586,7 +647,7 @@
       <a-entity
         id="playground-room-monkeybar"
         class="playground-room"
-        position="4 0 3.3"
+        position="3.307 0 2.187"
         rotation="0 90 0"
         scale="0.45 0.45 0.45"
         gltf-model="#playground-room-monkeybar"
@@ -684,8 +745,8 @@
         visible="false"
       ></a-entity>
 
+      <!--NATURE MODELS-->
       <!-- Nature Room -->
-
       <!-- EXIT: back to lobby portal -->
       <a-entity
         id="portal_link"
