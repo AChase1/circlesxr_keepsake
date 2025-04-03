@@ -20,12 +20,6 @@ AFRAME.registerComponent('note-creator', {
       self.createNote();
     });
 
-    // // init local note storage
-    // if (!localStorage.getItem('galleryNotes')) {
-    //   localStorage.setItem('galleryNotes', JSON.stringify([]));
-    // }
-
-    // load notes
     self.loadSavedNotes();
 
     console.log('Note creator init');
@@ -143,39 +137,10 @@ AFRAME.registerComponent('note-creator', {
     this.checkForExistingNote(note.id);
     S3Logic.uploadMetadataToS3(note.toJson());
 
-
-    // creating note data
-    // var noteData = {
-    //   id: noteEntity.id,
-    //   text: noteText || noteEntity.querySelector('a-text').getAttribute('value'),
-    //   position: position,
-    //   rotation: rotation,
-    //   timestamp: Date.now()
-    // };
-
-    // // get existing notes
-    // var notes = JSON.parse(localStorage.getItem('galleryNotes') || '[]');
-
-    // var existingIndex = notes.findIndex(function (note) {
-    //   return note.id === noteData.id;
-    // });
-
-    // if (existingIndex >= 0) {
-    //   notes[existingIndex] = noteData;
-    // } else {
-    //   // add new note
-    //   notes.push(noteData);
-    // }
-
-    // // save to localStorage
-    // localStorage.setItem('galleryNotes', JSON.stringify(notes));
-    // console.log('Note position saved:', noteData);
-
-    // this.showMessage('Your note has been posted :)');
+    this.showMessage('Your note has been posted :)');
   },
 
   loadSavedNotes: async function () {
-
     var self = this;
 
     const allS3Objects = await S3Logic.retrieveAllObjects();
