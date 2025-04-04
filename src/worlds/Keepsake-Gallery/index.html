@@ -133,14 +133,14 @@
           crossorigin="anonymous"
         />
 
-        <!-- pedestal -->
+        <!-- Pedestal -->
         <a-asset-item
           id="pedestal-model"
           src="assets/models/Pedestal.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-        <!-- frame -->
+        <!-- Frame -->
         <a-asset-item
           id="frame-model"
           src="assets/models/Frame.glb"
@@ -274,6 +274,46 @@
         <a-asset-item
           id="playground-room-fence-green"
           src="assets/models/Playground/Fence_Green.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- Nature Room Models -->
+        <a-asset-item
+          id="nature-room-model"
+          src="assets/models/Nature/Nature_Room.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <!--Nature Nav Mesh-->
+        <!--STEVEN INSERT HERE-->
+        <a-asset-item
+          id="nature-room-bench"
+          src="assets/models/Nature/Bench.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-tree"
+          src="assets/models/Nature/Tree.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-lamppost"
+          src="assets/models/Nature/Lamp_Post.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-tree-stump-1"
+          src="assets/models/Nature/Tree_Stump_1.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-tree-stump-2"
+          src="assets/models/Nature/Tree_Stump_2.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
@@ -443,8 +483,7 @@
         gltf-model="#frame-model"
         frame-interaction
         shadow="cast:true; receive:true;"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!-- frame (2)-->
       <a-entity
@@ -456,8 +495,7 @@
         gltf-model="#frame-model"
         frame-interaction
         shadow="cast:true; receive:true;"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!-- frame (3)-->
       <a-entity
@@ -468,9 +506,8 @@
         scale="0.45 0.45 0.45"
         gltf-model="#frame-model"
         frame-interaction
-        shadow="cast:true; recieve:true;"
-      >
-      </a-entity>
+        shadow="cast:true; receive:true;"
+      ></a-entity>
 
       <!-- Minimal Room -->
       <a-entity
@@ -482,8 +519,7 @@
         gltf-model="#minimal-room-model"
         shadow="receive:true; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Minimal NavMesh-->
       <a-entity
@@ -496,8 +532,7 @@
         gltf-model="#minimal-navmesh-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Minimal Light-->
       <!--NOTE: Need to be repaired-->
@@ -518,8 +553,7 @@
         gltf-model="#liminal-room-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal Roof-->
       <a-entity
@@ -531,8 +565,7 @@
         gltf-model="#liminal-room-roof"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal NavMesh-->
       <a-entity
@@ -544,8 +577,7 @@
         gltf-model="#liminal-navmesh-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal Vents-->
       <a-entity
@@ -557,8 +589,7 @@
         gltf-model="#vent-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
       <a-entity
         id="vent2"
         class="limimal-room"
@@ -568,8 +599,7 @@
         gltf-model="#vent-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal Lightbulb-->
       <a-entity
@@ -581,8 +611,7 @@
         gltf-model="#lightbulb"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal Point Light-->
       <a-entity
@@ -605,8 +634,7 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
       <a-entity
         id="liminal-pedestal-2"
         class="liminal-room interactive"
@@ -617,8 +645,7 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
       <a-entity
         id="liminal-pedestal-3"
         class="liminal-room interactive"
@@ -629,10 +656,9 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
-      <!--Playground Room-->
+      <!--PLAYGROUND MODELS-->
       <a-entity
         id="playground-room"
         class="playground-room"
@@ -654,8 +680,7 @@
         gltf-model="#playground-navmesh-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <a-entity
         id="playground-room-slides"
@@ -667,7 +692,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-monkeybar"
         class="playground-room"
@@ -678,7 +702,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-table"
         class="playground-room"
@@ -689,7 +712,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-fence-red"
         class="playground-room"
@@ -700,7 +722,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-fence-yellow-1"
         class="playground-room"
@@ -711,7 +732,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-fence-yellow-2"
         class="playground-room"
@@ -735,7 +755,6 @@
         shadow="receive:false; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-pedestal-2"
         class="playground-room interactive"
@@ -747,7 +766,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-pedestal-3"
         class="playground-room interactive"
@@ -759,7 +777,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <!--Playground Lighting-->
       <a-entity
         light="type: point; intensity: 50; color: #ffffff; decay:1"
@@ -770,7 +787,118 @@
       ></a-entity>
 
       <!--NATURE MODELS-->
-      <!-- Nature Room -->
+      <a-entity
+        id="nature-room"
+        class="nature-room"
+        position="0 0 0"
+        rotation="0 -90 0"
+        scale="0.23 0.23 0.23"
+        gltf-model="#nature-room-model"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-tree-1"
+        class="nature-room"
+        position="-3.91 0 -4.13"
+        rotation="0 0 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-tree"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-tree-2"
+        class="nature-room"
+        position="3.70 0 4.094"
+        rotation="0 0 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-tree"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-bench"
+        class="nature-room"
+        position="-1.57 0 -3.86 "
+        rotation="0 0 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#nature-room-bench"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-lamppost"
+        class="nature-room"
+        position="4.575 0 -4.58"
+        rotation="0 0 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-lamppost"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-lamppost-light"
+        light="type: point; intensity: 30; color: #fdff8a; decay:3"
+        position="4.62 4 -4.77"
+        class="nature-room"
+        shadow="receive:true; cast:true;"
+        visible="false"
+      ></a-entity>
+
+      <!--Nature Room Pedestal -->
+      <a-entity
+        id="nature-pedestal-1"
+        class="nature-room interactive"
+        position="-4 0 0.5"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
+        gltf-model="#nature-room-tree-stump-2"
+        pedestal-interaction
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="nature-pedestal-2"
+        class="nature-room interactive"
+        position="4 0 -2.7"
+        rotation="0 -52 0"
+        scale="0.5 0.5 0.5"
+        gltf-model="#nature-room-tree-stump-2"
+        pedestal-interaction
+        shadow="receive:true; cast:false;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="nature-pedestal-3"
+        class="nature-room interactive"
+        position="-1.4 0 3.5"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
+        gltf-model="#nature-room-tree-stump-1"
+        pedestal-interaction
+        shadow="receive:true; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <!--Nature Room Lighting-->
+      <a-entity
+        id="nature-room-light"
+        light="type: point; intensity: 40; color: #ffffff; decay:1"
+        position="0 10 0"
+        class="nature-room"
+        shadow="receive:true; cast:true;"
+        visible="false"
+      ></a-entity>
+
+
+
+
       <!-- EXIT: back to lobby portal -->
       <a-entity
         id="portal_link"
