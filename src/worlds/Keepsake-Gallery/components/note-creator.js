@@ -104,6 +104,11 @@ AFRAME.registerComponent('note-creator', {
       noteEntity.addEventListener('object-released', function () {
         console.log('Note released');
         self.saveNotePosition(noteEntity, noteText);
+
+        var noteSound = document.querySelectorAll('.noteSound');
+        noteSound.forEach(function(soundEntity){
+          soundEntity.components.sound.playSound();
+        });
       });
 
       noteEntity.classList.add('interactive');
