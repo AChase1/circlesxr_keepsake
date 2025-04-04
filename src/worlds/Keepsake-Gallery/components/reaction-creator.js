@@ -6,13 +6,32 @@ AFRAME.registerComponent('reaction-creator', {
     
     init: function () {
       var self = this;
+      
       if (!localStorage.getItem('galleryReactions')) {
         localStorage.setItem('galleryReactions', JSON.stringify([]));
       }
-            self.el.addEventListener('click', function() {
-        self.createReaction();
-      });
       
+      // tracking last time clicked for TC
+      this.lastClickTime = 0;
+      
+      this.clickHandler = function(event) {
+        // debounce
+        var now = Date.now();
+        if (now - self.lastClickTime < 500) {
+          console.log('Ignoring click - too soon after last click');
+          return;
+        }
+        
+        self.lastClickTime = now;
+        event.stopPropagation();
+        event.preventDefault();
+        
+        console.log('Creating reaction:', self.data.type);
+        self.createReaction();
+      };
+      
+      self.el.addEventListener('click', this.clickHandler);
+
       self.loadSavedReactions();
       
       console.log('Reaction creator init for:', self.data.type);
@@ -63,6 +82,8 @@ AFRAME.registerComponent('reaction-creator', {
         reactionEntity.setAttribute('pickupable', '');
         
         console.log('Added pickupable to reaction:', reactionId);
+        
+        self.setupTripleClickDelete(reactionEntity);
         
         // save position when released
         reactionEntity.addEventListener('object-released', function() {
@@ -144,6 +165,8 @@ AFRAME.registerComponent('reaction-creator', {
         setTimeout(function() {
           reactionEntity.setAttribute('pickupable', '');
           
+          self.setupTripleClickDelete(reactionEntity);
+          
           reactionEntity.addEventListener('object-released', function() {
             self.saveReactionPosition(reactionEntity);
           });
@@ -180,7 +203,58 @@ AFRAME.registerComponent('reaction-creator', {
       }, 3000);
     },
     
+    // triple click to delete
+    setupTripleClickDelete: function(reactionEntity) {
+      var self = this;
+      
+      reactionEntity.clickCount = 0;
+      reactionEntity.lastClickTime = 0;
+      
+      reactionEntity.clickHandler = function(event) {
+        var now = Date.now();
+        
+        // reset click count if past the time
+        if (now - reactionEntity.lastClickTime > 500) {
+          reactionEntity.clickCount = 0;
+        }
+        
+        reactionEntity.clickCount++;
+        reactionEntity.lastClickTime = now;
+        
+        // check for 3 clicks
+        if (reactionEntity.clickCount === 3) {
+          self.deleteReaction(reactionEntity);
+          
+          event.stopPropagation();
+          event.preventDefault();
+        }
+      };
+      
+      reactionEntity.addEventListener('click', reactionEntity.clickHandler);
+    },
+    
+    // deleting the reaction
+    deleteReaction: function(reactionEntity) {
+      var reactionId = reactionEntity.id;
+      var reactionType = reactionEntity.getAttribute('data-reaction-type');
+      
+      // remove from scene
+      reactionEntity.parentNode.removeChild(reactionEntity);
+      
+      // remove from localStorage
+      var reactions = JSON.parse(localStorage.getItem('galleryReactions') || '[]');
+      
+      var filteredReactions = reactions.filter(function(reaction) {
+        return reaction.id !== reactionId;
+      });
+      
+      localStorage.setItem('galleryReactions', JSON.stringify(filteredReactions));
+      
+      this.showMessage(reactionType.charAt(0).toUpperCase() + reactionType.slice(1) + ' deleted!');
+      console.log('Reaction deleted:', reactionId);
+    },
+    
     remove: function() {
-      this.el.removeEventListener('click', this.createReaction);
+      this.el.removeEventListener('click', this.clickHandler);
     }
   });
