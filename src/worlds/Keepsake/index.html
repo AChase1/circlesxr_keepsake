@@ -175,6 +175,14 @@
           crossorigin="anonymous"
         ></a-asset-item>
 
+        <!--SOUNDS-->
+        <audio id="lobby-music-sound" src="assets/sounds/LobbyMusic.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="click-sound" src="assets/sounds/TutorialClick.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="orb-pickup-sound" src="assets/sounds/OrbPickup.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="orb-setdown-sound" src="assets/sounds/OrbSetDown.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="orb-hover-sound" src="assets/sounds/OrbHover.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio id="orb-portal-sound" src="assets/sounds/OrbPortal.mp3" preload="auto" crossorigin="anonymous"></audio>
+
         <!-- Circles' built-in assets [REQUIRED] -->
         <circles-assets />
       </a-assets>
@@ -217,8 +225,57 @@
         <!--Use "side" property to load material on the inside/outside of the faces-->
       </a-entity>
 
+      <!--SOUNDS-->
+      <!--Lobby Music-->
+      <a-entity id="lobbyMusic"
+                position="0 0 0"
+                sound="src:#lobby-music-sound;
+                        autoplay:true;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="tutorialClick"
+                position="0 0 0"
+                sound="src:#click-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:1">
+      </a-entity>
+      <a-entity class="orbPickup"
+                position="0 0 0"
+                sound="src:#orb-pickup-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.5">
+      </a-entity>
+      <a-entity class="orbSetDown"
+                position="0 0 0"
+                sound="src:#orb-setdown-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.5">
+      </a-entity>
+      <a-entity class="orbHover"
+                position="0 0 0"
+                sound="src:#orb-hover-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.5">
+      </a-entity>
+      <a-entity class="orbPortal"
+                position="0 0 0"
+                sound="src:#orb-portal-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.5">
+      </a-entity>
 
-      
 
       <!--Minimal Room Plates-->
       <a-entity id="orb_plates">      

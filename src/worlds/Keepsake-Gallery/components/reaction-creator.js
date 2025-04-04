@@ -64,15 +64,18 @@ AFRAME.registerComponent('reaction-creator', {
         reactionEntity.setAttribute('gltf-model', '#heart-model');
         reactionEntity.setAttribute('scale', '0.1 0.1 0.1');
         reactionEntity.setAttribute('rotation', '0 90 0');
+        reactionEntity.setAttribute('reaction-sounds', "");
       } else if (reactionType === 'laugh') {
         reactionEntity.setAttribute('gltf-model', '#laugh-model');
         reactionEntity.setAttribute('scale', '0.1 0.1 0.1');
         reactionEntity.setAttribute('rotation', '0 180 0');
+        reactionEntity.setAttribute('reaction-sounds', "");
       } else {
         // default to heart if type isn't recognized
         reactionEntity.setAttribute('gltf-model', '#heart-model');
         reactionEntity.setAttribute('scale', '0.1 0.1 0.1');
         reactionEntity.setAttribute('rotation', '0 90 0');
+        reactionEntity.setAttribute('reaction-sounds', "");
       }
       
       reactionEntity.classList.add('interactive');
@@ -102,6 +105,11 @@ AFRAME.registerComponent('reaction-creator', {
       var position = reactionEntity.getAttribute('position');
       var rotation = reactionEntity.getAttribute('rotation');
       var reactionType = reactionEntity.getAttribute('data-reaction-type');
+
+      var laughingSound = document.querySelectorAll('.laughingSound');
+      var smilingSound = document.querySelectorAll('.smilingSound');
+      var thumbsUpSound = document.querySelectorAll('.thumbsUpSound');
+      var heartSound = document.querySelectorAll('.heartSound');
       
       var reactionData = {
         id: reactionEntity.id,
@@ -129,6 +137,30 @@ AFRAME.registerComponent('reaction-creator', {
       console.log('Reaction position saved:', reactionData);
       
       this.showMessage('Your ' + reactionType + ' has been placed :)');
+
+      // Emoji Sound Effects
+      switch(reactionType){
+        case "laugh":
+          laughingSound.forEach(function(soundEntity){
+            soundEntity.components.sound.playSound();
+          });
+          break;
+        case "smile":
+          smiliingSound.forEach(function(soundEntity){
+            soundEntity.components.sound.playSound();
+          });
+          break;
+        case "thumbsUp":
+          thumbsUpSound.forEach(function(soundEntity){
+            soundEntity.components.sound.playSound();
+          });
+          break;
+        default: // Heart Sound / Default
+          heartSound.forEach(function(soundEntity){
+            soundEntity.components.sound.playSound();
+          });
+          break;
+      }
     },
     
     loadSavedReactions: function() {
@@ -256,5 +288,19 @@ AFRAME.registerComponent('reaction-creator', {
     
     remove: function() {
       this.el.removeEventListener('click', this.clickHandler);
+    }
+  });
+
+  AFRAME.registerComponent('reaction-sounds', {
+    init: function() {
+      const CONTEXT_AF = this;
+      CONTEXT_AF.orbPickupSound = document.querySelectorAll('.emojiPickupSound');
+
+      CONTEXT_AF.el.addEventListener('click', function(e){
+        CONTEXT_AF.orbPickupSound.forEach(function(soundEntity){
+          soundEntity.components.sound.stopSound();
+          soundEntity.components.sound.playSound();
+        });
+      });
     }
   });

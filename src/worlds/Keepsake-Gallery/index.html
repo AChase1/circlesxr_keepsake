@@ -133,6 +133,14 @@
           crossorigin="anonymous"
         />
 
+        <!--Gallery NavMesh X4-->
+        <a-asset-item
+          id="gallery-navmesh-model"
+          src="assets/models/Gallery_NavMesh.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
         <!-- Pedestal -->
         <a-asset-item
           id="pedestal-model"
@@ -156,14 +164,6 @@
           crossorigin="anonymous"
         ></a-asset-item>
 
-        <!--Minimal NavMesh-->
-        <a-asset-item
-          id="minimal-navmesh-model"
-          src="assets/models/NavMeshes/MinimalNavMesh.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
-
         <!--Liminal Room Models-->
         <a-asset-item
           id="liminal-room-model"
@@ -177,13 +177,7 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-        <!--Liminal NavMesh-->
-        <a-asset-item
-          id="liminal-navmesh-model"
-          src="assets/models/NavMeshes/LiminalNavMesh.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
+
         <a-asset-item
           id="lightbulb"
           src="assets/models/Lightbulb.glb"
@@ -210,13 +204,7 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-        <!--Playground NavMesh-->
-        <a-asset-item
-          id="playground-navmesh-model"
-          src="assets/models/NavMeshes/PlaygroundNavMesh.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
+
         <a-asset-item
           id="playground-room-slides"
           src="assets/models/Playground/Slides.glb"
@@ -284,9 +272,7 @@
           src="assets/models/Nature/Nature_Room.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
-        ></a-asset-item>
-        <!--Nature Nav Mesh-->
-        <!--STEVEN INSERT HERE-->
+        ></a-asset-item>        
         <a-asset-item
           id="nature-room-bench"
           src="assets/models/Nature/Bench.glb"
@@ -341,6 +327,72 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
+
+        <!--SOUNDS-->
+        <a-asset-item
+          id="minimal-ambience-sound"
+          src="../Keepsake/assets/sounds/MinimalAmbience.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-music"
+          src="../Keepsake/assets/sounds/PlaygroundMusic.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="liminal-ambience-sound"
+          src="../Keepsake/assets/sounds/LiminalAmbience.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-ambience-sound"
+          src="../Keepsake/assets/sounds/NatureAmbience.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!--Emoji Sounds-->
+        <a-asset-item
+          id="emoji-pickup-sound"
+          src="../Keepsake/assets/sounds/EmojiPickup.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="laughing-sound"
+          src="../Keepsake/assets/sounds/LaughingEmoji.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="smiling-sound"
+          src="../Keepsake/assets/sounds/SmileEmoji.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="thumbsup-sound"
+          src="../Keepsake/assets/sounds/ThumbsUpEmoji.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="heart-sound"
+          src="../Keepsake/assets/sounds/HeartEmoji.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="stickynote-sound"
+          src="../Keepsake/assets/sounds/StickyNote.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
         <!-- pdf model -->
 
         <!-- Circles' built-in assets [REQUIRED] -->
@@ -372,6 +424,92 @@
         material="src: #sky_map; side:back; shader:flat"
         visible="true"
       >
+      </a-entity>
+
+      <a-entity
+        nav-mesh
+        id="gallery-navmesh"
+        position="0 0 0"
+        gltf-model="#gallery-navmesh-model"
+        shadow="cast:true; receive:true;"
+        visible="false">
+      </a-entity>
+
+      <!--SOUNDS-->
+      <!--Ambience and Music-->
+      <a-entity class="minimalAmbience"
+                sound="src:#minimal-ambience-sound;
+                        autoplay:false;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="playgroundMusic"
+                sound="src:#playground-music;
+                        autoplay:false;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="liminalAmbience"
+                sound="src:#liminal-ambience-sound;
+                        autoplay:false;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="natureAmbience"
+                sound="src:#nature-ambience-sound;
+                        autoplay:false;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+
+      <!--EMOJI SOUNDS-->
+      <a-entity class="emojiPickupSound"
+                sound="src:#emoji-pickup-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="laughingSound"
+                sound="src:#laughing-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="smilingSound"
+                sound="src:#smiling-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="thumbsUpSound"
+                sound="src:#thumbsup-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="heartSound"
+                sound="src:#heart-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+
+      <!--Sticky-Note Sound-->
+      <a-entity class="noteSound"
+                sound="src:#stickynote-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:1">
       </a-entity>
 
       <!--MINIMAL MODELS-->
@@ -521,19 +659,6 @@
         visible="false"
       ></a-entity>
 
-      <!--Minimal NavMesh-->
-      <a-entity
-        nav-mesh
-        id="minimal-navmesh"
-        class="minimal-room"
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="0 0 0"
-        gltf-model="#minimal-navmesh-model"
-        shadow="receive:false; cast:false;"
-        visible="false"
-      ></a-entity>
-
       <!--Minimal Light-->
       <!--NOTE: Need to be repaired-->
       <a-entity
@@ -563,18 +688,6 @@
         rotation="0 0 0"
         scale="0.23 0.23 0.23"
         gltf-model="#liminal-room-roof"
-        shadow="receive:false; cast:false;"
-        visible="false"
-      ></a-entity>
-
-      <!--Liminal NavMesh-->
-      <a-entity
-        id="liminal-navmesh"
-        class="liminal-room"
-        position="15 0 0"
-        rotation="0 0 0"
-        scale="1.0 1.0 1.0"
-        gltf-model="#liminal-navmesh-model"
         shadow="receive:false; cast:false;"
         visible="false"
       ></a-entity>
@@ -666,18 +779,6 @@
         rotation="0 -90 0"
         scale="0.23 0.23 0.23"
         gltf-model="#playground-room-model"
-        shadow="receive:false; cast:false;"
-        visible="false"
-      ></a-entity>
-
-      <!--Playground NavMesh-->
-      <a-entity
-        id="playground-navmesh"
-        class="playground-room"
-        position="30 0 0"
-        rotation="0 0 0"
-        scale="1.0 1.0 1.0"
-        gltf-model="#playground-navmesh-model"
         shadow="receive:false; cast:false;"
         visible="false"
       ></a-entity>

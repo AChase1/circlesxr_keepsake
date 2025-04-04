@@ -6,15 +6,21 @@ AFRAME.registerComponent('tutorial', {
     init: function() {
         const CONTEXT_AF = this;
         CONTEXT_AF.instructionsText = document.querySelector('#instructions');
+        CONTEXT_AF.tutorialSound = document.querySelectorAll('.tutorialClick'); // NOTE: Must load sounds as CONTEXT_AF
 
         CONTEXT_AF.el.addEventListener('click', function(e){
-            console.log(tutorialCount);
+
+            CONTEXT_AF.tutorialSound.forEach(function(soundEntity){
+                soundEntity.components.sound.stopSound();
+                soundEntity.components.sound.playSound();
+            });
 
             // Conditional Statement to swtich text
             // Aframe sometimes counts clicks twice, so switch the text every ""two"" clicks
             if(tutorialCount < 2){
                 CONTEXT_AF.instructionsText.setAttribute("text", {value: "1. First, click on the Orb Portal on the desk to pick it up.\n\nThis will be your personal portal to your personal gallery."}); 
                 tutorialCount++;
+
             }else if(tutorialCount >= 2 && tutorialCount < 4){
                 CONTEXT_AF.instructionsText.setAttribute("text", {value: "2. Carry your Orb to one of the four themed rooms.\n\nClick on one of the red plates to select a theme and place your Orb on the shelf."}); 
                 tutorialCount++;
@@ -37,6 +43,8 @@ AFRAME.registerComponent('tutorial', {
                 CONTEXT_AF.instructionsText.setAttribute("text", {value: "Welcome to Keepsake! The future of memory preservation in virtual reality.\n\nIf this is your first visit, click here for a tutorial."}); 
                 tutorialCount = 0;
             }
+
+            
         });
     }
 });
