@@ -55,7 +55,7 @@ AFRAME.registerComponent("gallery-theme", {
                 for (let i = 0; i < natureModels.length; i++) {
                     natureModels[i].setAttribute("visible", "true");
                   }
-                //document.querySelector('#nature-navmesh').setAttribute("visible", "false");
+                document.querySelector('#nature-navmesh').setAttribute("visible", "false");
             }
 
         } else {
