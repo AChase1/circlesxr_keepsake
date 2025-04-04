@@ -799,9 +799,31 @@
       ></a-entity>
 
       <a-entity
+        id="nature-room-tree-1"
+        class="nature-room"
+        position="-3.91 0 -4.13"
+        rotation="0 0 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-tree"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-tree-2"
+        class="nature-room"
+        position="3.70 0 4.094"
+        rotation="0 0 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-tree"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
         id="nature-room-bench"
         class="nature-room"
-        position="0 0 0 "
+        position="-1.57 0 -3.86 "
         rotation="0 0 0"
         scale="0.3 0.3 0.3"
         gltf-model="#nature-room-bench"
@@ -810,13 +832,22 @@
       ></a-entity>
 
       <a-entity
-        id="nature-room-tree"
+        id="nature-room-lamppost"
         class="nature-room"
-        position="-4.42 0 -4.78"
+        position="4.575 0 -4.58"
         rotation="0 0 0"
-        scale="0.3 0.3 0.3"
-        gltf-model="#nature-room-tree"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-lamppost"
         shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-lamppost-light"
+        light="type: point; intensity: 30; color: #fdff8a; decay:3"
+        position="4.62 4 -4.77"
+        class="nature-room"
+        shadow="receive:true; cast:true;"
         visible="false"
       ></a-entity>
 
@@ -824,9 +855,9 @@
       <a-entity
         id="nature-pedestal-1"
         class="nature-room interactive"
-        position="-4.8 0 0.46"
-        rotation="0 71.5 0"
-        scale="0.4 0.4 0.4"
+        position="-4 0 0.5"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
         gltf-model="#nature-room-tree-stump-2"
         pedestal-interaction
         shadow="receive:false; cast:false;"
@@ -835,9 +866,9 @@
       <a-entity
         id="nature-pedestal-2"
         class="nature-room interactive"
-        position="4.96 0 -2.65"
+        position="4 0 -2.7"
         rotation="0 -52 0"
-        scale="0.4 0.4 0.4"
+        scale="0.5 0.5 0.5"
         gltf-model="#nature-room-tree-stump-2"
         pedestal-interaction
         shadow="receive:true; cast:false;"
@@ -846,18 +877,20 @@
       <a-entity
         id="nature-pedestal-3"
         class="nature-room interactive"
-        position="-1.37 0 3.45"
-        rotation="0 -165 0"
-        scale="0.4 0.4 0.4"
+        position="-1.4 0 3.5"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
         gltf-model="#nature-room-tree-stump-1"
         pedestal-interaction
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
+
       <!--Nature Room Lighting-->
       <a-entity
-        light="type: point; intensity: 50; color: #ffffff; decay:1"
-        position="0 9.7 0"
+        id="nature-room-light"
+        light="type: point; intensity: 40; color: #ffffff; decay:1"
+        position="0 10 0"
         class="nature-room"
         shadow="receive:true; cast:true;"
         visible="false"
