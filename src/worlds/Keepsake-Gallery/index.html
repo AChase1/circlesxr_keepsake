@@ -265,6 +265,12 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
+        <a-asset-item
+          id="playground-room-frame-yellow"
+          src="assets/models/Playground/Frame_Yellow.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
 
         <!-- Nature Room Models -->
         <a-asset-item
@@ -300,6 +306,12 @@
         <a-asset-item
           id="nature-room-tree-stump-2"
           src="assets/models/Nature/Tree_Stump_2.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-frame-green"
+          src="assets/models/Nature/Frame_Nature_Green.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
@@ -513,7 +525,6 @@
       </a-entity>
 
       <!--MINIMAL MODELS-->
-      <!--Minimal Pedestals-->
       <!-- note box -->
       <a-box
         id="note-creator-box"
@@ -558,96 +569,10 @@
         height="0.3"
         depth="0.1"
         color="yellow"
-      >
-      </a-box>
+      ></a-box>
 
-      <!-- pedestal -->
-      <a-entity
-        id="minimal-pedestal-1"
-        class="interactive"
-        position="3.150 0 -1.822"
-        rotation="0 90 0"
-        scale="0.05 0.05 0.05"
-        gltf-model="#pedestal-model"
-        pedestal-interaction
-        shadow="cast:true; receive:true;"
-        visible="false"
-      >
-      </a-entity>
-
-      <!-- scale="0.045 0.045 0.045"-->
-      <a-entity
-        id="minimal-pedestal-2"
-        class="interactive"
-        position="-2.87 0 -3.581"
-        rotation="0 90 0"
-        scale="0.045 0.045 0.045"
-        gltf-model="#pedestal-model"
-        pedestal-interaction
-        shadow="cast:true; receive:true;"
-        visible="false"
-      >
-      </a-entity>
-
-      <a-entity
-        id="minimal-pedestal-3"
-        class="interactive"
-        position="4.592 0 3.352"
-        rotation="0 90 0"
-        scale="0.03 0.03 0.03"
-        gltf-model="#pedestal-model"
-        pedestal-interaction
-        shadow="cast:true; receive:true;"
-        visible="false"
-      >
-      </a-entity>
-
-      <!-- pdf test -->
-      <a-entity
-        id="pdf-test"
-        position="-5.631 2.690 -1.629"
-        rotation="0 90 0"
-        scale="2.0 2.0 2.0"
-        circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"
-      ></a-entity>
-
-      <!-- frame (1)-->
-      <a-entity
-        id="frame-1"
-        class="interactive"
-        position="-5.752 1.5 -1.6"
-        rotation="0 90 0"
-        scale="0.45 0.45 0.45"
-        gltf-model="#frame-model"
-        frame-interaction
-        shadow="cast:true; receive:true;"
-      ></a-entity>
-
-      <!-- frame (2)-->
-      <a-entity
-        id="frame-2"
-        class="interactive"
-        position="1 1.7 -5.787"
-        rotation="0 0 0"
-        scale="0.45 0.45 0.45"
-        gltf-model="#frame-model"
-        frame-interaction
-        shadow="cast:true; receive:true;"
-      ></a-entity>
-
-      <!-- frame (3)-->
-      <a-entity
-        id="frame-3"
-        class="interactive"
-        position="5.754 1 0.04"
-        rotation="0 -90 0"
-        scale="0.45 0.45 0.45"
-        gltf-model="#frame-model"
-        frame-interaction
-        shadow="cast:true; receive:true;"
-      ></a-entity>
-
-      <!-- Minimal Room -->
+      <!--MINIMAL MODELS-->
+      <!--Minimal Room-->
       <a-entity
         id="minimal-room"
         class="minimal-room"
@@ -659,10 +584,88 @@
         visible="false"
       ></a-entity>
 
-      <!--Minimal Light-->
-      <!--NOTE: Need to be repaired-->
+      <!--Minimal Room Pedestal-->
       <a-entity
-        light="type: ambient"
+        id="minimal-pedestal-1"
+        class="interactive"
+        position="3.150 0 -1.822"
+        rotation="0 90 0"
+        scale="0.05 0.05 0.05"
+        gltf-model="#pedestal-model"
+        pedestal-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="minimal-pedestal-2"
+        class="interactive"
+        position="-2.87 0 -3.581"
+        rotation="0 90 0"
+        scale="0.045 0.045 0.045"
+        gltf-model="#pedestal-model"
+        pedestal-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="minimal-pedestal-3"
+        class="interactive"
+        position="4.592 0 3.352"
+        rotation="0 90 0"
+        scale="0.03 0.03 0.03"
+        gltf-model="#pedestal-model"
+        pedestal-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+
+      <!--Minimal Room Frame-->
+      <a-entity
+        id="minimal-frame-1"
+        class="minimal-room interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="minimal-frame-2"
+        class="minimal-room interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="minimal-frame-3"
+        class="minimal-room interactive"    
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <!-- pdf test -->
+      <a-entity
+        id="pdf-test"
+        position="-5.631 2.690 -1.629"
+        rotation="0 90 0"
+        scale="2.0 2.0 2.0"
+        circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"
+      ></a-entity>
+
+      <!--Minimal Light-->
+      <a-entity
+        light="type: point; intensity: 45; color: #ffffff; decay:1"
+        position="0 11 0"
         class="minimal-room"
         visible="false"
       ></a-entity>
@@ -728,9 +731,7 @@
 
       <!--Liminal Point Light-->
       <a-entity
-        light="type: point;
-                      intensity: 7;
-                      color: #dedbba"
+        light="type: point; intensity: 7; color: #dedbba"
         position="-2.946 4.009 3.413"
         class="limimal-room"
         visible="false"
@@ -767,6 +768,41 @@
         scale="0.076 0.076 0.076"
         gltf-model="#foldable-chair"
         pedestal-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+
+      <!--Liminal Room Frame-->
+      <a-entity
+        id="liminal-frame-1"
+        class="liminal-room interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="liminal-frame-2"
+        class="liminal-room interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="liminal-frame-3"
+        class="liminal-room interactive"    
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
         shadow="cast:true; receive:true;"
         visible="false"
       ></a-entity>
@@ -878,6 +914,42 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
+
+      <!--Playground Room Frame-->
+      <a-entity
+        id="playground-frame-1"
+        class="playground-room interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#playground-room-frame-yellow"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="playground-frame-2"
+        class="playground-room interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#playground-room-frame-yellow"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="playground-frame-3"
+        class="playground-room interactive"
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#playground-room-frame-yellow"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+
       <!--Playground Lighting-->
       <a-entity
         light="type: point; intensity: 50; color: #ffffff; decay:1"
@@ -987,6 +1059,41 @@
         visible="false"
       ></a-entity>
 
+      <!--Nature Room Frame-->
+      <a-entity
+        id="nature-frame-1"
+        class="nature-room interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#nature-room-frame-green"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="nature-frame-2"
+        class="nature-room interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#nature-room-frame-green"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="nature-frame-3"
+        class="nature-room interactive"
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#nature-room-frame-green"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+
       <!--Nature Room Lighting-->
       <a-entity
         id="nature-room-light"
@@ -997,14 +1104,11 @@
         visible="false"
       ></a-entity>
 
-
-
-
       <!-- EXIT: back to lobby portal -->
       <a-entity
         id="portal_link"
         position="-4.573 1.347 4.479"
-        rotation="0 143.672 0"
+        rotation="0 0 0"
         scale="1 1 1"
         circles-portal="title_text:Exit to Lobby; link_url:/w/Keepsake?gallerySource=true"
       ></a-entity>

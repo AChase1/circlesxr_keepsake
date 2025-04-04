@@ -225,6 +225,40 @@
         <!--Use "side" property to load material on the inside/outside of the faces-->
       </a-entity>
 
+      <a-entity
+        id="lobby-light"
+        light="type: point; intensity: 100; color: #ffffff; decay:1"
+        position="-3 14.5 4.7">
+
+        <!--Minimal Orb Gallery-->
+        <a-entity
+          id="lobby-minimal-light"
+          light="type: point; intensity: 20; color: #ffffff; decay:1"
+          position="-16 1 7.5"
+        ></a-entity>
+
+        <!--Liminal Orb Gallery-->
+        <a-entity
+          id="lobby-liminal-light"
+          light="type: point; intensity: 50; color: #ffffff; decay:1"
+          position="13.3 -8 -21.5"
+        ></a-entity>
+
+        <!--Playground Orb Gallery-->
+        <a-entity
+          id="lobby-playground-light"
+          light="type: point; intensity: 50; color: #ffffff; decay:1"
+          position="-15 -4 -21.6"
+        ></a-entity>
+
+        <!--Nature Orb Gallery-->
+        <a-entity
+          id="lobby-nature-light"
+          light="type: point; intensity: 50; color: #ffffff; decay:1"
+          position="13 -4 4"
+        ></a-entity>
+      </a-entity>
+
       <!--SOUNDS-->
       <!--Lobby Music-->
       <a-entity id="lobbyMusic"
@@ -276,6 +310,21 @@
                         volume:0.5">
       </a-entity>
 
+      <!--Teleport Pads-->
+      <a-entity id="teleport-pads">
+        <a-entity circles-checkpoint position="-3.3 0.15 -2.3"></a-entity> <!--reception-->
+        <a-entity circles-checkpoint position="5 0.15 -1.5"></a-entity> <!--nature comp-->
+        <a-entity circles-checkpoint position="-11 0.15 -1.2"></a-entity> <!--minimal comp-->
+        <a-entity circles-checkpoint position="1 0.15 1"></a-entity>
+        <a-entity circles-checkpoint position="1 0.15 1"></a-entity>
+        <a-entity circles-checkpoint position="1 0.15 1"></a-entity>
+        <a-entity circles-checkpoint position="1 0.15 1"></a-entity>
+        <a-entity circles-checkpoint position="1 0.15 1"></a-entity>
+        <a-entity circles-checkpoint position="1 0.15 1"></a-entity>
+        <a-entity circles-checkpoint position="1 0.15 1"></a-entity>
+        <a-entity circles-checkpoint position="1 0.15 1"></a-entity>
+
+      </a-entity>
 
       <!--Minimal Room Plates-->
       <a-entity id="orb_plates">      
@@ -762,8 +811,7 @@
               rotation="0 90 0"
           >
       </a-entity>
-
-        </a-entity>
+      </a-entity>
 
         <!--Lobby Model-->
         <a-entity
@@ -773,8 +821,7 @@
           scale="0.3 0.3 0.3"
           gltf-model="#orb-room-model"
           shadow="recieve:true;"
-        >
-        </a-entity>
+        ></a-entity>
 
         <!--Lobby NavMesh-->
         <a-entity
@@ -784,9 +831,7 @@
           gltf-model="#lobby-navmesh"
           nav-mesh
           visible="false"
-        >
-        </a-entity>
-
+        ></a-entity>
       </a-entity>
     </a-scene>
 
