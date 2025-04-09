@@ -1,8 +1,7 @@
 class ArtifactLogic {
     getFileFromSystem = function () {
-        const currUserEmail = UserLogic.getCurrentUserEmail();
-        const userEmail = UserLogic.getCurrentGalleryEmail();
-        if (userEmail != currUserEmail) return;
+        console.log("getFileFromSystem called");
+
         const fileInput = this.createFileInput();
         fileInput.addEventListener('change', (event) => this.uploadFile(event));
         fileInput.click();
@@ -77,10 +76,27 @@ class ArtifactLogic {
 
         const model = document.createElement("a-entity");
         model.setAttribute("id", "artifact");
-        model.setAttribute("gltf-model", `url(${URL.createObjectURL(file)})`);
-        model.setAttribute("scale", "1 1 1");
-        model.setAttribute("position", { x: pedestalInteraction.pedestalTop.x, y: pedestalInteraction.pedestalTop.y, z: pedestalInteraction.pedestalTop.z });
-        model.setAttribute("circles-artefact", `label_text:${artifact.name}; label_offset:0 1.5 0; inspectPosition:0 0 -1.5`);
+
+        if (artifact.pedestalId.includes("frame")) {
+            const frame = document.getElementById(artifact.pedestalId);
+            const frameWorldPos = frame.object3D.getWorldPosition(new THREE.Vector3());
+            model.setAttribute("circles-pdf-loader", `src:${URL.createObjectURL(file)};`);
+            model.setAttribute("scale", "1.8 1.8 1.8");
+            model.setAttribute("position", { x: frameWorldPos.x, y: frameWorldPos.y + 1.3, z: frameWorldPos.z + 0.125 });
+            if (artifact.pedestalId.includes("frame-1")) {
+                model.setAttribute("rotation", "0 90 0");
+                model.setAttribute("position", { x: frameWorldPos.x + 0.125, y: frameWorldPos.y + 1.3, z: frameWorldPos.z });
+            } else if (artifact.pedestalId.includes("frame-3")) {
+                model.setAttribute("rotation", "0 -90 0");
+                model.setAttribute("position", { x: frameWorldPos.x - 0.125, y: frameWorldPos.y + 1.3, z: frameWorldPos.z });
+            }
+        } else {
+            model.setAttribute("gltf-model", `url(${URL.createObjectURL(file)})`);
+            model.setAttribute("scale", "1 1 1");
+            model.setAttribute("position", { x: pedestalInteraction.pedestalTop.x, y: pedestalInteraction.pedestalTop.y, z: pedestalInteraction.pedestalTop.z });
+            model.setAttribute("circles-artefact", `label_text:${artifact.name}; label_offset:0 1.5 0; inspectPosition:0 0 -1.5`);
+        }
+
         scene.appendChild(model);
     }
 }

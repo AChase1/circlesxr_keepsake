@@ -16,7 +16,11 @@ AFRAME.registerComponent('pedestal-interaction', {
         };
 
         this.el.addEventListener('click', () => {
-            console.log('Pedestal clicked');
+
+            const currUserEmail = UserLogic.getCurrentUserEmail();
+            const userEmail = UserLogic.getCurrentGalleryEmail();
+            if (userEmail != currUserEmail) return;
+
             const uploadUI = document.querySelector('#upload-ui');
             const manager = this.el.sceneEl;
             manager.emit('object-picked-up', { id: this.el.id }, true);

@@ -9,9 +9,9 @@ AFRAME.registerComponent('frame-interaction', {
         }
 
         this.el.addEventListener('click', () => {
-            console.log('Frame clicked');
             const uploadUI = document.querySelector('#upload-2D-ui');
             const manager = this.el.sceneEl;
+            manager.emit('object-picked-up', { id: this.el.id }, true);
             uploadUI.style.display = 'block';
         });
     }
