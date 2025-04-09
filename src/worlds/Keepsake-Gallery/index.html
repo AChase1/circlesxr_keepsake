@@ -11,10 +11,12 @@
     <script src="./components/load-artifacts.js"></script>
     <script src="./components/ui-handler.js"></script>
     <script src="./components/note-debug.js"></script>
-    <script src="./components/note-creator.js"></script>
+    <script src="./components/vr-note-creator.js"></script>
 
     <!-- VR keyboard -->
     <script src="./components/dist/aframe-super-keyboard.min.js"></script>
+    <!-- Locomotion -->
+    <script src="https://cdn.jsdelivr.net/npm/aframe-locomotion@0.2.0/dist/aframe-locomotion.umd.min.js"></script>
 
     <script src="./components/reaction-creator.js"></script>
     <script src="../Keepsake/components/interaction-manager.js"></script>
@@ -128,6 +130,7 @@
       load-artifacts
       gallery-theme
     >
+
       <a-assets>
         <!-- put all assets here -->
         <!--Skybox-->
@@ -421,6 +424,8 @@
       <!-- put scene stuff here -->
       <!-- camera -->
       <a-entity id="rig" movement-controls="constrainToNavMesh: true">
+
+        <!-- head/camera -->
         <a-entity
           id="camera"
           camera
@@ -428,13 +433,8 @@
           twoway-motion="speed: 35"
           position="0 1.6 0"
           cursor="rayOrigin: mouse"
-          raycaster="objects: .interactive; far: 20; interval: 100"
-        >
-        </a-entity>
+        ></a-entity>
       </a-entity>
-
-      <!-- Change hand to `hand` for VR. -->
-      <a-entity id="keyboard" super-keyboard="hand: #mouseCursor; imagePath:./assets/images" position="0 1.076 -0.5" rotation="-30 0 0";></a-entity>
 
       <a-entity
         id="sky-box"
