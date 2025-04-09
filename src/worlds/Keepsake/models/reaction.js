@@ -1,24 +1,24 @@
 class Reaction {
-    constructor(id, orbEmail, reactionNum, position, rotation) {
-        this.id = id
+    constructor(key, orbEmail, type, position, rotation) {
+        this.key = key
         this.orbEmail = orbEmail
-        this.reactionNum = reactionNum;
+        this.type = type;
         this.position = position;
         this.rotation = rotation;
     }
 
     toJson() {
         return JSON.stringify({
-            id: this.id,
+            key: this.key,
             orbEmail: this.orbEmail,
-            reactionNum: this.reactionNum,
-            position: this.position,
-            rotation: this.rotation
+            type: this.type,
+            position: `${this.position.x} ${this.position.y} ${this.position.z}`,
+            rotation: `${this.rotation.x} ${this.rotation.y} ${this.rotation.z}`
         });
     }
 
     static fromJson(json) {
         const data = JSON.parse(json);
-        return new Reaction(data.id, data.orbEmail, data.reactionNum, data.position, data.rotation);
+        return new Reaction(data["x-amz-meta-key"], data["x-amz-meta-orbemail"], data["x-amz-meta-type"], data["x-amz-meta-position"], data["x-amz-meta-rotation"]);
     }
 }
