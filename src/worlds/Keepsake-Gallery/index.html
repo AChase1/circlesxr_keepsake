@@ -64,6 +64,20 @@
     <!-- this is used to create our enter UI that creates a 2D overlay to capture a user gesture for sound/mic access etc. -->
     <circles-start-ui />
 
+    <div id="loading-animation">
+      <div id="load-div">
+        <img
+          src="assets/images/loading_anim.gif"
+          alt="Loading..."
+          width="100"
+          height="100"
+        />
+        <div id="loading-text">
+          <h2 style="color: white">Loading Artefacts...</h2>
+        </div>
+      </div>
+    </div>
+
     <!-- Upload 3D UI -->
     <div id="upload-ui">
       <span id="close-btn">&times;</span>
@@ -476,41 +490,39 @@
       <!--TELEPORTATION PADS-->
       <!--Minimal Room-->
       <a-entity id="teleport-pads" class="minimal-room" visible="false">
-        <a-entity circles-checkpoint position="1 0.15 -3.78"></a-entity> 
-        <a-entity circles-checkpoint position="3.2 0.15 0"></a-entity> 
-        <a-entity circles-checkpoint position="-3.83 0.15 -1.54"></a-entity> 
-        <a-entity circles-checkpoint position="0 0.15 0"></a-entity> 
-        <a-entity circles-checkpoint position="2.5 0.15 3"></a-entity> 
+        <a-entity circles-checkpoint position="1 0.15 -3.78"></a-entity>
+        <a-entity circles-checkpoint position="3.2 0.15 0"></a-entity>
+        <a-entity circles-checkpoint position="-3.83 0.15 -1.54"></a-entity>
+        <a-entity circles-checkpoint position="0 0.15 0"></a-entity>
+        <a-entity circles-checkpoint position="2.5 0.15 3"></a-entity>
         <a-entity circles-checkpoint position="-3.16 0.15 3.5"></a-entity>
       </a-entity>
       <!--Liminal Room-->
       <a-entity id="teleport-pads" class="limimal-room" visible="false">
-        <a-entity circles-checkpoint position="0.1 0.15 -3.66"></a-entity> 
-        <a-entity circles-checkpoint position="3.2 0.15 0"></a-entity> 
-        <a-entity circles-checkpoint position="-3.3 0.15 -1.45"></a-entity> 
-        <a-entity circles-checkpoint position="0 0.15 0"></a-entity> 
-        <a-entity circles-checkpoint position="1.2 0.15 4"></a-entity> 
+        <a-entity circles-checkpoint position="0.1 0.15 -3.66"></a-entity>
+        <a-entity circles-checkpoint position="3.2 0.15 0"></a-entity>
+        <a-entity circles-checkpoint position="-3.3 0.15 -1.45"></a-entity>
+        <a-entity circles-checkpoint position="0 0.15 0"></a-entity>
+        <a-entity circles-checkpoint position="1.2 0.15 4"></a-entity>
         <a-entity circles-checkpoint position="-3.16 0.15 3.5"></a-entity>
       </a-entity>
       <!--Playground Room-->
       <a-entity id="teleport-pads" class="playground-room" visible="false">
-        <a-entity circles-checkpoint position="0 0.15 0"></a-entity> 
-        <a-entity circles-checkpoint position="4.2 0.15 -4.4"></a-entity> 
+        <a-entity circles-checkpoint position="0 0.15 0"></a-entity>
+        <a-entity circles-checkpoint position="4.2 0.15 -4.4"></a-entity>
         <a-entity circles-checkpoint position="3.3 0.15 -1"></a-entity>
-        <a-entity circles-checkpoint position="1.54 0.15 3.9"></a-entity> 
-        <a-entity circles-checkpoint position="-2.87 0.15 4.36"></a-entity> 
+        <a-entity circles-checkpoint position="1.54 0.15 3.9"></a-entity>
+        <a-entity circles-checkpoint position="-2.87 0.15 4.36"></a-entity>
         <a-entity circles-checkpoint position="-4 0.15 -1.46"></a-entity>
-
       </a-entity>
       <!--Nature Room-->
       <a-entity id="teleport-pads" class="nature-room" visible="false">
-        <a-entity circles-checkpoint position="1.13 0.15 -3.36"></a-entity> 
-        <a-entity circles-checkpoint position="3.9 0.15 0"></a-entity> 
-        <a-entity circles-checkpoint position="-3.83 0.15 -1.54"></a-entity> 
-        <a-entity circles-checkpoint position="1.36 0.15 3.4"></a-entity> 
-        <a-entity circles-checkpoint position="-1.95 0.15 1.56"></a-entity> 
+        <a-entity circles-checkpoint position="1.13 0.15 -3.36"></a-entity>
+        <a-entity circles-checkpoint position="3.9 0.15 0"></a-entity>
+        <a-entity circles-checkpoint position="-3.83 0.15 -1.54"></a-entity>
+        <a-entity circles-checkpoint position="1.36 0.15 3.4"></a-entity>
+        <a-entity circles-checkpoint position="-1.95 0.15 1.56"></a-entity>
         <a-entity circles-checkpoint position="-1.52 0.15 -2.4"></a-entity>
-
       </a-entity>
 
       <!--SOUNDS-->
