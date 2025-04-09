@@ -31,8 +31,9 @@ class S3Logic {
             const uploadUI = document.querySelector('#upload-ui');
             uploadUI.style.display = 'none';
 
-            const artifact = Artifact.fromJson(response.data);
-            await this.retrieveObject(artifact.key);
+            const artifactJson = await S3Logic.retrieveObject(metadata.key);
+            const artifact = Artifact.fromJson(artifactJson);
+            new ArtifactLogic().fileDataToAframe(artifact);
 
         } catch (error) {
             console.error("Error uploading file: " + error);

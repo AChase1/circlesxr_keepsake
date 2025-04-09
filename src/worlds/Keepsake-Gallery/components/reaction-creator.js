@@ -113,7 +113,7 @@ AFRAME.registerComponent('reaction-creator', {
     var reactionType = reactionEntity.getAttribute('data-reaction-type');
 
     const reaction = new Reaction("reaction_" + reactionEntity.getAttribute('id'), UserLogic.getCurrentGalleryEmail(), reactionType, position, rotation);
-    this.checkForExistingReaction(reaction.id);
+    this.checkForExistingReaction(reaction.key);
     S3Logic.uploadMetadataToS3(reaction.toJson());
 
     this.showMessage('Your ' + reactionType + ' has been placed :)');
