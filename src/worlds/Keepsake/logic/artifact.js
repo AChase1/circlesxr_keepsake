@@ -36,7 +36,7 @@ class ArtifactLogic {
             const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
             const timestamp = BasicLogic.getCurrentTimestamp();
             const currUserEmail = UserLogic.getCurrentUserEmail();
-            const artifact = new Artifact("file_" + file.name + "_" + timestamp, currUserEmail, "", "", pedestalId, file);
+            const artifact = new Artifact("file_" + file.name + "_" + timestamp, currUserEmail, file.name, "", pedestalId, file);
             this.removeExistingArtifacts(artifact.pedestalId);
             await S3Logic.uploadFileToS3(artifact.file, artifact.toJson());
             const uploadedArtifact = await S3Logic.retrieveObject(artifact.key);
@@ -67,6 +67,7 @@ class ArtifactLogic {
     }
 
     loadObjectInScene(file, artifact) {
+        const scene = document.querySelector("a-scene");
         const pedestal = document.getElementById(artifact.pedestalId);
         if (!pedestal) {
             console.error("Pedestal not found");
@@ -77,9 +78,10 @@ class ArtifactLogic {
         const model = document.createElement("a-entity");
         model.setAttribute("id", "artifact");
         model.setAttribute("gltf-model", `url(${URL.createObjectURL(file)})`);
-        pedestal.appendChild(model);
-        model.setAttribute("scale", "70 70 70");
-        model.setAttribute("position", { x: pedestalInteraction.pedestalTop.x + 73, y: pedestalInteraction.pedestalTop.y + 15, z: pedestalInteraction.pedestalTop.z + 13 });
+        model.setAttribute("scale", "1 1 1");
+        model.setAttribute("position", { x: pedestalInteraction.pedestalTop.x, y: pedestalInteraction.pedestalTop.y, z: pedestalInteraction.pedestalTop.z });
+        model.setAttribute("circles-artefact", `label_text:${artifact.name}; label_offset:0 1.5 0; inspectPosition:0 0 -1.5`);
+        scene.appendChild(model);
     }
 }
 
