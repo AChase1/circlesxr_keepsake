@@ -1,4 +1,5 @@
 class S3Logic {
+
     static uploadMetadataToS3 = async (body) => {
         try {
             await fetch('/s3_uploadMetadata', {
@@ -20,7 +21,7 @@ class S3Logic {
             const formData = new FormData();
             formData.append("file", fileData);
             formData.append("metadata", JSON.stringify(metadata));
-            const response = await fetch('/s3_uploadFile', {
+            await fetch('/s3_uploadFile', {
                 method: 'POST',
                 body: formData,
             });
@@ -30,7 +31,7 @@ class S3Logic {
 
             // Model Upload Sound Effect
             var modelSound = document.querySelectorAll('.modelUpload');
-            modelSound.forEach(function(soundEntity){
+            modelSound.forEach(function (soundEntity) {
                 soundEntity.components.sound.stopSound();
                 soundEntity.components.sound.playSound();
             });
@@ -50,9 +51,12 @@ class S3Logic {
 
     static retrieveAllObjects = async () => {
         try {
+            const animEl = document.getElementById("loading-animation");
+            animEl.style.display = "block";
             const response = await fetch(`/s3_retrieveAllObjects`);
             console.log("Objects retrieved successfully!");
             const jsonResponse = await response.json();
+            animEl.style.display = "none";
             return jsonResponse.data.Contents;
         } catch (error) {
             console.error("Error retrieving all objects: " + error);
@@ -62,8 +66,11 @@ class S3Logic {
 
     static retrieveObject = async (key) => {
         try {
+            const animEl = document.getElementById("loading-animation");
+            animEl.style.display = "block";
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
             const jsonResponse = await response.json();
+            animEl.style.display = "none";
             return JSON.stringify(jsonResponse.data);
         } catch (error) {
             console.error("Error retrieving object: " + key + " : " + error);
