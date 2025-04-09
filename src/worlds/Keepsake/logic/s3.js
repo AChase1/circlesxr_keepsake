@@ -28,6 +28,13 @@ class S3Logic {
             console.log("File uploaded successfully!");
             // TODO => add UI feedback for successful upload
 
+            // Model Upload Sound Effect
+            var modelSound = document.querySelectorAll('.modelUpload');
+            modelSound.forEach(function(soundEntity){
+                soundEntity.components.sound.stopSound();
+                soundEntity.components.sound.playSound();
+            });
+
             const uploadUI = document.querySelector('#upload-ui');
             uploadUI.style.display = 'none';
 

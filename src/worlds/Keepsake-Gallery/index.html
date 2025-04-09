@@ -13,6 +13,8 @@
     <script src="./components/note-debug.js"></script>
     <script src="./components/note-creator.js"></script>
     <script src="./components/reaction-creator.js"></script>
+    <script src="./components/orb-exit-sound.js"></script>
+
     <script src="../Keepsake/components/interaction-manager.js"></script>
     <script src="../Keepsake/components/pickupable.js"></script>
     <script src="../Keepsake/logic/artifact.js"></script>
@@ -340,6 +342,22 @@
           crossorigin="anonymous"
         ></a-asset-item>
 
+        <!--Smile-->
+        <a-asset-item
+          id="smile-model"
+          src="assets/models/smile_reaction.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!--ThumbsUp-->
+        <a-asset-item
+          id="thumbsup-model"
+          src="assets/models/thumbsup_reaction.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
         <!--SOUNDS-->
         <a-asset-item
           id="minimal-ambience-sound"
@@ -401,6 +419,22 @@
         <a-asset-item
           id="stickynote-sound"
           src="../Keepsake/assets/sounds/StickyNote.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!--Model Upload Sound-->
+        <a-asset-item
+          id="model-upload-sound"
+          src="../Keepsake/assets/sounds/ModelUpload.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!--Exit Orb Sound-->
+        <a-asset-item
+          id="orb-exit-sound"
+          src="../Keepsake/assets/sounds/OrbHover.mp3"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
@@ -524,6 +558,26 @@
                         volume:1">
       </a-entity>
 
+      <!--Model Upload Sound-->
+      <a-entity class="modelUpload"
+                position="0 0 0"
+                sound="src:#model-upload-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.2">
+      </a-entity>
+
+      <!--Orb Exit Sound-->
+      <a-entity class="orbHover"
+                position="0 0 0"
+                sound="src:#orb-exit-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+
       <!--MINIMAL MODELS-->
       <!-- note box -->
       <a-box
@@ -531,7 +585,7 @@
         class="interactive"
         position="1.956 1 5.312"
         rotation="0 180 0"
-        color="#FFD700"
+        color="#ebdf98"
         width="0.3"
         height="0.3"
         depth="0.1"
@@ -557,6 +611,14 @@
         depth="0.1"
         color="red"
       >
+      <a-text
+          value="Heart Emoji"
+          position="0 0.25 0.008"
+          rotation = "0 180 0"
+          align="center"
+          color="#000"
+          width="1"
+        ></a-text>
       </a-box>
 
       <!-- laughing -->
@@ -564,12 +626,63 @@
         id="laugh-reaction-box"
         class="interactive"
         reaction-creator="type: laugh"
-        position="0.948 1 5.312"
+        position="0.959 1 5.312"
+        width="0.3"
+        height="0.3"
+        depth="0.1"
+        color="blue"
+      >
+        <a-text
+          value="Laughing Emoji"
+          position="0 0.25 0.008"
+          rotation = "0 180 0"
+          align="center"
+          color="#000"
+          width="1"
+        ></a-text>
+      </a-box>
+
+      <!-- Smiling -->
+      <a-box
+      id="smile-reaction-box"
+      class="interactive"
+      reaction-creator="type: smile"
+      position="0.552 1 5.312"
+      width="0.3"
+      height="0.3"
+      depth="0.1"
+      color="pink"
+    >
+      <a-text
+        value="Smiling Emoji"
+        position="0 0.25 0.008"
+        rotation = "0 180 0"
+        align="center"
+        color="#000"
+        width="1"
+      ></a-text>
+    </a-box>
+
+      <!-- Thumbs Up -->
+      <a-box
+        id="thumbsup-reaction-box"
+        class="interactive"
+        reaction-creator="type: thumbsup"
+        position="0.136 1 5.312"
         width="0.3"
         height="0.3"
         depth="0.1"
         color="yellow"
-      ></a-box>
+      >
+      <a-text
+        value="Thumbs-Up Emoji"
+        position="0 0.25 0.008"
+        rotation = "0 180 0"
+        align="center"
+        color="#000"
+        width="1"
+      ></a-text>
+    </a-box>
 
       <!--MINIMAL MODELS-->
       <!--Minimal Room-->
@@ -1111,6 +1224,7 @@
         rotation="0 0 0"
         scale="1 1 1"
         circles-portal="title_text:Exit to Lobby; link_url:/w/Keepsake?gallerySource=true"
+        orb-exit-sound=""
       ></a-entity>
     </a-scene>
 
