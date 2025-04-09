@@ -18,8 +18,6 @@ class Reaction {
     }
 
     static fromJson(json) {
-        console.log("Reaction JSON:", json);
-        console.log("Reaction JSON parsed:", JSON.parse(json));
         const data = JSON.parse(json);
         return new Reaction(data["x-amz-meta-key"], data["x-amz-meta-orbemail"], data["x-amz-meta-type"], data["x-amz-meta-position"], data["x-amz-meta-rotation"]);
     }

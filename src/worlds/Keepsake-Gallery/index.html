@@ -133,14 +133,22 @@
           crossorigin="anonymous"
         />
 
-        <!-- pedestal -->
+        <!--Gallery NavMesh X4-->
+        <a-asset-item
+          id="gallery-navmesh-model"
+          src="assets/models/Gallery_NavMesh.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- Pedestal -->
         <a-asset-item
           id="pedestal-model"
           src="assets/models/Pedestal.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-        <!-- frame -->
+        <!-- Frame -->
         <a-asset-item
           id="frame-model"
           src="assets/models/Frame.glb"
@@ -152,14 +160,6 @@
         <a-asset-item
           id="minimal-room-model"
           src="assets/models/Minimal_Room.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
-
-        <!--Minimal NavMesh-->
-        <a-asset-item
-          id="minimal-navmesh-model"
-          src="assets/models/NavMeshes/MinimalNavMesh.glb"
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
@@ -177,13 +177,7 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-        <!--Liminal NavMesh-->
-        <a-asset-item
-          id="liminal-navmesh-model"
-          src="assets/models/NavMeshes/LiminalNavMesh.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
+
         <a-asset-item
           id="lightbulb"
           src="assets/models/Lightbulb.glb"
@@ -210,13 +204,7 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
-        <!--Playground NavMesh-->
-        <a-asset-item
-          id="playground-navmesh-model"
-          src="assets/models/NavMeshes/PlaygroundNavMesh.glb"
-          response-type="arraybuffer"
-          crossorigin="anonymous"
-        ></a-asset-item>
+
         <a-asset-item
           id="playground-room-slides"
           src="assets/models/Playground/Slides.glb"
@@ -277,6 +265,56 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
+        <a-asset-item
+          id="playground-room-frame-yellow"
+          src="assets/models/Playground/Frame_Yellow.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!-- Nature Room Models -->
+        <a-asset-item
+          id="nature-room-model"
+          src="assets/models/Nature/Nature_Room.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>        
+        <a-asset-item
+          id="nature-room-bench"
+          src="assets/models/Nature/Bench.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-tree"
+          src="assets/models/Nature/Tree.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-lamppost"
+          src="assets/models/Nature/Lamp_Post.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-tree-stump-1"
+          src="assets/models/Nature/Tree_Stump_1.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-tree-stump-2"
+          src="assets/models/Nature/Tree_Stump_2.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-room-frame-green"
+          src="assets/models/Nature/Frame_Nature_Green.glb"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
 
         <!-- note -->
         <a-asset-item
@@ -301,6 +339,72 @@
           response-type="arraybuffer"
           crossorigin="anonymous"
         ></a-asset-item>
+
+        <!--SOUNDS-->
+        <a-asset-item
+          id="minimal-ambience-sound"
+          src="../Keepsake/assets/sounds/MinimalAmbience.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="playground-music"
+          src="../Keepsake/assets/sounds/PlaygroundMusic.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="liminal-ambience-sound"
+          src="../Keepsake/assets/sounds/LiminalAmbience.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="nature-ambience-sound"
+          src="../Keepsake/assets/sounds/NatureAmbience.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <!--Emoji Sounds-->
+        <a-asset-item
+          id="emoji-pickup-sound"
+          src="../Keepsake/assets/sounds/EmojiPickup.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="laughing-sound"
+          src="../Keepsake/assets/sounds/LaughingEmoji.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="smiling-sound"
+          src="../Keepsake/assets/sounds/SmileEmoji.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="thumbsup-sound"
+          src="../Keepsake/assets/sounds/ThumbsUpEmoji.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+        <a-asset-item
+          id="heart-sound"
+          src="../Keepsake/assets/sounds/HeartEmoji.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="stickynote-sound"
+          src="../Keepsake/assets/sounds/StickyNote.mp3"
+          response-type="arraybuffer"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
         <!-- pdf model -->
 
         <!-- Circles' built-in assets [REQUIRED] -->
@@ -334,8 +438,93 @@
       >
       </a-entity>
 
+      <a-entity
+        nav-mesh
+        id="gallery-navmesh"
+        position="0 0 0"
+        gltf-model="#gallery-navmesh-model"
+        shadow="cast:true; receive:true;"
+        visible="false">
+      </a-entity>
+
+      <!--SOUNDS-->
+      <!--Ambience and Music-->
+      <a-entity class="minimalAmbience"
+                sound="src:#minimal-ambience-sound;
+                        autoplay:false;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="playgroundMusic"
+                sound="src:#playground-music;
+                        autoplay:false;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="liminalAmbience"
+                sound="src:#liminal-ambience-sound;
+                        autoplay:false;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="natureAmbience"
+                sound="src:#nature-ambience-sound;
+                        autoplay:false;
+                        loop:true;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+
+      <!--EMOJI SOUNDS-->
+      <a-entity class="emojiPickupSound"
+                sound="src:#emoji-pickup-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="laughingSound"
+                sound="src:#laughing-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="smilingSound"
+                sound="src:#smiling-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="thumbsUpSound"
+                sound="src:#thumbsup-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+      <a-entity class="heartSound"
+                sound="src:#heart-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:0.3">
+      </a-entity>
+
+      <!--Sticky-Note Sound-->
+      <a-entity class="noteSound"
+                sound="src:#stickynote-sound;
+                        autoplay:false;
+                        loop:false;
+                        positional:false;
+                        volume:1">
+      </a-entity>
+
       <!--MINIMAL MODELS-->
-      <!--Minimal Pedestals-->
       <!-- note box -->
       <a-box
         id="note-creator-box"
@@ -380,10 +569,22 @@
         height="0.3"
         depth="0.1"
         color="yellow"
-      >
-      </a-box>
+      ></a-box>
 
-      <!-- pedestal -->
+      <!--MINIMAL MODELS-->
+      <!--Minimal Room-->
+      <a-entity
+        id="minimal-room"
+        class="minimal-room"
+        position="0 0 0"
+        rotation="0 0 0"
+        scale="0.23 0.23 0.23"
+        gltf-model="#minimal-room-model"
+        shadow="receive:true; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <!--Minimal Room Pedestal-->
       <a-entity
         id="minimal-pedestal-1"
         class="interactive"
@@ -394,10 +595,7 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
-
-      <!-- scale="0.045 0.045 0.045"-->
+      ></a-entity>
       <a-entity
         id="minimal-pedestal-2"
         class="interactive"
@@ -408,9 +606,7 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
-
+      ></a-entity>
       <a-entity
         id="minimal-pedestal-3"
         class="interactive"
@@ -421,9 +617,42 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
+      <!--Minimal Room Frame-->
+      <a-entity
+        id="minimal-frame-1"
+        class="minimal-room interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="minimal-frame-2"
+        class="minimal-room interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="minimal-frame-3"
+        class="minimal-room interactive"    
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
       <!-- pdf test -->
       <a-entity
         id="pdf-test"
@@ -433,76 +662,10 @@
         circles-pdf-loader="src:assets/pdf/bread-zine.pdf;"
       ></a-entity>
 
-      <!-- frame (1)-->
-      <a-entity
-        id="frame-1"
-        class="interactive"
-        position="-5.752 1.5 -1.6"
-        rotation="0 90 0"
-        scale="0.45 0.45 0.45"
-        gltf-model="#frame-model"
-        frame-interaction
-        shadow="cast:true; receive:true;"
-      >
-      </a-entity>
-
-      <!-- frame (2)-->
-      <a-entity
-        id="frame-2"
-        class="interactive"
-        position="1 1.7 -5.787"
-        rotation="0 0 0"
-        scale="0.45 0.45 0.45"
-        gltf-model="#frame-model"
-        frame-interaction
-        shadow="cast:true; receive:true;"
-      >
-      </a-entity>
-
-      <!-- frame (3)-->
-      <a-entity
-        id="frame-3"
-        class="interactive"
-        position="5.754 1 0.04"
-        rotation="0 -90 0"
-        scale="0.45 0.45 0.45"
-        gltf-model="#frame-model"
-        frame-interaction
-        shadow="cast:true; recieve:true;"
-      >
-      </a-entity>
-
-      <!-- Minimal Room -->
-      <a-entity
-        id="minimal-room"
-        class="minimal-room"
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="0.23 0.23 0.23"
-        gltf-model="#minimal-room-model"
-        shadow="receive:true; cast:false;"
-        visible="false"
-      >
-      </a-entity>
-
-      <!--Minimal NavMesh-->
-      <a-entity
-        nav-mesh
-        id="minimal-navmesh"
-        class="minimal-room"
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="0 0 0"
-        gltf-model="#minimal-navmesh-model"
-        shadow="receive:false; cast:false;"
-        visible="false"
-      >
-      </a-entity>
-
       <!--Minimal Light-->
-      <!--NOTE: Need to be repaired-->
       <a-entity
-        light="type: ambient"
+        light="type: point; intensity: 45; color: #ffffff; decay:1"
+        position="0 11 0"
         class="minimal-room"
         visible="false"
       ></a-entity>
@@ -518,8 +681,7 @@
         gltf-model="#liminal-room-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal Roof-->
       <a-entity
@@ -531,21 +693,7 @@
         gltf-model="#liminal-room-roof"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
-
-      <!--Liminal NavMesh-->
-      <a-entity
-        id="liminal-navmesh"
-        class="liminal-room"
-        position="15 0 0"
-        rotation="0 0 0"
-        scale="1.0 1.0 1.0"
-        gltf-model="#liminal-navmesh-model"
-        shadow="receive:false; cast:false;"
-        visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal Vents-->
       <a-entity
@@ -557,8 +705,7 @@
         gltf-model="#vent-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
       <a-entity
         id="vent2"
         class="limimal-room"
@@ -568,8 +715,7 @@
         gltf-model="#vent-model"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal Lightbulb-->
       <a-entity
@@ -581,14 +727,11 @@
         gltf-model="#lightbulb"
         shadow="receive:false; cast:false;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
       <!--Liminal Point Light-->
       <a-entity
-        light="type: point;
-                      intensity: 7;
-                      color: #dedbba"
+        light="type: point; intensity: 7; color: #dedbba"
         position="-2.946 4.009 3.413"
         class="limimal-room"
         visible="false"
@@ -605,8 +748,7 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
       <a-entity
         id="liminal-pedestal-2"
         class="liminal-room interactive"
@@ -617,8 +759,7 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
       <a-entity
         id="liminal-pedestal-3"
         class="liminal-room interactive"
@@ -629,10 +770,44 @@
         pedestal-interaction
         shadow="cast:true; receive:true;"
         visible="false"
-      >
-      </a-entity>
+      ></a-entity>
 
-      <!--Playground Room-->
+      <!--Liminal Room Frame-->
+      <a-entity
+        id="liminal-frame-1"
+        class="liminal-room interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="liminal-frame-2"
+        class="liminal-room interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="liminal-frame-3"
+        class="liminal-room interactive"    
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.45 0.45 0.45"
+        gltf-model="#frame-model"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+
+      <!--PLAYGROUND MODELS-->
       <a-entity
         id="playground-room"
         class="playground-room"
@@ -644,19 +819,6 @@
         visible="false"
       ></a-entity>
 
-      <!--Playground NavMesh-->
-      <a-entity
-        id="playground-navmesh"
-        class="playground-room"
-        position="30 0 0"
-        rotation="0 0 0"
-        scale="1.0 1.0 1.0"
-        gltf-model="#playground-navmesh-model"
-        shadow="receive:false; cast:false;"
-        visible="false"
-      >
-      </a-entity>
-
       <a-entity
         id="playground-room-slides"
         class="playground-room"
@@ -667,7 +829,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-monkeybar"
         class="playground-room"
@@ -678,7 +839,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-table"
         class="playground-room"
@@ -689,7 +849,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-fence-red"
         class="playground-room"
@@ -700,7 +859,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-fence-yellow-1"
         class="playground-room"
@@ -711,7 +869,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-room-fence-yellow-2"
         class="playground-room"
@@ -735,7 +892,6 @@
         shadow="receive:false; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-pedestal-2"
         class="playground-room interactive"
@@ -747,7 +903,6 @@
         shadow="receive:true; cast:false;"
         visible="false"
       ></a-entity>
-
       <a-entity
         id="playground-pedestal-3"
         class="playground-room interactive"
@@ -757,6 +912,41 @@
         gltf-model="#playground-room-chair-yellow"
         pedestal-interaction
         shadow="receive:true; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <!--Playground Room Frame-->
+      <a-entity
+        id="playground-frame-1"
+        class="playground-room interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#playground-room-frame-yellow"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="playground-frame-2"
+        class="playground-room interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#playground-room-frame-yellow"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="playground-frame-3"
+        class="playground-room interactive"
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#playground-room-frame-yellow"
+        frame-interaction
+        shadow="cast:true; receive:true;"
         visible="false"
       ></a-entity>
 
@@ -770,12 +960,155 @@
       ></a-entity>
 
       <!--NATURE MODELS-->
-      <!-- Nature Room -->
+      <a-entity
+        id="nature-room"
+        class="nature-room"
+        position="0 0 0"
+        rotation="0 -90 0"
+        scale="0.23 0.23 0.23"
+        gltf-model="#nature-room-model"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-tree-1"
+        class="nature-room"
+        position="-3.91 0 -4.13"
+        rotation="0 0 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-tree"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-tree-2"
+        class="nature-room"
+        position="3.70 0 4.094"
+        rotation="0 0 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-tree"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-bench"
+        class="nature-room"
+        position="-1.57 0 -3.86 "
+        rotation="0 0 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#nature-room-bench"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-lamppost"
+        class="nature-room"
+        position="4.575 0 -4.58"
+        rotation="0 0 0"
+        scale="0.4 0.4 0.4"
+        gltf-model="#nature-room-lamppost"
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <a-entity
+        id="nature-room-lamppost-light"
+        light="type: point; intensity: 30; color: #fdff8a; decay:3"
+        position="4.62 4 -4.77"
+        class="nature-room"
+        shadow="receive:true; cast:true;"
+        visible="false"
+      ></a-entity>
+
+      <!--Nature Room Pedestal -->
+      <a-entity
+        id="nature-pedestal-1"
+        class="nature-room interactive"
+        position="-4 0 0.5"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
+        gltf-model="#nature-room-tree-stump-2"
+        pedestal-interaction
+        shadow="receive:false; cast:false;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="nature-pedestal-2"
+        class="nature-room interactive"
+        position="4 0 -2.7"
+        rotation="0 -52 0"
+        scale="0.5 0.5 0.5"
+        gltf-model="#nature-room-tree-stump-2"
+        pedestal-interaction
+        shadow="receive:true; cast:false;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="nature-pedestal-3"
+        class="nature-room interactive"
+        position="-1.4 0 3.5"
+        rotation="0 0 0"
+        scale="0.5 0.5 0.5"
+        gltf-model="#nature-room-tree-stump-1"
+        pedestal-interaction
+        shadow="receive:true; cast:false;"
+        visible="false"
+      ></a-entity>
+
+      <!--Nature Room Frame-->
+      <a-entity
+        id="nature-frame-1"
+        class="nature-room interactive"
+        position="-5.752 1.5 -1.6"
+        rotation="0 90 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#nature-room-frame-green"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="nature-frame-2"
+        class="nature-room interactive"
+        position="1 1.7 -5.787"
+        rotation="0 0 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#nature-room-frame-green"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+      <a-entity
+        id="nature-frame-3"
+        class="nature-room interactive"
+        position="5.754 1 0.04"
+        rotation="0 -90 0"
+        scale="0.3 0.3 0.3"
+        gltf-model="#nature-room-frame-green"
+        frame-interaction
+        shadow="cast:true; receive:true;"
+        visible="false"
+      ></a-entity>
+
+      <!--Nature Room Lighting-->
+      <a-entity
+        id="nature-room-light"
+        light="type: point; intensity: 40; color: #ffffff; decay:1"
+        position="0 10 0"
+        class="nature-room"
+        shadow="receive:true; cast:true;"
+        visible="false"
+      ></a-entity>
+
       <!-- EXIT: back to lobby portal -->
       <a-entity
         id="portal_link"
         position="-4.573 1.347 4.479"
-        rotation="0 143.672 0"
+        rotation="0 0 0"
         scale="1 1 1"
         circles-portal="title_text:Exit to Lobby; link_url:/w/Keepsake?gallerySource=true"
       ></a-entity>

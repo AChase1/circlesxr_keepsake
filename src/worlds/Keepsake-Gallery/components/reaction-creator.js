@@ -9,9 +9,28 @@ AFRAME.registerComponent('reaction-creator', {
     if (!localStorage.getItem('galleryReactions')) {
       localStorage.setItem('galleryReactions', JSON.stringify([]));
     }
-    self.el.addEventListener('click', function () {
+
+    // tracking last time clicked for TC
+    this.lastClickTime = 0;
+
+    this.clickHandler = function (event) {
+      // debounce
+      var now = Date.now();
+      if (now - self.lastClickTime < 500) {
+        console.log('Ignoring click - too soon after last click');
+        return;
+      }
+
+      self.lastClickTime = now;
+      event.stopPropagation();
+      event.preventDefault();
+
+      console.log('Creating reaction:', self.data.type);
       self.createReaction();
-    });
+    };
+
+    self.el.addEventListener('click', this.clickHandler);
+
 
     self.loadSavedReactions();
 
@@ -97,50 +116,23 @@ AFRAME.registerComponent('reaction-creator', {
     this.checkForExistingReaction(reaction.id);
     S3Logic.uploadMetadataToS3(reaction.toJson());
 
-    // var reactionData = {
-    //   id: reactionEntity.id,
-    //   type: reactionType,
-    //   position: position,
-    //   rotation: rotation,
-    //   timestamp: Date.now()
-    // };
-
-    // var reactions = JSON.parse(localStorage.getItem('galleryReactions') || '[]');
-
-    // var existingIndex = reactions.findIndex(function (reaction) {
-    //   return reaction.id === reactionData.id;
-    // });
-
-    // if (existingIndex >= 0) {
-    //   reactions[existingIndex] = reactionData;
-    // } else {
-    //   // add new reaction
-    //   reactions.push(reactionData);
-    // }
-
-    // // saving to local storage
-    // localStorage.setItem('galleryReactions', JSON.stringify(reactions));
-    // console.log('Reaction position saved:', reactionData);
-
     this.showMessage('Your ' + reactionType + ' has been placed :)');
   },
 
   loadSavedReactions: async function () {
     var self = this;
-
     const allObjects = await S3Logic.retrieveAllObjects();
-    // var reactions = JSON.parse(localStorage.getItem('galleryReactions') || '[]');
 
     for (const object of allObjects) {
-      console.log(object);
       if (object.Key.startsWith("reaction")) {
+
 
         console.log("Loading reaction:", object.Key);
         const objectJson = await S3Logic.retrieveObject(object.Key);
         const reaction = Reaction.fromJson(objectJson);
 
         if (reaction && reaction.orbEmail === UserLogic.getCurrentGalleryEmail()) {
-          console.log("Loading reaction:", reaction.key, "at position:", reaction.position);
+          console.log('Loading reaction:', reaction.id, 'at position:', reaction.position);
           var reactionEntity = document.createElement('a-entity');
           reactionEntity.setAttribute('id', reaction.id || reaction.type + '-' + Date.now());
           reactionEntity.setAttribute('data-reaction-type', reaction.type || 'heart');
@@ -204,7 +196,72 @@ AFRAME.registerComponent('reaction-creator', {
     }, 3000);
   },
 
+  // triple click to delete
+  setupTripleClickDelete: function (reactionEntity) {
+    var self = this;
+
+    reactionEntity.clickCount = 0;
+    reactionEntity.lastClickTime = 0;
+
+    reactionEntity.clickHandler = function (event) {
+      var now = Date.now();
+
+      // reset click count if past the time
+      if (now - reactionEntity.lastClickTime > 500) {
+        reactionEntity.clickCount = 0;
+      }
+
+      reactionEntity.clickCount++;
+      reactionEntity.lastClickTime = now;
+
+      // check for 3 clicks
+      if (reactionEntity.clickCount === 3) {
+        self.deleteReaction(reactionEntity);
+
+        event.stopPropagation();
+        event.preventDefault();
+      }
+    };
+
+    reactionEntity.addEventListener('click', reactionEntity.clickHandler);
+  },
+
+  // deleting the reaction
+  deleteReaction: function (reactionEntity) {
+    var reactionId = reactionEntity.id;
+    var reactionType = reactionEntity.getAttribute('data-reaction-type');
+
+    // remove from scene
+    reactionEntity.parentNode.removeChild(reactionEntity);
+
+    // remove from localStorage
+    var reactions = JSON.parse(localStorage.getItem('galleryReactions') || '[]');
+
+    var filteredReactions = reactions.filter(function (reaction) {
+      return reaction.id !== reactionId;
+    });
+
+    localStorage.setItem('galleryReactions', JSON.stringify(filteredReactions));
+
+    this.showMessage(reactionType.charAt(0).toUpperCase() + reactionType.slice(1) + ' deleted!');
+    console.log('Reaction deleted:', reactionId);
+  },
+
   remove: function () {
     this.el.removeEventListener('click', this.createReaction);
+  }
+});
+
+AFRAME.registerComponent('reaction-sounds', {
+  init: function () {
+    const CONTEXT_AF = this;
+    CONTEXT_AF.orbPickupSound = document.querySelectorAll('.emojiPickupSound');
+
+    CONTEXT_AF.el.addEventListener('click', function (e) {
+      CONTEXT_AF.orbPickupSound.forEach(function (soundEntity) {
+        soundEntity.components.sound.stopSound();
+        soundEntity.components.sound.playSound();
+      });
+    });
   }
 });

@@ -10,7 +10,8 @@ AFRAME.registerComponent("orbs", {
         if (allS3Objects) {
             for (const object of allS3Objects) {
                 if (object.Key.startsWith("orb")) {
-                    const orb = await S3Logic.retrieveObject(object.Key);
+                    const s3Object = await S3Logic.retrieveObject(object.Key);
+                    const orb = Orb.fromJson(s3Object);
                     if (orb.userEmail == UserLogic.getCurrentUserEmail()) {
                         console.log("current user already has orb");
                         doesCurrUserHaveOrb = true;
@@ -27,6 +28,7 @@ AFRAME.registerComponent("orbs", {
     },
 
     getOrbTheme: function (orb) {
+        console.log("orb: " + JSON.stringify(orb));
         const pedestal = document.getElementById(orb.plateId);
         const theme = pedestal.getAttribute("class");
         switch (theme) {
@@ -62,6 +64,12 @@ AFRAME.registerComponent("orbs", {
         }
 
         this.assignToPlate(portalEl, orb.plateId);
+
+        var orbPortalSound = document.querySelectorAll('.orbPortal');
+        orbPortalSound.forEach(function(soundEntity){
+            soundEntity.components.sound.stopSound();
+            soundEntity.components.sound.playSound();
+        });
     },
 
     assignToPlate: function (portal, plateId) {
@@ -99,7 +107,57 @@ AFRAME.registerComponent("orbs", {
         orb.setAttribute("circles-interactive-object", "");
         orb.setAttribute("pickupable", "");
         orb.setAttribute("object-label", "text: ; yOffset: 0.6");
+        orb.setAttribute("orb-sounds", "");
         this.el.appendChild(orb);
     }
 
+});
+
+orbPickedUp = false;
+clickCount = 0;
+
+AFRAME.registerComponent("orb-sounds", {
+    init: function() {
+        const CONTEXT_AF = this;
+        CONTEXT_AF.orbPickupSound = document.querySelectorAll('.orbPickup');
+        CONTEXT_AF.orbSetDownSound = document.querySelectorAll('.orbSetDown');
+        CONTEXT_AF.orbHoverSound = document.querySelectorAll('.orbHover');
+
+        CONTEXT_AF.el.addEventListener('mouseenter', function(e){
+            CONTEXT_AF.orbHoverSound.forEach(function(soundEntity){
+                soundEntity.components.sound.playSound();
+            });
+        });
+        CONTEXT_AF.el.addEventListener('mouseleave', function(e){
+            CONTEXT_AF.orbHoverSound.forEach(function(soundEntity){
+                soundEntity.components.sound.stopSound();
+            });
+        });
+
+        CONTEXT_AF.el.addEventListener('click', function(e){
+
+            if (!orbPickedUp){
+                CONTEXT_AF.orbPickupSound.forEach(function(soundEntity){
+                    soundEntity.components.sound.stopSound();
+                    soundEntity.components.sound.playSound();
+                });
+                clickCount ++;
+                if(clickCount == 2){
+                    orbPickedUp = true;
+                    clickCount = 0;
+                }
+            }else{
+                CONTEXT_AF.orbSetDownSound.forEach(function(soundEntity){
+                    soundEntity.components.sound.stopSound();
+                    soundEntity.components.sound.playSound();
+                });
+                clickCount ++;
+                if(clickCount == 2){
+                    orbPickedUp = false;
+                    clickCount = 0;
+                }
+            }
+
+        });
+    }
 });

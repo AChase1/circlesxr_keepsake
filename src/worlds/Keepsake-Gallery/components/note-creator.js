@@ -45,7 +45,7 @@ AFRAME.registerComponent('note-creator', {
     }
 
     // creating a note & assigning a unique ID
-    var noteId = 'note-' + Date.now();
+    var noteId = 'comment_note-' + Date.now();
     var noteEntity = document.createElement('a-entity');
     noteEntity.setAttribute('id', noteId);
 
@@ -104,6 +104,11 @@ AFRAME.registerComponent('note-creator', {
       noteEntity.addEventListener('object-released', function () {
         console.log('Note released');
         self.saveNotePosition(noteEntity, noteText);
+
+        var noteSound = document.querySelectorAll('.noteSound');
+        noteSound.forEach(function(soundEntity){
+          soundEntity.components.sound.playSound();
+        });
       });
 
       noteEntity.classList.add('interactive');
@@ -133,8 +138,8 @@ AFRAME.registerComponent('note-creator', {
     var position = noteEntity.getAttribute('position');
     var rotation = noteEntity.getAttribute('rotation');
 
-    const note = new Comment("comment_" + noteEntity.getAttribute('id'), UserLogic.getCurrentGalleryEmail(), noteText, position, rotation);
-    this.checkForExistingNote(note.id);
+    const note = new Comment(noteEntity.getAttribute('id'), UserLogic.getCurrentGalleryEmail(), noteText, position, rotation);
+    this.checkForExistingNote(note.key);
     S3Logic.uploadMetadataToS3(note.toJson());
 
     this.showMessage('Your note has been posted :)');

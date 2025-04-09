@@ -1,9 +1,9 @@
 class Orb {
     constructor(key, userEmail, name, plateId) {
-        this.key = key == undefined ? "" : key;
-        this.userEmail = userEmail == undefined ? "" : userEmail;
-        this.name = name == undefined ? "" : name;
-        this.plateId = plateId == undefined ? "" : plateId;
+        this.key = key;
+        this.userEmail = userEmail;
+        this.name = name;
+        this.plateId = plateId;
     }
 
     toJson() {
@@ -17,6 +17,7 @@ class Orb {
     }
 
     static fromJson = (json) => {
-        return new Orb(json.key, json.userEmail, json.name, json.plateId);
+        const data = JSON.parse(json);
+        return new Orb(data['x-amz-meta-key'], data['x-amz-meta-useremail'], data['x-amz-meta-name'], data['x-amz-meta-plateid']);
     }
 }

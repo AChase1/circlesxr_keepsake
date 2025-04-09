@@ -1,8 +1,7 @@
 class ArtifactLogic {
     getFileFromSystem = function () {
         const currUserEmail = UserLogic.getCurrentUserEmail();
-        const urlParams = new URLSearchParams(window.location.search);
-        const userEmail = urlParams.get("userEmail");
+        const userEmail = UserLogic.getCurrentGalleryEmail();
         if (userEmail != currUserEmail) return;
         const fileInput = this.createFileInput();
         fileInput.addEventListener('change', (event) => this.uploadFile(event));
