@@ -49,6 +49,7 @@ AFRAME.registerComponent("orbs", {
     createCirclesPortal: function (orb) {
         const orbTheme = this.getOrbTheme(orb);
         const portalEl = document.createElement("a-entity");
+        portalEl.setAttribute("orb-sounds", "");
         portalEl.setAttribute("object-label", { text: orb.name });
         portalEl.setAttribute("circles-portal", {
             title_text: orb.name,
