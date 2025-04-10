@@ -82,13 +82,13 @@ class ArtifactLogic {
             const frameWorldPos = frame.object3D.getWorldPosition(new THREE.Vector3());
             model.setAttribute("circles-pdf-loader", `src:${URL.createObjectURL(file)};`);
             model.setAttribute("scale", "1.8 1.8 1.8");
-            model.setAttribute("position", { x: frameWorldPos.x, y: frameWorldPos.y + 1.3, z: frameWorldPos.z + 0.125 });
+            model.setAttribute("position", { x: frameWorldPos.x, y: frameWorldPos.y + 1.3, z: frameWorldPos.z + 0.2 });
             if (artifact.pedestalId.includes("frame-1")) {
                 model.setAttribute("rotation", "0 90 0");
-                model.setAttribute("position", { x: frameWorldPos.x + 0.125, y: frameWorldPos.y + 1.3, z: frameWorldPos.z });
+                model.setAttribute("position", { x: frameWorldPos.x + 0.2, y: frameWorldPos.y + 1.3, z: frameWorldPos.z });
             } else if (artifact.pedestalId.includes("frame-3")) {
                 model.setAttribute("rotation", "0 -90 0");
-                model.setAttribute("position", { x: frameWorldPos.x - 0.125, y: frameWorldPos.y + 1.3, z: frameWorldPos.z });
+                model.setAttribute("position", { x: frameWorldPos.x - 0.2, y: frameWorldPos.y + 1.3, z: frameWorldPos.z });
             }
         } else {
             model.setAttribute("gltf-model", `url(${URL.createObjectURL(file)})`);
