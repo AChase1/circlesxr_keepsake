@@ -52,11 +52,16 @@ class S3Logic {
     static retrieveAllObjects = async () => {
         try {
             const animEl = document.getElementById("loading-animation");
-            animEl.style.display = "block";
+            if (animEl) {
+                animEl.style.display = "block";
+            }
+
             const response = await fetch(`/s3_retrieveAllObjects`);
             console.log("Objects retrieved successfully!");
             const jsonResponse = await response.json();
-            animEl.style.display = "none";
+            if (animEl) {
+                animEl.style.display = "none";
+            }
             return jsonResponse.data.Contents;
         } catch (error) {
             console.error("Error retrieving all objects: " + error);
@@ -67,10 +72,14 @@ class S3Logic {
     static retrieveObject = async (key) => {
         try {
             const animEl = document.getElementById("loading-animation");
-            animEl.style.display = "block";
+            if (animEl) {
+                animEl.style.display = "block";
+            }
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
             const jsonResponse = await response.json();
-            animEl.style.display = "none";
+            if (animEl) {
+                animEl.style.display = "none";
+            }
             return JSON.stringify(jsonResponse.data);
         } catch (error) {
             console.error("Error retrieving object: " + key + " : " + error);
