@@ -110,11 +110,13 @@ class S3Logic {
             const animEl = document.getElementById("loading-animation");
             if (animEl) {
                 animEl.style.display = "block";
+                VRLoadingManager.showLoading();
             }
             const response = await fetch(`/s3_retrieveObject/${encodeURIComponent(key)}`);
             const jsonResponse = await response.json();
             if (animEl) {
                 animEl.style.display = "none";
+                VRLoadingManager.hideLoading();
             }
             return JSON.stringify(jsonResponse.data);
         } catch (error) {

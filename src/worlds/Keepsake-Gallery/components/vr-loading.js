@@ -36,7 +36,7 @@ const VRLoadingManager = {
         backgroundPlane.setAttribute('width', '1.5');
         
         const gifPlane = document.createElement('a-plane');
-        gifPlane.setAttribute('src', 'Keepsake/assets/images/loading_anim.gif');
+        gifPlane.setAttribute('src', '../Keepsake/assets/images/loading_anim.gif');
         gifPlane.setAttribute('height', '0.6');
         gifPlane.setAttribute('width', '0.6');
         gifPlane.setAttribute('position', '0 0.1 0.01');
