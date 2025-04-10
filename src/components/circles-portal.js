@@ -15,35 +15,45 @@ AFRAME.registerComponent('circles-portal', {
     CONTEXT_AF.portalElem.classList.add('portal');
     CONTEXT_AF.el.appendChild(CONTEXT_AF.portalElem);
 
-    //create text component for title with front and back labels
     CONTEXT_AF.titleContainer = document.createElement('a-entity');
     CONTEXT_AF.titleContainer.classList.add('title-container');
     CONTEXT_AF.titleContainer.setAttribute('position', {x:0, y:1, z:0});
     CONTEXT_AF.el.appendChild(CONTEXT_AF.titleContainer);
 
-    // front facing text
-    CONTEXT_AF.frontText = document.createElement('a-entity');
-    CONTEXT_AF.frontText.classList.add('title-front');
-    CONTEXT_AF.frontText.setAttribute('rotation', {x:0, y:120, z:0});
-    CONTEXT_AF.frontText.setAttribute('text', {
+    // rotates to face the user
+    CONTEXT_AF.textEntity = document.createElement('a-entity');
+    CONTEXT_AF.textEntity.classList.add('dynamic-title');
+    
+    CONTEXT_AF.textEntity.setAttribute('text', {
       value: data.title_text,
       align: 'center',
-      width: 5.0
+      width: 5.0,
+      color: '#000000',
+      wrapCount: 30
     });
-    CONTEXT_AF.titleContainer.appendChild(CONTEXT_AF.frontText);
-
-    // back facing text
-    CONTEXT_AF.backText = document.createElement('a-entity');
-    CONTEXT_AF.backText.classList.add('title-back');
-    CONTEXT_AF.backText.setAttribute('rotation', {x:0, y:270, z:0});
-    CONTEXT_AF.backText.setAttribute('text', {
-      value: data.title_text,
-      align: 'center',
-      width: 5.0
-    });
-    CONTEXT_AF.titleContainer.appendChild(CONTEXT_AF.backText);
-
+    
+    CONTEXT_AF.titleContainer.appendChild(CONTEXT_AF.textEntity);
+    
     CONTEXT_AF.titleElem = CONTEXT_AF.titleContainer;
+
+    // get pos/rotation
+    this.cameraEl = document.querySelector('#camera');
+    if (this.cameraEl) {
+      this.tick = function() {
+        if (!CONTEXT_AF.titleContainer || !CONTEXT_AF.cameraEl) return;
+        
+        const worldPos = new THREE.Vector3();
+        CONTEXT_AF.titleContainer.object3D.getWorldPosition(worldPos);
+        
+        const cameraPos = new THREE.Vector3();
+        CONTEXT_AF.cameraEl.object3D.getWorldPosition(cameraPos);
+        
+        // calc direction of txt from cam
+        const direction = new THREE.Vector3().subVectors(cameraPos, worldPos).normalize();
+        
+        CONTEXT_AF.titleContainer.object3D.lookAt(cameraPos);
+      };
+    }
 
     //where do we go when this portal is clicked
     CONTEXT_AF.portalElem.addEventListener('click', (e) => {
@@ -108,11 +118,8 @@ AFRAME.registerComponent('circles-portal', {
     }
 
     if ( (oldData.title_text !== data.title_text) && (data.title_text !== '') ) {
-      if (CONTEXT_AF.frontText) {
-        CONTEXT_AF.frontText.setAttribute('text', 'value', data.title_text);
-      }
-      if (CONTEXT_AF.backText) {
-        CONTEXT_AF.backText.setAttribute('text', 'value', data.title_text);
+      if (CONTEXT_AF.textEntity) {
+        CONTEXT_AF.textEntity.setAttribute('text', 'value', data.title_text);
       }
     }
 
@@ -149,5 +156,8 @@ AFRAME.registerComponent('circles-portal', {
     else {
       console.log('[circles-portal]: invalid circles-portal "img_src" value')
     }
+  },
+  remove: function() {
+    this.tick = undefined;
   }
 });
