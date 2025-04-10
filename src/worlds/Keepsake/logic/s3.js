@@ -1,5 +1,25 @@
 class S3Logic {
 
+    static updateNetworkedOrbs = () => {
+        const scene = document.querySelector("a-scene");
+        const interactionManager = scene.components["interaction-manager"];
+        if (interactionManager) {
+            if (interactionManager.socket) {
+                interactionManager.socket.emit("update-orbs");
+            }
+        }
+    }
+
+    static updateNetworkedGalleries = () => {
+        const scene = document.querySelector("a-scene");
+        const interactionManager = scene.components["interaction-manager"];
+        if (interactionManager) {
+            if (interactionManager.socket) {
+                interactionManager.socket.emit("update-gallery");
+            }
+        }
+    }
+
     static uploadMetadataToS3 = async (body) => {
         try {
             await fetch('/s3_uploadMetadata', {
@@ -10,7 +30,6 @@ class S3Logic {
                 }
             });
             console.log("Metadata uploaded successfully!");
-            // TODO => add UI feedback for successful upload          
         } catch (error) {
             console.error("Error uploading metadata: " + error);
         }
@@ -21,13 +40,21 @@ class S3Logic {
             const formData = new FormData();
             formData.append("file", fileData);
             formData.append("metadata", JSON.stringify(metadata));
+
+            const animEl = document.getElementById("loading-animation");
+            if (animEl) {
+                animEl.style.display = "block";
+            }
+
             await fetch('/s3_uploadFile', {
                 method: 'POST',
                 body: formData,
             });
 
             console.log("File uploaded successfully!");
-            // TODO => add UI feedback for successful upload
+            if (animEl) {
+                animEl.style.display = "none";
+            }
 
             // Model Upload Sound Effect
             var modelSound = document.querySelectorAll('.modelUpload');
@@ -38,6 +65,8 @@ class S3Logic {
 
             const uploadUI = document.querySelector('#upload-ui');
             uploadUI.style.display = 'none';
+            const upload2DUI = document.querySelector('#upload-2d-ui');
+            upload2DUI.style.display = 'none';
 
             const artifactJson = await S3Logic.retrieveObject(metadata.key);
             const artifact = Artifact.fromJson(artifactJson);

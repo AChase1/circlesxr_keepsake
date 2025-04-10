@@ -9,6 +9,11 @@ AFRAME.registerComponent('frame-interaction', {
         }
 
         this.el.addEventListener('click', () => {
+
+            const currUserEmail = UserLogic.getCurrentUserEmail();
+            const userEmail = UserLogic.getCurrentGalleryEmail();
+            if (userEmail != currUserEmail) return;
+
             const uploadUI = document.querySelector('#upload-2D-ui');
             const manager = this.el.sceneEl;
             manager.emit('object-picked-up', { id: this.el.id }, true);

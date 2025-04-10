@@ -31,9 +31,6 @@ AFRAME.registerComponent('reaction-creator', {
 
     self.el.addEventListener('click', this.clickHandler);
 
-
-    self.loadSavedReactions();
-
     console.log('Reaction creator init for:', self.data.type);
   },
 
@@ -129,6 +126,12 @@ AFRAME.registerComponent('reaction-creator', {
     this.checkForExistingReaction(reaction.key);
     S3Logic.uploadMetadataToS3(reaction.toJson());
 
+    const scene = document.querySelector('a-scene');
+    const interactionManager = scene.components['interaction-manager'];
+    if (interactionManager.socket) {
+      interactionManager.socket.emit(CIRCLES.EVENTS.SEND_DATA_SYNC, { galleryEmail: UserLogic.getCurrentGalleryEmail(), room: CIRCLES.getCirclesGroupName(), world: CIRCLES.getCirclesWorldName() });
+    }
+
     this.showMessage('Your ' + reactionType + ' has been placed :)');
 
     var laughingSound = document.querySelectorAll('.laughingSound');
@@ -137,83 +140,27 @@ AFRAME.registerComponent('reaction-creator', {
     var heartSound = document.querySelectorAll('.heartSound');
 
     // Emoji Sound Effects
-    switch(reactionType){
+    switch (reactionType) {
       case "laugh":
-        laughingSound.forEach(function(soundEntity){
+        laughingSound.forEach(function (soundEntity) {
           soundEntity.components.sound.playSound();
         });
         break;
       case "smile":
-        smilingSound.forEach(function(soundEntity){
+        smilingSound.forEach(function (soundEntity) {
           soundEntity.components.sound.playSound();
         });
         break;
       case "thumbsup":
-        thumbsUpSound.forEach(function(soundEntity){
+        thumbsUpSound.forEach(function (soundEntity) {
           soundEntity.components.sound.playSound();
         });
         break;
       default: // Heart Sound / Default
-        heartSound.forEach(function(soundEntity){
+        heartSound.forEach(function (soundEntity) {
           soundEntity.components.sound.playSound();
         });
         break;
-    }
-  },
-
-  loadSavedReactions: async function () {
-    var self = this;
-    const allObjects = await S3Logic.retrieveAllObjects();
-
-    for (const object of allObjects) {
-      if (object.Key.startsWith("reaction")) {
-
-
-        console.log("Loading reaction:", object.Key);
-        const objectJson = await S3Logic.retrieveObject(object.Key);
-        const reaction = Reaction.fromJson(objectJson);
-
-        if (reaction && reaction.orbEmail === UserLogic.getCurrentGalleryEmail()) {
-          console.log('Loading reaction:', reaction.id, 'at position:', reaction.position);
-          var reactionEntity = document.createElement('a-entity');
-          reactionEntity.setAttribute('id', reaction.id || reaction.type + '-' + Date.now());
-          reactionEntity.setAttribute('data-reaction-type', reaction.type || 'heart');
-
-          reactionEntity.setAttribute('position', reaction.position);
-          reactionEntity.setAttribute('rotation', reaction.rotation || { x: 0, y: 0, z: 0 });
-
-          if (reaction.type === 'heart' || !reaction.type) {
-            reactionEntity.setAttribute('gltf-model', '#heart-model');
-            reactionEntity.setAttribute('scale', '0.1 0.1 0.1');
-          } else if (reaction.type === 'laugh') {
-            reactionEntity.setAttribute('gltf-model', '#laugh-model');
-            reactionEntity.setAttribute('scale', '0.1 0.1 0.1');
-          } else if (reaction.type === 'smile') {
-            reactionEntity.setAttribute('gltf-model', '#smile-model');
-            reactionEntity.setAttribute('scale', '0.1 0.1 0.1');
-          } else if (reaction.type === 'thumbsup') {
-            reactionEntity.setAttribute('gltf-model', '#thumbsup-model');
-            reactionEntity.setAttribute('scale', '0.1 0.1 0.1');
-          } else {
-            reactionEntity.setAttribute('gltf-model', '#heart-model');
-            reactionEntity.setAttribute('scale', '0.1 0.1 0.1');
-          }
-
-          reactionEntity.classList.add('interactive');
-
-          document.querySelector('a-scene').appendChild(reactionEntity);
-
-          setTimeout(function () {
-            reactionEntity.setAttribute('pickupable', '');
-
-            reactionEntity.addEventListener('object-released', function () {
-              self.saveReactionPosition(reactionEntity);
-            });
-
-            console.log('Loaded saved reaction:', reactionEntity.id);
-          }, 100);
-        }
-      }
     }
   },
 

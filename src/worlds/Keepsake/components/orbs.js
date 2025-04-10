@@ -4,6 +4,16 @@ AFRAME.registerComponent("orbs", {
         this.loadUserOrbs();
     },
 
+    deleteExistingOrb: function (orb) {
+        const orbEl = document.getElementById(orb.key);
+        if (orbEl) {
+            orbEl.parentNode.removeChild(orbEl);
+            console.log("Deleted existing orb: " + orb.key);
+        } else {
+            console.log("Orb not found: " + orb.key);
+        }
+    },
+
     loadUserOrbs: async function () {
         let doesCurrUserHaveOrb = false;
         const allS3Objects = await S3Logic.retrieveAllObjects();
@@ -16,6 +26,7 @@ AFRAME.registerComponent("orbs", {
                         console.log("current user already has orb");
                         doesCurrUserHaveOrb = true;
                     }
+                    this.deleteExistingOrb(orb);
                     this.createCirclesPortal(orb);
                 }
             }
@@ -49,6 +60,7 @@ AFRAME.registerComponent("orbs", {
     createCirclesPortal: function (orb) {
         const orbTheme = this.getOrbTheme(orb);
         const portalEl = document.createElement("a-entity");
+        portalEl.setAttribute("id", orb.key);
         portalEl.setAttribute("orb-sounds", "");
         portalEl.setAttribute("object-label", { text: orb.name });
         portalEl.setAttribute("circles-portal", {
@@ -67,7 +79,7 @@ AFRAME.registerComponent("orbs", {
         this.assignToPlate(portalEl, orb.plateId);
 
         var orbPortalSound = document.querySelectorAll('.orbPortal');
-        orbPortalSound.forEach(function(soundEntity){
+        orbPortalSound.forEach(function (soundEntity) {
             soundEntity.components.sound.stopSound();
             soundEntity.components.sound.playSound();
         });
@@ -118,42 +130,42 @@ orbPickedUp = false;
 clickCount = 0;
 
 AFRAME.registerComponent("orb-sounds", {
-    init: function() {
+    init: function () {
         const CONTEXT_AF = this;
         CONTEXT_AF.orbPickupSound = document.querySelectorAll('.orbPickup');
         CONTEXT_AF.orbSetDownSound = document.querySelectorAll('.orbSetDown');
         CONTEXT_AF.orbHoverSound = document.querySelectorAll('.orbHover');
 
-        CONTEXT_AF.el.addEventListener('mouseenter', function(e){
-            CONTEXT_AF.orbHoverSound.forEach(function(soundEntity){
+        CONTEXT_AF.el.addEventListener('mouseenter', function (e) {
+            CONTEXT_AF.orbHoverSound.forEach(function (soundEntity) {
                 soundEntity.components.sound.playSound();
             });
         });
-        CONTEXT_AF.el.addEventListener('mouseleave', function(e){
-            CONTEXT_AF.orbHoverSound.forEach(function(soundEntity){
+        CONTEXT_AF.el.addEventListener('mouseleave', function (e) {
+            CONTEXT_AF.orbHoverSound.forEach(function (soundEntity) {
                 soundEntity.components.sound.stopSound();
             });
         });
 
-        CONTEXT_AF.el.addEventListener('click', function(e){
+        CONTEXT_AF.el.addEventListener('click', function (e) {
 
-            if (!orbPickedUp){
-                CONTEXT_AF.orbPickupSound.forEach(function(soundEntity){
+            if (!orbPickedUp) {
+                CONTEXT_AF.orbPickupSound.forEach(function (soundEntity) {
                     soundEntity.components.sound.stopSound();
                     soundEntity.components.sound.playSound();
                 });
-                clickCount ++;
-                if(clickCount == 2){
+                clickCount++;
+                if (clickCount == 2) {
                     orbPickedUp = true;
                     clickCount = 0;
                 }
-            }else{
-                CONTEXT_AF.orbSetDownSound.forEach(function(soundEntity){
+            } else {
+                CONTEXT_AF.orbSetDownSound.forEach(function (soundEntity) {
                     soundEntity.components.sound.stopSound();
                     soundEntity.components.sound.playSound();
                 });
-                clickCount ++;
-                if(clickCount == 2){
+                clickCount++;
+                if (clickCount == 2) {
                     orbPickedUp = false;
                     clickCount = 0;
                 }

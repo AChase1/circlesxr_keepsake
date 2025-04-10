@@ -77,6 +77,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 const orb = createOrb(labelText);
                 scene.components["orbs"].createCirclesPortal(orb);
                 S3Logic.uploadOrbToS3(orb.toJson());
+
+                const interactionManager = scene.components['interaction-manager'];
+                if (interactionManager.socket) {
+                    interactionManager.socket.emit(CIRCLES.EVENTS.SEND_DATA_SYNC, { galleryEmail: "", room: CIRCLES.getCirclesGroupName(), world: CIRCLES.getCirclesWorldName() });
+                }
             }
         }
 

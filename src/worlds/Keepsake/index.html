@@ -43,24 +43,6 @@
     <!-- this is used to create our enter UI that creates a 2D overlay to capture a user gesture for sound/mic access etc. -->
     <circles-start-ui />
 
-    <!-- Upload UI -->
-    <div id="upload-ui">
-      <span id="close-btn">&times;</span>
-      <div class="center">
-        <h2 style="color: white">Upload a Keepsake</h2>
-        <p style="color: white">Acceptable file types 3D:.glb, .gltf</p>
-        <button id="upload-btn" onclick="new FileLogic().getFileFromSystem()">
-          Choose File
-        </button>
-        <input
-          type="file"
-          id="file-input"
-          style="display: none"
-          accept=".glb,.gltf"
-        />
-      </div>
-    </div>
-
     <!-- Orb Label UI-->
     <div id="label-ui">
       <span id="close-label-btn">&times;</span>
@@ -176,12 +158,42 @@
         ></a-asset-item>
 
         <!--SOUNDS-->
-        <audio id="lobby-music-sound" src="assets/sounds/LobbyMusic.mp3" preload="auto" crossorigin="anonymous"></audio>
-        <audio id="click-sound" src="assets/sounds/TutorialClick.mp3" preload="auto" crossorigin="anonymous"></audio>
-        <audio id="orb-pickup-sound" src="assets/sounds/OrbPickup.mp3" preload="auto" crossorigin="anonymous"></audio>
-        <audio id="orb-setdown-sound" src="assets/sounds/OrbSetDown.mp3" preload="auto" crossorigin="anonymous"></audio>
-        <audio id="orb-hover-sound" src="assets/sounds/OrbHover.mp3" preload="auto" crossorigin="anonymous"></audio>
-        <audio id="orb-portal-sound" src="assets/sounds/OrbPortal.mp3" preload="auto" crossorigin="anonymous"></audio>
+        <audio
+          id="lobby-music-sound"
+          src="assets/sounds/LobbyMusic.mp3"
+          preload="auto"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="click-sound"
+          src="assets/sounds/TutorialClick.mp3"
+          preload="auto"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="orb-pickup-sound"
+          src="assets/sounds/OrbPickup.mp3"
+          preload="auto"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="orb-setdown-sound"
+          src="assets/sounds/OrbSetDown.mp3"
+          preload="auto"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="orb-hover-sound"
+          src="assets/sounds/OrbHover.mp3"
+          preload="auto"
+          crossorigin="anonymous"
+        ></audio>
+        <audio
+          id="orb-portal-sound"
+          src="assets/sounds/OrbPortal.mp3"
+          preload="auto"
+          crossorigin="anonymous"
+        ></audio>
 
         <!-- Circles' built-in assets [REQUIRED] -->
         <circles-assets />
@@ -193,26 +205,27 @@
       <!-- put scene stuff here -->
 
       <!-- Camera -->
-       <!--Camera is now inside of a "Rig"; wasd-controls are removed-->
-       <a-entity id="rig"
-        movement-controls="constrainToNavMesh: true">
-            <a-entity
-            id="camera"
-            camera
-            look-controls
-            twoway-motion="speed: 35"
-            position="0 1.6 0"
-            cursor="rayOrigin: mouse"
-            circles-interactive-object
-            raycaster="objects: .interactive; far: 20; interval: 100"
-          >
-      
+      <!--Camera is now inside of a "Rig"; wasd-controls are removed-->
+      <a-entity id="rig" movement-controls="constrainToNavMesh: true">
+        <a-entity
+          id="camera"
+          camera
+          look-controls
+          twoway-motion="speed: 35"
+          position="0 1.6 0"
+          cursor="rayOrigin: mouse"
+          circles-interactive-object
+          raycaster="objects: .interactive; far: 20; interval: 100"
+        >
         </a-entity>
-       </a-entity>
-
+      </a-entity>
 
       <!-- hand ctrls -->
-      <a-entity id="left-hand" oculus-touch-controls="hand: left" blink-controls></a-entity>
+      <a-entity
+        id="left-hand"
+        oculus-touch-controls="hand: left"
+        blink-controls
+      ></a-entity>
       <a-entity id="right-hand" oculus-touch-controls="hand: right"></a-entity>
 
       <!--SKY BOX-->
@@ -228,8 +241,8 @@
       <a-entity
         id="lobby-light"
         light="type: point; intensity: 100; color: #ffffff; decay:1"
-        position="-3 14.5 4.7">
-
+        position="-3 14.5 4.7"
+      >
         <!--Minimal Orb Gallery-->
         <a-entity
           id="lobby-minimal-light"
@@ -261,62 +274,79 @@
 
       <!--SOUNDS-->
       <!--Lobby Music-->
-      <a-entity id="lobbyMusic"
-                position="0 0 0"
-                sound="src:#lobby-music-sound;
+      <a-entity
+        id="lobbyMusic"
+        position="0 0 0"
+        sound="src:#lobby-music-sound;
                         autoplay:true;
                         loop:true;
                         positional:false;
-                        volume:0.3">
+                        volume:0.3"
+      >
       </a-entity>
-      <a-entity class="tutorialClick"
-                position="0 0 0"
-                sound="src:#click-sound;
+      <a-entity
+        class="tutorialClick"
+        position="0 0 0"
+        sound="src:#click-sound;
                         autoplay:false;
                         loop:false;
                         positional:false;
-                        volume:1">
+                        volume:1"
+      >
       </a-entity>
-      <a-entity class="orbPickup"
-                position="0 0 0"
-                sound="src:#orb-pickup-sound;
+      <a-entity
+        class="orbPickup"
+        position="0 0 0"
+        sound="src:#orb-pickup-sound;
                         autoplay:false;
                         loop:false;
                         positional:false;
-                        volume:0.5">
+                        volume:0.5"
+      >
       </a-entity>
-      <a-entity class="orbSetDown"
-                position="0 0 0"
-                sound="src:#orb-setdown-sound;
+      <a-entity
+        class="orbSetDown"
+        position="0 0 0"
+        sound="src:#orb-setdown-sound;
                         autoplay:false;
                         loop:false;
                         positional:false;
-                        volume:0.5">
+                        volume:0.5"
+      >
       </a-entity>
-      <a-entity class="orbHover"
-                position="0 0 0"
-                sound="src:#orb-hover-sound;
+      <a-entity
+        class="orbHover"
+        position="0 0 0"
+        sound="src:#orb-hover-sound;
                         autoplay:false;
                         loop:false;
                         positional:false;
-                        volume:0.5">
+                        volume:0.5"
+      >
       </a-entity>
-      <a-entity class="orbPortal"
-                position="0 0 0"
-                sound="src:#orb-portal-sound;
+      <a-entity
+        class="orbPortal"
+        position="0 0 0"
+        sound="src:#orb-portal-sound;
                         autoplay:false;
                         loop:false;
                         positional:false;
-                        volume:0.5">
+                        volume:0.5"
+      >
       </a-entity>
 
       <!--Teleport Pads-->
       <a-entity id="teleport-pads">
-        <a-entity circles-checkpoint position="-3.3 0.15 -2.3"></a-entity> <!--reception-->
-        <a-entity circles-checkpoint position="5 0.15 -1.5"></a-entity> <!--nature comp-->
-        <a-entity circles-checkpoint position="-11 0.15 -1.2"></a-entity> <!--minimal comp-->
-        <a-entity circles-checkpoint position="-11.6 0.15 -7.5"></a-entity> <!--playground comp-->
-        <a-entity circles-checkpoint position="5 0.15 -7.6"></a-entity> <!--liminal comp-->
+        <a-entity circles-checkpoint position="-3.3 0.15 -2.3"></a-entity>
+        <!--reception-->
+        <a-entity circles-checkpoint position="5 0.15 -1.5"></a-entity>
+        <!--nature comp-->
+        <a-entity circles-checkpoint position="-11 0.15 -1.2"></a-entity>
+        <!--minimal comp-->
+        <a-entity circles-checkpoint position="-11.6 0.15 -7.5"></a-entity>
+        <!--playground comp-->
+        <a-entity circles-checkpoint position="5 0.15 -7.6"></a-entity>
+        <!--liminal comp-->
 
         <!--path (right side)-->
         <a-entity circles-checkpoint position="4.7 0.15 -11.2"></a-entity>
@@ -369,273 +399,321 @@
       </a-entity>
 
       <!--Minimal Room Plates-->
-      <a-entity id="orb_plates">      
-          <a-cylinder id="minimal_plate1"
-            position="-21.674 1.3 3.824"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="minimal interactive"
-            theme-select="">
-          </a-cylinder>
+      <a-entity id="orb_plates">
+        <a-cylinder
+          id="minimal_plate1"
+          position="-21.674 1.3 3.824"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="minimal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="minimal_plate2"
-            position="-23.487 1.3 7.649"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="minimal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="minimal_plate2"
+          position="-23.487 1.3 7.649"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="minimal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="minimal_plate3"
-            position="-22.633 1.3 11.778"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="minimal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="minimal_plate3"
+          position="-22.633 1.3 11.778"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="minimal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="minimal_plate4"
-            position="-19.588 1.3 14.682"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="minimal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="minimal_plate4"
+          position="-19.588 1.3 14.682"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="minimal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="minimal_plate5"
-            position="-15.399 1.3 15.177"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="minimal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="minimal_plate5"
+          position="-15.399 1.3 15.177"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="minimal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="minimal_plate6"
-            position="-11.753 1.3 13.206"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="minimal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="minimal_plate6"
+          position="-11.753 1.3 13.206"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="minimal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <!--Playground Room Plates-->
-          <a-cylinder id="playground_plate1"
-            position="-12.588 1.3 -21.741"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="playground interactive"
-            theme-select="">
-          </a-cylinder>
+        <!--Playground Room Plates-->
+        <a-cylinder
+          id="playground_plate1"
+          position="-12.588 1.3 -21.741"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="playground interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="playground_plate2"
-            position="-16.451 1.3 -23.558"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="playground interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="playground_plate2"
+          position="-16.451 1.3 -23.558"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="playground interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="playground_plate3"
-            position="-20.568 1.3 -22.873"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="playground interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="playground_plate3"
+          position="-20.568 1.3 -22.873"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="playground interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="playground_plate4"
-            position="-23.594 1.3 -19.790"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="playground interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="playground_plate4"
+          position="-23.594 1.3 -19.790"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="playground interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="playground_plate5"
-            position="-24.057 1.3 -15.573"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="playground interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="playground_plate5"
+          position="-24.057 1.3 -15.573"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="playground interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="playground_plate6"
-            position="-21.980 1.3 -11.877"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="playground interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="playground_plate6"
+          position="-21.980 1.3 -11.877"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="playground interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <!--Liminal Room Plates-->
-          <a-cylinder id="liminal_plate1"
-            position="15.352 1.3 -11.735"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="liminal interactive"
-            theme-select="">
-          </a-cylinder>
+        <!--Liminal Room Plates-->
+        <a-cylinder
+          id="liminal_plate1"
+          position="15.352 1.3 -11.735"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="liminal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="liminal_plate2"
-            position="17.599 1.3 -15.557"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="liminal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="liminal_plate2"
+          position="17.599 1.3 -15.557"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="liminal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="liminal_plate3"
-            position="17.004 1.3 -19.682"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="liminal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="liminal_plate3"
+          position="17.004 1.3 -19.682"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="liminal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="liminal_plate4"
-            position="14.153 1.3 -22.798"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="liminal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="liminal_plate4"
+          position="14.153 1.3 -22.798"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="liminal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="liminal_plate5"
-            position="9.988 1.3 -23.548"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="liminal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="liminal_plate5"
+          position="9.988 1.3 -23.548"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="liminal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="liminal_plate6"
-            position="6.175 1.3 -21.870"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="liminal interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="liminal_plate6"
+          position="6.175 1.3 -21.870"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="liminal interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <!--Nature Room Plates-->
-          <a-cylinder id="nature_plate1"
-            position="5.222 1.3 13.126"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="nature interactive"
-            theme-select="">
-          </a-cylinder>
+        <!--Nature Room Plates-->
+        <a-cylinder
+          id="nature_plate1"
+          position="5.222 1.3 13.126"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="nature interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="nature_plate2"
-            position="8.822 1.3 15.285"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="nature interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="nature_plate2"
+          position="8.822 1.3 15.285"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="nature interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="nature_plate3"
-            position="13.175 1.3 14.811"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="nature interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="nature_plate3"
+          position="13.175 1.3 14.811"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="nature interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="nature_plate4"
-            position="16.227 1.3 11.889"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="nature interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="nature_plate4"
+          position="16.227 1.3 11.889"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="nature interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="nature_plate5"
-            position="17.133 1.3 7.816"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="nature interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="nature_plate5"
+          position="17.133 1.3 7.816"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="nature interactive"
+          theme-select=""
+        >
+        </a-cylinder>
 
-          <a-cylinder id="nature_plate6"
-            position="15.188 1.3 3.938"
-            height="0.1"
-            radius="0.5"
-            material="color: #e74c3c"
-            circles-interactive-object
-            plate-interaction
-            class="nature interactive"
-            theme-select="">
-          </a-cylinder>
+        <a-cylinder
+          id="nature_plate6"
+          position="15.188 1.3 3.938"
+          height="0.1"
+          radius="0.5"
+          material="color: #e74c3c"
+          circles-interactive-object
+          plate-interaction
+          class="nature interactive"
+          theme-select=""
+        >
+        </a-cylinder>
       </a-entity>
 
       <a-entity id="keepsake_Lobby" position="14 0 14" rotation="0 180 0">
@@ -829,31 +907,33 @@
           visible="true"
           tutorial=""
         >
-          <a-entity id="instructions"
-              text="value:Welcome to Keepsake! The future of memory preservation in virtual reality.\n\nIf this is your first visit, click here for a tutorial.;
+          <a-entity
+            id="instructions"
+            text="value:Welcome to Keepsake! The future of memory preservation in virtual reality.\n\nIf this is your first visit, click here for a tutorial.;
               color:black;
               font:roboto;
               width:4.5;
               anchor:left;
               baseline:top;
               wrapCount:25;"
-              position="0 4.0 2.097"
-              rotation="0 90 0"
+            position="0 4.0 2.097"
+            rotation="0 90 0"
           >
           </a-entity>
-          <a-entity id="instructions-next"
-              text="value:(Click for next);        
+          <a-entity
+            id="instructions-next"
+            text="value:(Click for next);        
               color:black;
               font:roboto;
               width:4.5;
               anchor:center;
               baseline:top;
               wrapCount:25;"
-              position="0 1.465 -1.155"
-              rotation="0 90 0"
+            position="0 1.465 -1.155"
+            rotation="0 90 0"
           >
-      </a-entity>
-      </a-entity>
+          </a-entity>
+        </a-entity>
 
         <!--Lobby Model-->
         <a-entity
