@@ -40,12 +40,21 @@ class S3Logic {
             const formData = new FormData();
             formData.append("file", fileData);
             formData.append("metadata", JSON.stringify(metadata));
+
+            const animEl = document.getElementById("loading-animation");
+            if (animEl) {
+                animEl.style.display = "block";
+            }
+
             await fetch('/s3_uploadFile', {
                 method: 'POST',
                 body: formData,
             });
 
             console.log("File uploaded successfully!");
+            if (animEl) {
+                animEl.style.display = "none";
+            }
 
             // Model Upload Sound Effect
             var modelSound = document.querySelectorAll('.modelUpload');
@@ -56,6 +65,8 @@ class S3Logic {
 
             const uploadUI = document.querySelector('#upload-ui');
             uploadUI.style.display = 'none';
+            const upload2DUI = document.querySelector('#upload-2d-ui');
+            upload2DUI.style.display = 'none';
 
             const artifactJson = await S3Logic.retrieveObject(metadata.key);
             const artifact = Artifact.fromJson(artifactJson);
