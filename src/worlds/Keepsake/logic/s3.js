@@ -51,9 +51,14 @@ class S3Logic {
 
     static retrieveAllObjects = async () => {
         try {
+
+            // init vr loading
+            VRLoadingManager.init();
+
             const animEl = document.getElementById("loading-animation");
             if (animEl) {
                 animEl.style.display = "block";
+                VRLoadingManager.showLoading(); // show vr
             }
 
             const response = await fetch(`/s3_retrieveAllObjects`);
@@ -61,7 +66,9 @@ class S3Logic {
             const jsonResponse = await response.json();
             if (animEl) {
                 animEl.style.display = "none";
+                VRLoadingManager.hideLoading(); // hide vr
             }
+
             return jsonResponse.data.Contents;
         } catch (error) {
             console.error("Error retrieving all objects: " + error);
