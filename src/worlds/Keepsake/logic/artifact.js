@@ -35,9 +35,17 @@ class ArtifactLogic {
             const pedestalId = document.querySelector("a-scene").components["interaction-manager"].pickedUpObject;
             const timestamp = BasicLogic.getCurrentTimestamp();
             const currUserEmail = UserLogic.getCurrentUserEmail();
+
             const artifact = new Artifact("file_" + file.name + "_" + timestamp, currUserEmail, file.name, "", pedestalId, file);
             this.removeExistingArtifacts(artifact.pedestalId);
             await S3Logic.uploadFileToS3(artifact.file, artifact.toJson());
+
+            const scene = document.querySelector('a-scene');
+            const interactionManager = scene.components['interaction-manager'];
+            if (interactionManager.socket) {
+                interactionManager.socket.emit('update-gallery', { galleryEmail: UserLogic.getCurrentGalleryEmail() });
+            }
+
             const uploadedArtifact = await S3Logic.retrieveObject(artifact.key);
             this.fileDataToAframe(uploadedArtifact);
 
