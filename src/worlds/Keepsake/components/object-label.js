@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const scene = document.querySelector("a-scene");
                 const orb = createOrb(labelText);
                 scene.components["orbs"].createCirclesPortal(orb);
-                S3Logic.uploadOrbToS3(orb.toJson());
+                S3Logic.uploadMetadataToS3(orb.toJson());
 
                 const interactionManager = scene.components['interaction-manager'];
                 if (interactionManager.socket) {
